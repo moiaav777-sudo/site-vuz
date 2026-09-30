@@ -1,0 +1,271 @@
+# Стартовый реестр проверок. Одна запись = одна проверка.
+# status_class: violation | risk | check | fact
+# kind: auto (код) | llm (модель по схеме) | manual (человек)
+# Даты и номера пунктов сверять с первоисточником перед вводом в эксплуатацию.
+
+meta:
+  version: 0.1
+  updated: 2026-09-30
+  fronts:
+    A: Обязательная информация
+    B: Доступность
+    C: Персональные данные и информация
+    D: Безопасность периметра
+    E: Целостность данных и ссылок
+    F: Качество площадки
+
+checks:
+  # ---------- A. Обязательная информация ----------
+  - id: A-01-sveden-exists
+    front: A
+    title: Раздел «Сведения об образовательной организации» по адресу /sveden
+    norm: п. 2–6 Требований, приказ Рособрнадзора №1493 (ред. №920)
+    kind: auto
+    status_class: violation
+    evidence: snapshot
+  - id: A-02-subsections
+    front: A
+    title: Все подразделы /sveden присутствуют, URL-имена совпадают с п. 6
+    norm: п. 6 Требований №1493
+    kind: auto
+    status_class: violation
+    params: {subsections: [common, struct, document, education, eduStandarts, managers, employees, objects, grants, paid_edu, budget, vacant, inter, catering]}
+  - id: A-03-itemprop
+    front: A
+    title: На страницах пп. 7–20 есть микроразметка itemprop по перечню
+    norm: п. 27 Требований №1493
+    kind: auto
+    status_class: violation
+  - id: A-04-machine-readable
+    front: A
+    title: Табличные сведения пп. 7–20 доступны в формате для автоматической обработки
+    norm: п. 26 Требований №1493 (ред. №920, с 01.09.2026)
+    kind: auto
+    status_class: risk
+  - id: A-05-update-10-days
+    front: A
+    title: Изменённые сведения обновлены на сайте не позднее 10 рабочих дней
+    norm: ч. 3 ст. 29 ФЗ-273; ПП РФ №1802 (правило обновления)
+    kind: auto
+    status_class: violation
+    note: срабатывает только при доказанном изменении (diff снимков или журнал вуза); старая дата сама по себе = check
+  - id: A-06-family-rooms
+    front: A
+    title: Указано количество изолированных помещений для студенческих семей
+    norm: подп. «о» п. 1 ч. 2 ст. 29 ФЗ-273 (ред. 34-ФЗ от 20.02.2026)
+    effective_from: 2026-09-01
+    kind: llm
+    status_class: violation
+  - id: A-07-fgos-code-match
+    front: A
+    title: Код направления в подписи = код в имени файла ФГОС = запись fgosvo.ru
+    norm: ч. 1 ст. 29 ФЗ-273; п. 15 Требований №1493
+    kind: auto
+    status_class: violation
+  - id: A-08-fgos-source
+    front: A
+    title: Ссылка на ФГОС ведёт на реестр (fgosvo.ru) или копию на сайте вуза, а не на сторонний сайт
+    norm: п. 15 Требований №1493
+    kind: auto
+    status_class: risk
+  - id: A-09-doc-formats
+    front: A
+    title: Документы в допустимых форматах, PDF содержит текстовый слой
+    norm: ПП РФ №1802 (требования к файлам)
+    kind: auto
+    status_class: risk
+  - id: A-10-sig-declared
+    front: A
+    title: Если сайт заявляет «подписано ЭП», рядом есть .sig и подпись проверяется
+    norm: ПП РФ №1802 (простая ЭП, 63-ФЗ)
+    kind: auto
+    status_class: risk
+  - id: A-11-managers-consistent
+    front: A
+    title: Сведения о руководстве совпадают между порталом и сайтами филиалов
+    norm: п. 7 Требований №1493
+    kind: llm
+    status_class: check
+
+  # ---------- B. Доступность ----------
+  - id: B-01-zoom
+    front: B
+    title: Текст масштабируется до 200%, нет maximum-scale / user-scalable=no
+    norm: ПП РФ от 07.02.2026 №102 (с 01.03.2026); ПП №1802
+    kind: auto
+    status_class: violation
+  - id: B-02-axe
+    front: B
+    title: axe-core без критических ошибок (alt, заголовки, контраст, язык, фокус)
+    norm: ПП РФ №102; ГОСТ Р 52872-2019
+    kind: auto
+    status_class: risk
+  - id: B-03-vision-version
+    front: B
+    title: Версия для слабовидящих есть и работает
+    norm: ПП №1802; ГОСТ Р 52872-2019
+    kind: auto
+    status_class: violation
+  - id: B-04-pdf-readable
+    front: B
+    title: Документы читаемы программой экранного доступа или есть текстовая альтернатива
+    norm: ПП РФ №102
+    kind: auto
+    status_class: risk
+
+  # ---------- C. Персональные данные и информация ----------
+  - id: C-01-pd-policy
+    front: C
+    title: Опубликована политика обработки ПДн, ссылка с каждой формы
+    norm: ч. 2 ст. 18.1 152-ФЗ
+    kind: auto
+    status_class: violation
+  - id: C-02-forms-https-consent
+    front: C
+    title: Формы отправляются по https и содержат согласие на обработку
+    norm: ст. 9 152-ФЗ
+    kind: auto
+    status_class: violation
+  - id: C-03-foreign-resources
+    front: C
+    title: Перечень иностранных счётчиков/шрифтов/капч/встраиваний
+    norm: ст. 12 152-ФЗ (трансграничная передача)
+    kind: auto
+    status_class: risk
+  - id: C-04-auth-ru
+    front: C
+    title: Авторизация в ЛК/LMS только через российские сервисы
+    norm: 149-ФЗ (требования к авторизации пользователей)
+    kind: manual
+    status_class: risk
+  - id: C-05-hosting-ru
+    front: C
+    title: Хостинг-провайдер в реестре Роскомнадзора, IP в РФ
+    norm: 149-ФЗ (реестр хостинг-провайдеров)
+    kind: auto
+    status_class: risk
+  - id: C-06-pps-minimization
+    front: C
+    title: В реестре ППС только поля, требуемые п. 12 №1493
+    norm: п. 12 Требований №1493; ст. 5 152-ФЗ
+    kind: llm
+    status_class: risk
+
+  # ---------- D. Безопасность периметра ----------
+  - id: D-01-tls-expiry
+    front: D
+    title: Сертификат действителен более 30 дней
+    norm: ПП №1802 (доступность сайта)
+    kind: auto
+    status_class: risk
+    alert: {days: [30, 7, 1]}
+  - id: D-02-domain-expiry
+    front: D
+    title: Домен оплачен более чем на 30 дней (WHOIS paid-till)
+    kind: auto
+    status_class: risk
+    alert: {days: [30, 7]}
+  - id: D-03-tls-config
+    front: D
+    title: TLS 1.2+, HSTS, корректная цепочка
+    kind: auto
+    status_class: risk
+  - id: D-04-headers
+    front: D
+    title: CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy
+    kind: auto
+    status_class: risk
+  - id: D-05-mail-auth
+    front: D
+    title: SPF, DKIM, DMARC для домена вуза
+    kind: auto
+    status_class: risk
+  - id: D-06-subdomains
+    front: D
+    title: Инвентаризация поддоменов (crt.sh, DNS), живость, CNAME на чужие сервисы
+    kind: auto
+    status_class: risk
+  - id: D-07-cms-version
+    front: D
+    title: Отпечаток CMS/сервера и известные CVE по версии
+    kind: auto
+    status_class: risk
+  - id: D-08-blacklists
+    front: D
+    title: Домен не в Яндекс/Google Safe Browsing и VirusTotal
+    kind: auto
+    status_class: violation
+    alert: {immediate: true}
+  - id: D-09-defacement
+    front: D
+    title: Хэш и текстовый diff главной и /sveden между обходами без необъяснённых изменений
+    kind: auto
+    status_class: check
+    alert: {immediate: true}
+  - id: D-10-injected-script
+    front: D
+    title: В контентных полях нет <script>/<iframe>/onerror с чужих доменов
+    kind: auto
+    status_class: violation
+    alert: {immediate: true}
+  - id: D-11-exposed-paths
+    front: D
+    title: Служебные пути (админка, .git, бэкапы) не отдают 200
+    kind: auto
+    status_class: risk
+  - id: D-12-typosquat
+    front: D
+    title: Домены-двойники по crt.sh/DNS
+    kind: auto
+    status_class: check
+  - id: D-13-dual-route
+    front: D
+    title: Доступность с RU-маршрута и извне
+    kind: auto
+    status_class: violation
+    alert: {minutes_down: 15}
+
+  # ---------- E. Целостность данных и ссылок ----------
+  - id: E-01-link-alive
+    front: E
+    title: Ссылки живы по телу ответа (soft-404 учитывается)
+    norm: ч. 1 ст. 29 ФЗ-273
+    kind: auto
+    status_class: violation
+  - id: E-02-http-links
+    front: E
+    title: Нет ссылок по http:// на документы
+    kind: auto
+    status_class: risk
+  - id: E-03-sig-verify
+    front: E
+    title: Для каждого .sig подпись криптографически верна
+    kind: auto
+    status_class: risk
+  - id: E-04-data-garbage
+    front: E
+    title: Нет HTML/скриптов в текстовых полях, нет битых строк выгрузок
+    kind: auto
+    status_class: risk
+  - id: E-05-hidden-links
+    front: E
+    title: Документы, видимые только в коде страницы, показаны пользователю
+    kind: auto
+    status_class: check
+
+  # ---------- F. Качество площадки ----------
+  - id: F-01-sitemap-robots
+    front: F
+    title: sitemap.xml непустой, robots.txt актуален
+    kind: auto
+    status_class: fact
+  - id: F-02-canonical-www
+    front: F
+    title: Редирект www, canonical
+    kind: auto
+    status_class: fact
+  - id: F-03-http2-ipv6
+    front: F
+    title: HTTP/2 и AAAA
+    kind: auto
+    status_class: fact
