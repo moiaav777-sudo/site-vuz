@@ -1,0 +1,114 @@
+{
+ "eng": {
+  "subject": "Английский язык",
+  "tasks": 1735,
+  "documents": 250,
+  "images": 0,
+  "files": 58,
+  "tasks_with_document": 1533
+ },
+ "bio": {
+  "subject": "Биология",
+  "tasks": 1979,
+  "documents": 208,
+  "images": 1154,
+  "files": 0,
+  "tasks_with_document": 362
+ },
+ "geo": {
+  "subject": "География",
+  "tasks": 2355,
+  "documents": 330,
+  "images": 626,
+  "files": 0,
+  "tasks_with_document": 841
+ },
+ "inf": {
+  "subject": "Информатика",
+  "tasks": 1585,
+  "documents": 0,
+  "images": 435,
+  "files": 371,
+  "tasks_with_document": 0
+ },
+ "esp": {
+  "subject": "Испанский язык",
+  "tasks": 868,
+  "documents": 130,
+  "images": 0,
+  "files": 28,
+  "tasks_with_document": 784
+ },
+ "his": {
+  "subject": "История",
+  "tasks": 1511,
+  "documents": 253,
+  "images": 330,
+  "files": 0,
+  "tasks_with_document": 681
+ },
+ "lit": {
+  "subject": "Литература",
+  "tasks": 1343,
+  "documents": 242,
+  "images": 6,
+  "files": 0,
+  "tasks_with_document": 805
+ },
+ "mat": {
+  "subject": "Математика",
+  "tasks": 3884,
+  "documents": 38,
+  "images": 2844,
+  "files": 0,
+  "tasks_with_document": 359
+ },
+ "ger": {
+  "subject": "Немецкий язык",
+  "tasks": 1106,
+  "documents": 162,
+  "images": 0,
+  "files": 31,
+  "tasks_with_document": 992
+ },
+ "soc": {
+  "subject": "Обществознание",
+  "tasks": 2668,
+  "documents": 127,
+  "images": 211,
+  "files": 0,
+  "tasks_with_document": 508
+ },
+ "rus": {
+  "subject": "Русский язык",
+  "tasks": 1144,
+  "documents": 191,
+  "images": 0,
+  "files": 43,
+  "tasks_with_document": 596
+ },
+ "phs": {
+  "subject": "Физика",
+  "tasks": 1506,
+  "documents": 63,
+  "images": 752,
+  "files": 0,
+  "tasks_with_document": 63
+ },
+ "fra": {
+  "subject": "Французский язык",
+  "tasks": 885,
+  "documents": 126,
+  "images": 0,
+  "files": 30,
+  "tasks_with_document": 755
+ },
+ "him": {
+  "subject": "Химия",
+  "tasks": 2009,
+  "documents": 79,
+  "images": 73,
+  "files": 0,
+  "tasks_with_document": 154
+ }
+}
