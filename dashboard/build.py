@@ -115,7 +115,7 @@ def clean_url(x):
 rows_AB, rows_C = [], []
 for b in BROKEN:
     url = clean_url(b["url"])
-    row = {"text": verdict_label[b["v"]] + " · " + ", ".join(cat_label[c] for c in b["cats"]) + (" · http" if b["http"] else "") + ("" if url else " · адрес в снимке обрезан, восстановить по странице"),
+    row = {"text": ", ".join(cat_label[c] for c in b["cats"]) + (" · ссылка жива" if b["v"]=="C" else "") + (" · без https" if b["http"] else "") + ("" if url else " · адрес в снимке обрезан, восстановить по странице"),
            "url": url}
     (rows_AB if b["v"] in "AB" else rows_C).append(row)
 rows_AB.append({"text":"44.04.03: ссылка на стандарт пустая (по тексту отчёта v2, фаза 0 плана)","url":u("/sveden/eduStandarts")})

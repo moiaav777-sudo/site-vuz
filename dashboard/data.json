@@ -602,39 +602,39 @@
    "first_seen": "2026-09-29",
    "rows": [
     {
-     "text": "источник не реестр · источник не реестр fgosvo.ru",
+     "text": "источник не реестр fgosvo.ru",
      "url": "https://rsmu.ru/fileadmin/templates/DOC/Local_Acts_Education/Aspirantura-ordinatura/FGOS_3__/31.08.43_Nefrologija.pdf"
     },
     {
-     "text": "источник не реестр · источник не реестр fgosvo.ru, не тот код ФГОС",
+     "text": "источник не реестр fgosvo.ru, не тот код ФГОС",
      "url": "https://rsmu.ru/fileadmin/templates/DOC/Local_Acts_Education/Aspirantura-ordinatura/FGOS_3__/31.08.53_EHndokrinologija.pdf"
     },
     {
-     "text": "источник не реестр · источник не реестр fgosvo.ru, не тот код ФГОС · адрес в снимке обрезан, восстановить по странице",
+     "text": "источник не реестр fgosvo.ru, не тот код ФГОС · адрес в снимке обрезан, восстановить по странице",
      "url": null
     },
     {
-     "text": "источник не реестр · источник не реестр fgosvo.ru · http",
+     "text": "источник не реестр fgosvo.ru · без https",
      "url": "http://www.edu.ru/db/mo/Data/d_14/m344.pdf"
     },
     {
-     "text": "источник не реестр · источник не реестр fgosvo.ru · http",
+     "text": "источник не реестр fgosvo.ru · без https",
      "url": "http://www.garant.ru/products/ipo/prime/doc/70605600/#1000"
     },
     {
-     "text": "источник не реестр · источник не реестр fgosvo.ru · http",
+     "text": "источник не реестр fgosvo.ru · без https",
      "url": "http://www.edu.ru/documents/view/58667/"
     },
     {
-     "text": "источник не реестр · источник не реестр fgosvo.ru · http",
+     "text": "источник не реестр fgosvo.ru · без https",
      "url": "http://www.edu.ru/documents/view/59268/"
     },
     {
-     "text": "источник не реестр · источник не реестр fgosvo.ru · http",
+     "text": "источник не реестр fgosvo.ru · без https",
      "url": "http://www.edu.ru/documents/view/59586/"
     },
     {
-     "text": "не тот файл или код · не тот код ФГОС · http",
+     "text": "не тот код ФГОС · без https",
      "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/380401_M_3_31082020.pdf"
     },
     {
@@ -669,35 +669,35 @@
    "first_seen": "2026-09-29",
    "rows": [
     {
-     "text": "формальный дефект, ссылка жива · ссылка-заглушка на страницу загрузки",
+     "text": "ссылка-заглушка на страницу загрузки · ссылка жива",
      "url": "https://fgosvo.ru/fgosvo/downloads?f=%2Fuploadfiles%2FFGOS+VO+3%2B%2B%2FMag%2F380405_M_3_31082020.pdf&id=1991"
     },
     {
-     "text": "формальный дефект, ссылка жива · двойной слэш в адресе",
+     "text": "двойной слэш в адресе · ссылка жива",
      "url": "https://fgosvo.ru/uploadfiles//fgosvoord/310801.pdf"
     },
     {
-     "text": "формальный дефект, ссылка жива · двойной слэш в адресе",
+     "text": "двойной слэш в адресе · ссылка жива",
      "url": "https://fgosvo.ru/uploadfiles//FGOS%20VO%203%2B%2B/Ordinat/310805_Clinic_labor_diagnostic.pdf"
     },
     {
-     "text": "формальный дефект, ссылка жива · двойной слэш в адресе",
+     "text": "двойной слэш в адресе · ссылка жива",
      "url": "https://fgosvo.ru/uploadfiles//fgosvoord/310809_Rentgenology.pdf"
     },
     {
-     "text": "формальный дефект, ссылка жива · двойной слэш в адресе",
+     "text": "двойной слэш в адресе · ссылка жива",
      "url": "https://fgosvo.ru/uploadfiles//fgosvoord/310810_Sud_expert.pdf"
     },
     {
-     "text": "формальный дефект, ссылка жива · двойной слэш в адресе",
+     "text": "двойной слэш в адресе · ссылка жива",
      "url": "https://fgosvo.ru/uploadfiles//fgosvoord/310835_Infections.pdf"
     },
     {
-     "text": "формальный дефект, ссылка жива · двойной слэш в адресе",
+     "text": "двойной слэш в адресе · ссылка жива",
      "url": "https://fgosvo.ru/uploadfiles//FGOS%20VO%203%2B%2B/Ordinat/310845_%20pulmonology.pdf"
     },
     {
-     "text": "формальный дефект, ссылка жива · ссылка-заглушка на страницу загрузки",
+     "text": "ссылка-заглушка на страницу загрузки · ссылка жива",
      "url": "https://fgosvo.ru/fgosvo/downloads?f=%2Fuploadfiles%2FFGOS+VO+3%2B%2B%2FSpec%2F380501_C_3_24052021.pdf&id=2136"
     }
    ]
