@@ -68,7 +68,8 @@ tr.detail>td{padding:0 10px 10px;background:var(--surface-2)}
 .pill.violation{color:var(--critical);background:var(--critical-soft)} .pill.risk{color:var(--warning);background:var(--warning-soft)}
 .pill.check{color:var(--check);background:var(--check-soft)} .pill.unverified{color:var(--unv);background:var(--unv-soft)}
 .pill.fact{color:var(--fg-2);background:var(--surface-2)} .pill.ok{color:var(--good);background:var(--good-soft)}
-#findings th:nth-child(1){width:124px} #findings th:nth-child(2){width:40%} #findings th:nth-child(5){width:96px} #findings th:nth-child(6){width:120px} .where a{overflow-wrap:anywhere}
+#findings th:nth-child(1){width:124px} #findings th:nth-child(2){width:40%} #findings th:nth-child(5){width:96px} #findings th:nth-child(6){width:120px}
+#sections th:nth-child(2){width:38%} #sections td:nth-child(2){min-width:260px} a.open-f{display:flex;align-items:flex-start;gap:8px;color:var(--fg);text-decoration:none;line-height:1.35;margin:3px 0} a.open-f:hover span:last-child{color:var(--accent);text-decoration:underline} a.open-f .pill{padding:0;width:8px;height:8px;min-width:8px;margin-top:6px;background:transparent} a.open-f .pill::before{width:8px;height:8px} .where a{overflow-wrap:anywhere}
 .card{display:grid;grid-template-columns:160px 1fr;gap:8px 16px;padding:14px 16px;border-radius:10px;background:var(--surface);border:1px solid var(--line);margin:4px 0 8px}
 @media (max-width:720px){.card{grid-template-columns:1fr}}
 .card dt{color:var(--fg-3);font-size:12.5px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;padding-top:2px}
@@ -193,7 +194,7 @@ footer{margin-top:28px;color:var(--fg-3);font-size:12.5px}
     </div>
   </div>
   <div class="tbl"><table id="sections">
-    <thead><tr><th>Подраздел</th><th>Нарушения</th><th>Риски</th><th>Проверить</th><th>Файлов</th><th>Не обновлялся, дней</th><th>Живых ссылок, %</th></tr></thead>
+    <thead><tr><th>Подраздел</th><th>Что не так</th><th>Нарушения</th><th>Риски</th><th>Проверить</th><th>Файлов</th><th>Не обновлялся, дней</th><th>Живых ссылок, %</th></tr></thead>
     <tbody></tbody></table></div>
   <div class="grid2">
     <div class="placeholder"><strong>Как увидит проверяющий.</strong> Прогон по методическим рекомендациям Рособрнадзора не входит в первую сборку.</div>
@@ -362,8 +363,15 @@ document.getElementById('group-scores').innerHTML = Object.keys(D.groups).filter
 }).join('');
 document.querySelector('#sections tbody').innerHTML = D.sections.map(function(s){
   var p=perSec[s.code]; var d = function(x){ return x==null?'<span class="muted">—</span>':x; };
-  return '<tr><td><a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.name)+'</a></td><td class="mono">'+(p.violation||'')+'</td><td class="mono">'+(p.risk||'')+'</td><td class="mono">'+(p.check||'')+'</td><td class="mono">'+d(s.files)+'</td><td class="mono">'+d(s.updated_days)+'</td><td class="mono">'+d(s.alive_pct)+'</td></tr>';
-}).join('') + ((meta.unassigned_files||[]).length ? '<tr><td class="muted" colspan="4">Не отнесены к подразделу: '+meta.unassigned_files.map(function(x){ return esc(x.label)+' ('+x.files+')'; }).join(', ')+'</td><td class="mono">'+meta.unassigned_files.reduce(function(a,x){return a+x.files;},0)+'</td><td></td><td></td></tr>' : '');
+  var probs = D.findings.filter(function(f){ return f.sections.indexOf(s.code)>=0 && f.status!=='fact'; }).sort(function(a,b){ return ORDER[a.status]-ORDER[b.status]; })
+    .map(function(f){ return '<a href="#otvet" class="open-f" data-open="'+f.id+'"><span class="pill '+f.status+'"></span><span>'+esc(f.title)+'</span></a>'; }).join('<br>');
+  return '<tr><td><a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.name)+'</a></td><td class="small">'+(probs||'<span class="muted">проблем не найдено</span>')+'</td><td class="mono">'+(p.violation||'')+'</td><td class="mono">'+(p.risk||'')+'</td><td class="mono">'+(p.check||'')+'</td><td class="mono">'+d(s.files)+'</td><td class="mono">'+d(s.updated_days)+'</td><td class="mono">'+d(s.alive_pct)+'</td></tr>';
+}).join('') + ((meta.unassigned_files||[]).length ? '<tr><td class="muted" colspan="5">Не отнесены к подразделу: '+meta.unassigned_files.map(function(x){ return esc(x.label)+' ('+x.files+')'; }).join(', ')+'</td><td class="mono">'+meta.unassigned_files.reduce(function(a,x){return a+x.files;},0)+'</td><td></td><td></td></tr>' : '');
+
+document.querySelector('#sections').addEventListener('click', function(e){ var a=e.target.closest('a.open-f'); if(!a) return; e.preventDefault(); openFinding(a.dataset.open); });
+function openFinding(id){ state.section=null; state.status='all'; renderFilters(); renderFindings();
+  var tr = tb.querySelector('tr.f[data-id="'+id+'"]'); if(!tr) return; tr.setAttribute('aria-expanded','true'); tb.querySelector('tr.detail[data-for="'+id+'"]').hidden=false;
+  tr.scrollIntoView({behavior:'smooth', block:'start'}); tr.focus({preventScroll:true}); }
 
 /* ---- экран 3 ---- */
 var cstate='all';
