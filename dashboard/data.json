@@ -1,0 +1,1471 @@
+{
+ "meta": {
+  "org": "Пензенский государственный университет",
+  "site": "pnzgu.ru",
+  "snapshot_date": "2026-09-29",
+  "snapshot_time": "08:13",
+  "probe_date": "2026-09-30",
+  "build_date": "2026-10-07",
+  "build": "Сборка 1, статичная",
+  "rules": "Правила аудита сайта вуза, финальная редакция от 07.10.2026",
+  "route_note": "Снимок снят с российского маршрута. Внешний маршрут 28.09 получал 502 от DDoS-Guard на 27 поддоменах. Из среды сборки сайт недоступен, живые пробы после 30.09 не выполнялись."
+ },
+ "weights": {
+  "status": {
+   "violation": 1.0,
+   "risk": 0.5,
+   "check": 0.2,
+   "unverified": 0.2,
+   "fact": 0.0,
+   "ok": 0.0
+  },
+  "cls": {
+   "violation": 1.0,
+   "risk": 0.5,
+   "check": 0.2,
+   "fact": 0.0
+  },
+  "groups": {
+   "A": 0.4,
+   "B": 0.15,
+   "V": 0.15,
+   "G": 0.15,
+   "D": 0.15,
+   "E": 0.0
+  }
+ },
+ "groups": {
+  "A": "Состав и содержание раздела «Сведения»",
+  "B": "Доступность",
+  "V": "Персональные данные",
+  "G": "Безопасность",
+  "D": "Целостность данных",
+  "E": "Качество площадки"
+ },
+ "sections": [
+  {
+   "n": 1,
+   "code": "common",
+   "name": "Основные сведения",
+   "url": "https://pnzgu.ru/sveden/common",
+   "files": 6,
+   "updated_days": 210,
+   "alive_pct": null
+  },
+  {
+   "n": 2,
+   "code": "struct",
+   "name": "Структура и органы управления",
+   "url": "https://pnzgu.ru/sveden/struct",
+   "files": 172,
+   "updated_days": null,
+   "alive_pct": 82
+  },
+  {
+   "n": 3,
+   "code": "document",
+   "name": "Документы",
+   "url": "https://pnzgu.ru/sveden/document",
+   "files": 90,
+   "updated_days": 91,
+   "alive_pct": 74
+  },
+  {
+   "n": 4,
+   "code": "education",
+   "name": "Образование",
+   "url": "https://pnzgu.ru/sveden/education",
+   "files": 21,
+   "updated_days": 14,
+   "alive_pct": null
+  },
+  {
+   "n": 5,
+   "code": "eduStandarts",
+   "name": "Образовательные стандарты и требования",
+   "url": "https://pnzgu.ru/sveden/eduStandarts",
+   "files": 234,
+   "updated_days": null,
+   "alive_pct": 58
+  },
+  {
+   "n": 6,
+   "code": "managers",
+   "name": "Руководство",
+   "url": "https://pnzgu.ru/sveden/managers",
+   "files": null,
+   "updated_days": 20,
+   "alive_pct": null
+  },
+  {
+   "n": 7,
+   "code": "employees",
+   "name": "Педагогический состав",
+   "url": "https://pnzgu.ru/sveden/employees",
+   "files": null,
+   "updated_days": null,
+   "alive_pct": 66
+  },
+  {
+   "n": 8,
+   "code": "objects",
+   "name": "Материально-техническое обеспечение и доступная среда",
+   "url": "https://pnzgu.ru/sveden/objects",
+   "files": 117,
+   "updated_days": 19,
+   "alive_pct": null
+  },
+  {
+   "n": 9,
+   "code": "paid_edu",
+   "name": "Платные образовательные услуги",
+   "url": "https://pnzgu.ru/sveden/paid_edu",
+   "files": 40,
+   "updated_days": 91,
+   "alive_pct": null
+  },
+  {
+   "n": 10,
+   "code": "budget",
+   "name": "Финансово-хозяйственная деятельность",
+   "url": "https://pnzgu.ru/sveden/budget",
+   "files": 5,
+   "updated_days": 119,
+   "alive_pct": 70
+  },
+  {
+   "n": 11,
+   "code": "vacant",
+   "name": "Вакантные места для приёма",
+   "url": "https://pnzgu.ru/sveden/vacant",
+   "files": 2,
+   "updated_days": 5,
+   "alive_pct": null
+  },
+  {
+   "n": 12,
+   "code": "grants",
+   "name": "Стипендии и меры поддержки",
+   "url": "https://pnzgu.ru/sveden/grants",
+   "files": 16,
+   "updated_days": 120,
+   "alive_pct": 60
+  },
+  {
+   "n": 13,
+   "code": "inter",
+   "name": "Международное сотрудничество",
+   "url": "https://pnzgu.ru/sveden/inter",
+   "files": null,
+   "updated_days": 71,
+   "alive_pct": null
+  },
+  {
+   "n": 14,
+   "code": "catering",
+   "name": "Организация питания",
+   "url": "https://pnzgu.ru/sveden/catering",
+   "files": 2,
+   "updated_days": 722,
+   "alive_pct": 44
+  }
+ ],
+ "checks": [
+  {
+   "id": "А-1",
+   "group": "A",
+   "title": "Раздел доступен с главной и из меню, все страницы открываются",
+   "cls": "violation",
+   "method": "проба",
+   "status": "ok",
+   "note": "Снимок 29.09 с российского маршрута снят полностью. Внешний маршрут (28.09) получал 502 от DDoS-Guard на 27 поддоменах: это фильтр по IP, а не недоступность.",
+   "sections": []
+  },
+  {
+   "id": "А-2",
+   "group": "A",
+   "title": "Все 14 подразделов на месте, названия и адреса как в №1493",
+   "cls": "violation",
+   "method": "снимок",
+   "status": "ok",
+   "note": "В снимке есть все 14 адресов /sveden/*.",
+   "sections": []
+  },
+  {
+   "id": "А-3",
+   "group": "A",
+   "title": "Все поля раздела 3 заполнены, нет пустых ячеек",
+   "cls": "violation",
+   "method": "снимок",
+   "status": "unverified",
+   "note": "Словарь полей и itemprop по подразделам к первой сборке не подготовлен; проверка не выполнялась.",
+   "sections": []
+  },
+  {
+   "id": "А-4",
+   "group": "A",
+   "title": "Микроразметка itemprop на каждой странице пп. 7–20",
+   "cls": "violation",
+   "method": "снимок",
+   "status": "unverified",
+   "note": "Словарь itemprop не применён; в v2 была только выборочная оценка без списка.",
+   "sections": []
+  },
+  {
+   "id": "А-5",
+   "group": "A",
+   "title": "Таблицы и документы машиночитаемы по условиям подраздела 4.1 (п. 26)",
+   "cls": "violation",
+   "method": "снимок",
+   "status": "violation",
+   "note": "",
+   "sections": [
+    "vacant",
+    "inter",
+    "employees"
+   ]
+  },
+  {
+   "id": "А-6",
+   "group": "A",
+   "title": "Документы в допустимых форматах с текстовым слоем; заявленная подпись есть и проверяется",
+   "cls": "risk",
+   "method": "снимок",
+   "status": "risk",
+   "note": "",
+   "sections": [
+    "struct"
+   ]
+  },
+  {
+   "id": "А-7",
+   "group": "A",
+   "title": "Ссылки на ФГОС живы, ведут на официальный источник, код в подписи равен коду файла",
+   "cls": "violation",
+   "method": "проба, реестр",
+   "status": "violation",
+   "note": "",
+   "sections": [
+    "eduStandarts"
+   ]
+  },
+  {
+   "id": "А-8",
+   "group": "A",
+   "title": "Лицензия и аккредитация совпадают с реестрами Рособрнадзора",
+   "cls": "violation",
+   "method": "реестр",
+   "status": "unverified",
+   "note": "Доступа к реестрам из среды сборки нет.",
+   "sections": []
+  },
+  {
+   "id": "А-9",
+   "group": "A",
+   "title": "Изменённые сведения обновлены в течение 10 рабочих дней",
+   "cls": "violation",
+   "method": "снимок, сравнение",
+   "status": "check",
+   "note": "Прошлого снимка нет, изменения не доказаны: только возраст страниц.",
+   "sections": [
+    "catering",
+    "common",
+    "grants",
+    "budget",
+    "document",
+    "paid_edu"
+   ]
+  },
+  {
+   "id": "А-10",
+   "group": "A",
+   "title": "Новые нормы с датой вступления выполнены (комнаты для семей, аккредитация в «Образовании», педсостав по программам)",
+   "cls": "violation",
+   "method": "снимок",
+   "status": "violation",
+   "note": "Проверено только требование о комнатах для семей.",
+   "sections": [
+    "grants",
+    "objects"
+   ]
+  },
+  {
+   "id": "А-11",
+   "group": "A",
+   "title": "Нет противоречий между подразделами и с сайтами филиалов",
+   "cls": "check",
+   "method": "снимок",
+   "status": "check",
+   "note": "",
+   "sections": [
+    "managers"
+   ]
+  },
+  {
+   "id": "А-12",
+   "group": "A",
+   "title": "Ссылки на сайты Минобрнауки и Минпросвещения есть и работают",
+   "cls": "violation",
+   "method": "проба",
+   "status": "unverified",
+   "note": "Живая проба из среды сборки невозможна.",
+   "sections": []
+  },
+  {
+   "id": "Б-1",
+   "group": "B",
+   "title": "Масштабирование текста до 200% не запрещено",
+   "cls": "violation",
+   "method": "снимок",
+   "status": "violation",
+   "note": "",
+   "sections": []
+  },
+  {
+   "id": "Б-2",
+   "group": "B",
+   "title": "Заголовки страниц осмысленны, документы читаемы программой экранного доступа",
+   "cls": "violation",
+   "method": "снимок",
+   "status": "unverified",
+   "note": "Проверка текстового слоя по всем 766 файлам не выполнялась.",
+   "sections": []
+  },
+  {
+   "id": "Б-3",
+   "group": "B",
+   "title": "Контраст, alt, навигация с клавиатуры, язык страницы",
+   "cls": "risk",
+   "method": "проба (axe-core)",
+   "status": "unverified",
+   "note": "axe-core не запускался.",
+   "sections": []
+  },
+  {
+   "id": "В-1",
+   "group": "V",
+   "title": "Политика обработки ПДн опубликована, ссылка с каждой формы",
+   "cls": "violation",
+   "method": "снимок",
+   "status": "unverified",
+   "note": "Формы и политика в снимок v2 не входили.",
+   "sections": []
+  },
+  {
+   "id": "В-2",
+   "group": "V",
+   "title": "Формы по https с отдельным согласием, без лишних полей",
+   "cls": "violation",
+   "method": "снимок",
+   "status": "unverified",
+   "note": "Формы в снимок v2 не входили.",
+   "sections": []
+  },
+  {
+   "id": "В-3",
+   "group": "V",
+   "title": "Сведения о людях сверх перечня имеют основание",
+   "cls": "risk",
+   "method": "снимок",
+   "status": "unverified",
+   "note": "",
+   "sections": []
+  },
+  {
+   "id": "В-4",
+   "group": "V",
+   "title": "Иностранные счётчики, шрифты, капчи перечислены, есть уведомление о cookie",
+   "cls": "risk",
+   "method": "снимок",
+   "status": "unverified",
+   "note": "",
+   "sections": []
+  },
+  {
+   "id": "В-5",
+   "group": "V",
+   "title": "Хостинг в РФ, провайдер в реестре Роскомнадзора",
+   "cls": "risk",
+   "method": "реестр",
+   "status": "unverified",
+   "note": "",
+   "sections": []
+  },
+  {
+   "id": "Г-1",
+   "group": "G",
+   "title": "В контентных полях нет стороннего исполняемого кода; сайт не в чёрных списках",
+   "cls": "violation",
+   "method": "снимок, реестр",
+   "status": "violation",
+   "note": "Чёрные списки не проверялись; скрипт в контенте найден.",
+   "sections": [
+    "struct"
+   ]
+  },
+  {
+   "id": "Г-2",
+   "group": "G",
+   "title": "Сертификат и домен действуют больше 30 дней, сайт доступен с двух маршрутов",
+   "cls": "risk",
+   "method": "проба, реестр",
+   "status": "risk",
+   "note": "",
+   "sections": []
+  },
+  {
+   "id": "Г-3",
+   "group": "G",
+   "title": "Заголовки безопасности, версии ПО скрыты, служебные файлы закрыты, SPF/DKIM/DMARC",
+   "cls": "fact",
+   "method": "проба",
+   "status": "unverified",
+   "note": "Заголовки и DNS не снимались.",
+   "sections": []
+  },
+  {
+   "id": "Г-4",
+   "group": "G",
+   "title": "Поддомены и сайты филиалов в контуре, подмена контента отслеживается",
+   "cls": "fact",
+   "method": "проба",
+   "status": "risk",
+   "note": "",
+   "sections": []
+  },
+  {
+   "id": "Г-5",
+   "group": "G",
+   "title": "Активные проверки (защита форм, лимиты, сканер уязвимостей)",
+   "cls": "fact",
+   "method": "по разрешению",
+   "status": "unverified",
+   "note": "Письменного разрешения вуза нет, не выполнялись.",
+   "sections": []
+  },
+  {
+   "id": "Д-1",
+   "group": "D",
+   "title": "Все ссылки раздела живы по телу ответа",
+   "cls": "violation",
+   "method": "проба",
+   "status": "unverified",
+   "note": "В v2 было утверждение «~11% адресов ЛНА требуют проверки» без построчного списка; без списка не публикуется.",
+   "sections": []
+  },
+  {
+   "id": "Д-2",
+   "group": "D",
+   "title": "Нет мусора в данных: теги в полях, битые строки, документы только в коде",
+   "cls": "risk",
+   "method": "снимок",
+   "status": "risk",
+   "note": "",
+   "sections": [
+    "employees",
+    "catering"
+   ]
+  },
+  {
+   "id": "Д-3",
+   "group": "D",
+   "title": "Есть дата обновления у каждой страницы и журнал изменений",
+   "cls": "risk",
+   "method": "снимок",
+   "status": "ok",
+   "note": "Поле «Дата обновления» есть у страниц раздела; журнала изменений нет (учтено в А-9).",
+   "sections": []
+  },
+  {
+   "id": "Е-1",
+   "group": "E",
+   "title": "Качество площадки: sitemap, robots, редирект www, HTTP/2, IPv6, https-ссылки",
+   "cls": "fact",
+   "method": "проба",
+   "status": "fact",
+   "note": "",
+   "sections": []
+  }
+ ],
+ "findings": [
+  {
+   "id": "F-01",
+   "check": "А-10",
+   "status": "violation",
+   "title": "Нет сведений о количестве изолированных комнат для студенческих семей",
+   "section": "grants",
+   "sections": [
+    "grants",
+    "objects"
+   ],
+   "where": [
+    {
+     "label": "Стипендии и меры поддержки, блок об общежитиях",
+     "url": "https://pnzgu.ru/sveden/grants"
+    },
+    {
+     "label": "Материально-техническое обеспечение, общежития",
+     "url": "https://pnzgu.ru/sveden/objects"
+    }
+   ],
+   "evidence": "Снимок /sveden/grants и /sveden/objects от 29.09.2026 08:13: строки об изолированных помещениях для семей нет. Требование действует с 01.09.2026, срок 10 рабочих дней истёк 15.09.2026.",
+   "norm": "подп. «о» п. 1 ч. 2 ст. 29 ФЗ-273 в ред. 34-ФЗ от 20.02.2026; срок — ч. 3 ст. 29 ФЗ-273",
+   "fix": "Добавить в сведения об общежитиях строку о количестве изолированных жилых помещений для студенческих семей и обновить положение о жилье.",
+   "owner": "Ерёменко Ю.В., проректор по социальной политике",
+   "due": "2026-10-31",
+   "first_seen": "2026-09-29",
+   "rows": [],
+   "note": ""
+  },
+  {
+   "id": "F-02",
+   "check": "А-7",
+   "status": "violation",
+   "title": "17 ссылок на образовательные стандарты с дефектами: 1 ведёт не на тот код, 8 на сторонние сайты, 8 с формальными ошибками адреса",
+   "section": "eduStandarts",
+   "sections": [
+    "eduStandarts"
+   ],
+   "where": [
+    {
+     "label": "Образовательные стандарты и требования",
+     "url": "https://pnzgu.ru/sveden/eduStandarts"
+    }
+   ],
+   "evidence": "Разбор 276 ссылок страницы из снимка 29.09.2026; живые пробы 30.09.2026 по 4 из 4 категорий: файлы отдаются (HTTP 200, application/pdf), дефекты содержательные. Пример: подпись 37.04.01, файл 380401.pdf.",
+   "norm": "ч. 1 ст. 29 ФЗ-273; п. 15 Требований №1493 (ред. №920)",
+   "fix": "Заменить ссылки по списку ниже на файлы реестра fgosvo.ru с совпадающим кодом; сторонние сайты (rsmu.ru, edu.ru, garant.ru) заменить на реестр.",
+   "owner": "Механов В.Б., проректор по учебной работе",
+   "due": "2026-10-31",
+   "first_seen": "2026-09-29",
+   "rows": [
+    {
+     "text": "формальный дефект, ссылка жива · ссылка-заглушка на страницу загрузки",
+     "url": "https://fgosvo.ru/fgosvo/downloads?f=%2Fuploadfiles%2FFGOS+VO+3%2B%2B%2FMag%2F380405_M_3_31082020.pdf&id=1991"
+    },
+    {
+     "text": "формальный дефект, ссылка жива · двойной слэш в адресе",
+     "url": "https://fgosvo.ru/uploadfiles//fgosvoord/310801.pdf"
+    },
+    {
+     "text": "формальный дефект, ссылка жива · двойной слэш в адресе",
+     "url": "https://fgosvo.ru/uploadfiles//FGOS%20VO%203%2B%2B/Ordinat/310805_Clinic_labor_diagnostic.pdf"
+    },
+    {
+     "text": "формальный дефект, ссылка жива · двойной слэш в адресе",
+     "url": "https://fgosvo.ru/uploadfiles//fgosvoord/310809_Rentgenology.pdf"
+    },
+    {
+     "text": "формальный дефект, ссылка жива · двойной слэш в адресе",
+     "url": "https://fgosvo.ru/uploadfiles//fgosvoord/310810_Sud_expert.pdf"
+    },
+    {
+     "text": "формальный дефект, ссылка жива · двойной слэш в адресе",
+     "url": "https://fgosvo.ru/uploadfiles//fgosvoord/310835_Infections.pdf"
+    },
+    {
+     "text": "источник не реестр · источник не реестр fgosvo.ru",
+     "url": "https://rsmu.ru/fileadmin/templates/DOC/Local_Acts_Education/Aspirantura-ordinatura/FGOS_3__/31.08.43_Nefrologija.pdf"
+    },
+    {
+     "text": "формальный дефект, ссылка жива · двойной слэш в адресе",
+     "url": "https://fgosvo.ru/uploadfiles//FGOS%20VO%203%2B%2B/Ordinat/310845_%20pulmonology.pdf"
+    },
+    {
+     "text": "источник не реестр · источник не реестр fgosvo.ru, не тот код ФГОС",
+     "url": "https://rsmu.ru/fileadmin/templates/DOC/Local_Acts_Education/Aspirantura-ordinatura/FGOS_3__/31.08.53_EHndokrinologija.pdf"
+    },
+    {
+     "text": "источник не реестр · источник не реестр fgosvo.ru, не тот код ФГОС",
+     "url": "https://rsmu.ru/.../31.08.43_Nefrologija.pdf"
+    },
+    {
+     "text": "формальный дефект, ссылка жива · ссылка-заглушка на страницу загрузки",
+     "url": "https://fgosvo.ru/fgosvo/downloads?f=%2Fuploadfiles%2FFGOS+VO+3%2B%2B%2FSpec%2F380501_C_3_24052021.pdf&id=2136"
+    },
+    {
+     "text": "источник не реестр · источник не реестр fgosvo.ru · http",
+     "url": "http://www.edu.ru/db/mo/Data/d_14/m344.pdf"
+    },
+    {
+     "text": "источник не реестр · источник не реестр fgosvo.ru · http",
+     "url": "http://www.garant.ru/products/ipo/prime/doc/70605600/#1000"
+    },
+    {
+     "text": "источник не реестр · источник не реестр fgosvo.ru · http",
+     "url": "http://www.edu.ru/documents/view/58667/"
+    },
+    {
+     "text": "источник не реестр · источник не реестр fgosvo.ru · http",
+     "url": "http://www.edu.ru/documents/view/59268/"
+    },
+    {
+     "text": "источник не реестр · источник не реестр fgosvo.ru · http",
+     "url": "http://www.edu.ru/documents/view/59586/"
+    },
+    {
+     "text": "не тот файл или код · не тот код ФГОС · http",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/380401_M_3_31082020.pdf"
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "F-03",
+   "check": "А-5",
+   "status": "violation",
+   "title": "Таблицы вакансий, международных соглашений и педсостава не читаются машиной: нет выгрузки, реестр педсостава обрезается",
+   "section": "vacant",
+   "sections": [
+    "vacant",
+    "inter",
+    "employees"
+   ],
+   "where": [
+    {
+     "label": "Вакантные места",
+     "url": "https://pnzgu.ru/sveden/vacant"
+    },
+    {
+     "label": "Международное сотрудничество",
+     "url": "https://pnzgu.ru/sveden/inter"
+    },
+    {
+     "label": "Педагогический состав",
+     "url": "https://pnzgu.ru/sveden/employees"
+    }
+   ],
+   "evidence": "Снимок 29.09.2026: рядом с таблицами нет выгрузок CSV/XLSX/JSON (условие 6 подраздела 4.1); таблица педсостава 5,3 МБ и 5431 ссылка грузится внутренним POST-запросом и обрезается лимитом выгрузки (условие 7). Цифры по педсоставу из внутреннего снимка, извне не воспроизводятся.",
+   "norm": "п. 26 Требований №1493: сведения пп. 7–20 в формате, обеспечивающем автоматическую обработку",
+   "fix": "Публиковать рядом с каждой таблицей выгрузку CSV или XLSX с теми же колонками; реестр педсостава отдавать целиком по прямой ссылке или постранично плюс полная выгрузка.",
+   "owner": "Механов В.Б., проректор по учебной работе; ответственные подразделов",
+   "due": "2026-11-30",
+   "first_seen": "2026-09-29",
+   "rows": [
+    {
+     "text": "Вакантные места: таблица без выгрузки",
+     "url": "https://pnzgu.ru/sveden/vacant"
+    },
+    {
+     "text": "Международное сотрудничество: 89 соглашений только таблицей",
+     "url": "https://pnzgu.ru/sveden/inter"
+    },
+    {
+     "text": "Педагогический состав: таблица обрезается, выгрузки нет",
+     "url": "https://pnzgu.ru/sveden/employees"
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "F-04",
+   "check": "Б-1",
+   "status": "violation",
+   "title": "Страницы запрещают увеличивать текст: в шаблоне стоит запрет масштабирования, у части изображений нет alt",
+   "section": "common",
+   "sections": [
+    "common"
+   ],
+   "where": [
+    {
+     "label": "Шаблон всех страниц портала",
+     "url": "https://pnzgu.ru/"
+    }
+   ],
+   "evidence": "Снимок 29.09.2026: тег viewport шаблона содержит maximum-scale; версия для слабовидящих есть.",
+   "norm": "ПП РФ №102 от 07.02.2026 (с 01.03.2026): масштабирование текста до 200% без потери функциональности; ПП №1802",
+   "fix": "Убрать maximum-scale и user-scalable=no из viewport шаблона; добавить alt у содержательных изображений.",
+   "owner": "Антонов А.В., проректор по эксплуатации и ЦНИТ",
+   "due": "2026-11-30",
+   "first_seen": "2026-09-29",
+   "rows": [],
+   "note": ""
+  },
+  {
+   "id": "F-05",
+   "check": "Г-1",
+   "status": "violation",
+   "title": "В поле адреса кафедры ИнОУП внедрён сторонний скрипт: признак взлома или уязвимости CMS",
+   "section": "struct",
+   "sections": [
+    "struct"
+   ],
+   "where": [
+    {
+     "label": "Структура и органы управления, кафедра ИнОУП",
+     "url": "https://pnzgu.ru/sveden/struct"
+    }
+   ],
+   "evidence": "Снимок /sveden/struct от 29.09.2026: в текстовом поле адреса кафедры ИнОУП содержится тег script.",
+   "norm": "Прямой нормы нет; достоверность сведений — ч. 2 ст. 29 ФЗ-273; защита информации — 149-ФЗ, политика ИБ вуза",
+   "fix": "Не править текст вручную. Выгрузить историю правок записи и логи CMS, проверить остальные текстовые поля на теги, затем очистить поле и закрыть уязвимость ввода.",
+   "owner": "Антонов А.В., проректор по эксплуатации и ЦНИТ",
+   "due": "2026-10-10",
+   "first_seen": "2026-09-29",
+   "rows": [],
+   "note": ""
+  },
+  {
+   "id": "F-06",
+   "check": "А-6",
+   "status": "risk",
+   "title": "50 положений опубликованы без файла подписи, хотя сайт заявляет «подписано ЭП»",
+   "section": "struct",
+   "sections": [
+    "struct"
+   ],
+   "where": [
+    {
+     "label": "Структура и органы управления, положения подразделений",
+     "url": "https://pnzgu.ru/sveden/struct"
+    }
+   ],
+   "evidence": "Инвентаризация 202 узлов структуры в снимке 29.09.2026: 122 с .sig, 80 без; из них 50 опубликованы без подписи, у 30 нет положения.",
+   "norm": "ПП №1802: простая электронная подпись по 63-ФЗ; усиленная квалифицированная для публикации не требуется",
+   "fix": "Либо приложить файл подписи к каждому положению, либо снять формулировку «все положения подписаны».",
+   "owner": "Антонов А.В. (публикация); проректоры по профилю",
+   "due": "2026-10-31",
+   "first_seen": "2026-09-29",
+   "rows": [],
+   "note": ""
+  },
+  {
+   "id": "F-07",
+   "check": "Г-2",
+   "status": "risk",
+   "title": "Сертификат *.pnzgu.ru истекал 04.10.2026, домен оплачен до 11.10.2026; продление из среды сборки не проверено",
+   "section": "common",
+   "sections": [
+    "common"
+   ],
+   "where": [
+    {
+     "label": "Главная страница портала",
+     "url": "https://pnzgu.ru/"
+    }
+   ],
+   "evidence": "crt.sh на 29.09.2026: окончание сертификата 04.10.2026. WHOIS (whois.tcinet.ru) на 30.09.2026: paid-till 11.10.2026, RU-CENTER-RU. После 04.10 состояние не снималось.",
+   "norm": "ПП №1802: доступность сайта; прямой обязанности HTTPS нет",
+   "fix": "Подтвердить продление сертификата и домена; включить автопродление и напоминания за 30, 7 и 1 день.",
+   "owner": "Антонов А.В., проректор по эксплуатации и ЦНИТ",
+   "due": "2026-10-11",
+   "first_seen": "2026-09-29",
+   "rows": [],
+   "note": ""
+  },
+  {
+   "id": "F-08",
+   "check": "Г-4",
+   "status": "risk",
+   "title": "Два филиала живут на чужих доменах, один на бесплатном хостинге uCoz",
+   "section": "common",
+   "sections": [
+    "common"
+   ],
+   "where": [
+    {
+     "label": "Кузнецкий институт",
+     "url": "https://kiiut.ru/"
+    },
+    {
+     "label": "Сердобский филиал",
+     "url": "https://sfpgu.my1.ru/"
+    }
+   ],
+   "evidence": "Снимок 29.09.2026: ссылки раздела ведут на kiiut.ru и sfpgu.my1.ru; площадка my1.ru вне контроля вуза, со сторонней рекламой.",
+   "norm": "ч. 2 ст. 29 ФЗ-273: раздел должен быть доступен; требования к хостингу 149-ФЗ — сверить юристу",
+   "fix": "Перевести сайты филиалов на домен вуза или общий шаблон; до этого включить их в проверку теми же правилами.",
+   "owner": "Антонов А.В.; директора филиалов",
+   "due": "2026-12-31",
+   "first_seen": "2026-09-29",
+   "rows": [
+    {
+     "text": "kiiut.ru: отдельный домен",
+     "url": "https://kiiut.ru/"
+    },
+    {
+     "text": "sfpgu.my1.ru: бесплатный хостинг uCoz",
+     "url": "https://sfpgu.my1.ru/"
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "F-09",
+   "check": "Д-2",
+   "status": "risk",
+   "title": "Мусор в данных: битая последняя строка реестра педсостава, два файла раздела «Питание» видны только в коде страницы",
+   "section": "employees",
+   "sections": [
+    "employees",
+    "catering"
+   ],
+   "where": [
+    {
+     "label": "Педагогический состав",
+     "url": "https://pnzgu.ru/sveden/employees"
+    },
+    {
+     "label": "Организация питания",
+     "url": "https://pnzgu.ru/sveden/catering"
+    }
+   ],
+   "evidence": "Снимок 29.09.2026: последняя строка выгрузки педсостава не разбирается; на странице питания две ссылки на документы присутствуют в коде, но не показаны пользователю.",
+   "norm": "Без внешней нормы: целостность данных; условие 8 подраздела 4.1",
+   "fix": "Починить строку реестра; поднять скрытые ссылки в видимую часть страницы.",
+   "owner": "Антонов А.В., проректор по эксплуатации и ЦНИТ",
+   "due": "2026-10-31",
+   "first_seen": "2026-09-29",
+   "rows": [
+    {
+     "text": "Реестр педсостава: битая последняя строка",
+     "url": "https://pnzgu.ru/sveden/employees"
+    },
+    {
+     "text": "Питание: 2 документа только в коде",
+     "url": "https://pnzgu.ru/sveden/catering"
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "F-10",
+   "check": "А-9",
+   "status": "check",
+   "title": "Шесть разделов не обновлялись от 3 месяцев до 2 лет; нарушение срока доказуемо только при изменении данных",
+   "section": "catering",
+   "sections": [
+    "catering",
+    "common",
+    "grants",
+    "budget",
+    "document",
+    "paid_edu"
+   ],
+   "where": [
+    {
+     "label": "Организация питания",
+     "url": "https://pnzgu.ru/sveden/catering"
+    },
+    {
+     "label": "Основные сведения",
+     "url": "https://pnzgu.ru/sveden/common"
+    },
+    {
+     "label": "Стипендии",
+     "url": "https://pnzgu.ru/sveden/grants"
+    },
+    {
+     "label": "Финансово-хозяйственная деятельность",
+     "url": "https://pnzgu.ru/sveden/budget"
+    }
+   ],
+   "evidence": "Поле «Дата обновления» страниц в снимке 29.09.2026. Журнала изменений нет, поэтому факт изменения сведений не доказан.",
+   "norm": "ч. 3 ст. 29 ФЗ-273; ПП №1802: 10 рабочих дней после изменения",
+   "fix": "Сверить по внутренним данным, менялись ли сведения после указанных дат; если менялись, внести и обновить дату; если нет, зафиксировать актуальность.",
+   "owner": "Ерёменко Ю.В. (питание); Лысенко Н.А. (финансы, платное обучение); Артамонов Д.В. (сведения, документы)",
+   "due": "2026-10-20",
+   "first_seen": "2026-09-29",
+   "rows": [
+    {
+     "text": "Организация питания: 722 дня, с 07.10.2024",
+     "url": "https://pnzgu.ru/sveden/catering"
+    },
+    {
+     "text": "Основные сведения: 210 дней",
+     "url": "https://pnzgu.ru/sveden/common"
+    },
+    {
+     "text": "Стипендии и меры поддержки: 120 дней",
+     "url": "https://pnzgu.ru/sveden/grants"
+    },
+    {
+     "text": "Финансово-хозяйственная деятельность: 119 дней",
+     "url": "https://pnzgu.ru/sveden/budget"
+    },
+    {
+     "text": "Документы: 91 день",
+     "url": "https://pnzgu.ru/sveden/document"
+    },
+    {
+     "text": "Платные образовательные услуги: 91 день",
+     "url": "https://pnzgu.ru/sveden/paid_edu"
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "F-11",
+   "check": "А-11",
+   "status": "check",
+   "title": "Сведения о руководстве расходятся: директор Кузнецкого филиала на портале Сызранцев, на сайте филиала Корчагин; у части руководителей статус «и.о.»",
+   "section": "managers",
+   "sections": [
+    "managers"
+   ],
+   "where": [
+    {
+     "label": "Руководство",
+     "url": "https://pnzgu.ru/sveden/managers"
+    },
+    {
+     "label": "Сайт Кузнецкого института",
+     "url": "https://kiiut.ru/"
+    }
+   ],
+   "evidence": "Снимок страницы «Руководство» 29.09.2026 и главная kiiut.ru.",
+   "norm": "п. 7 Требований №1493 (сведения о руководстве); достоверность — ч. 2 ст. 29 ФЗ-273",
+   "fix": "Сверить ФИО директора по приказу, исправить неверный источник; статусы «и.о.» подтвердить или снять.",
+   "owner": "Артамонов Д.В., проректор по кадрам",
+   "due": "2026-10-20",
+   "first_seen": "2026-09-29",
+   "rows": [],
+   "note": ""
+  },
+  {
+   "id": "F-12",
+   "check": "Е-1",
+   "status": "fact",
+   "title": "109 ссылок на документы открываются по http без шифрования; браузер помечает их «небезопасно»",
+   "section": "eduStandarts",
+   "sections": [
+    "eduStandarts"
+   ],
+   "where": [
+    {
+     "label": "Образовательные стандарты и требования",
+     "url": "https://pnzgu.ru/sveden/eduStandarts"
+    }
+   ],
+   "evidence": "Разбор ссылок из снимка 29.09.2026: fgosvo.ru 101, www.edu.ru 4, elib.pnzgu.ru 2, pnzgu.ru 1, www.garant.ru 1. 6 из них есть в списке дефектов F-02.",
+   "norm": "Не норма: качество площадки",
+   "fix": "Заменить http на https во всех ссылках на документы.",
+   "owner": "Антонов А.В., проректор по эксплуатации и ЦНИТ",
+   "due": "2026-12-31",
+   "first_seen": "2026-09-29",
+   "rows": [
+    {
+     "text": "pnzgu.ru",
+     "url": "http://pnzgu.ru/files/pnzgu.ru/obrstan/2014/fsvyshrobrback14/010301_matematika.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/010301_B_3_16022018.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/010302_B_3_08022018.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/010304_B_2_12022018.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/020303_B_3_18092017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/030302_B_3_31082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/040301_B_3_09082017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/060301_B_3_23082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/090302_B_3_17102017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/090303_B_3_17102017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/090304_B_3_17102017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/110303_B_3_17102017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/110304_B_3_12102017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/120301_B_3_06102017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/120304_B_3_06102017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/130302_B_3_26032018.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/130303_B_3_26032018.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/150305_B_3_14092020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/150306_B_3_10092020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/180301_B_3_23082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/200301_B_3_21072020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/220301_B_3_23072020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/230301_B_3_23082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/270301_B_3_23082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/270304_B_3_31082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/fgosvob/280301.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/280301_B_3_11102017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/370301_B_3_23082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/380301_B_3_31082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/380302B_3_31082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/380303_B_3_31082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/380304_B_3_31082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/380305_B_3_23082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/380306_B_3_31082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/390301_B_3_07032018.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/390302_B_3_07032018.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/400301_B_3_07092020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/410305_B_3_07072017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/420301_B_3_30062017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/420302_B_3_30062017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/430302_B_3_30062017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/440301_B_3_16032018.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/440302_B_3_20032018.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/440303_B_3_20032018.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/440305_B_3_16032018.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/450302_B_3_31082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/fgosvob/46_03_01_Istoria.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/460301_B_3_12112020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/460302_B_3_03122020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/490301_B_3_30102017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/490302_B_3_31102017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/fgosvob/510301.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Bak/510301_B_3_22062018.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/010402_M_3_13022018.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/030402_M_3_22082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/060401_M_3_31082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/090401_M_3_11102017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/090402_M_3_17102017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/090403_M_3_12102017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/090404_M_3_1102017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/110403_M_3_13102017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/110404_M_3_11102017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/120401_M_3_12102017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/130402_M_3_26062018.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/150405_M_3_10092020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/fgosvom/150406.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/150406_M_3_31082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/220401_M_3_18052018.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/230402_M_3_31082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/270401_M_3_22082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/270402_M_3_31082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/270404_M_3_22082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/fgosvom/280401.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/280401_M_3_12102017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/**380401**_M_3_22082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/380401_M_3_31082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/380402_M_3_22082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/380403_M_3_31082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/380404_M_3_31082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/380408_M_3_31082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/390402_M_3_06022018.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/fgos/32/20110318162458.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/420401_M_3_30062017.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/440401_M_3_16032018.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/440402_M_3_14032108.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/450401_M_3_31082020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Mag/460402_M_3_03122020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/fgosvoord/310854_Obvrpr.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/fgosvoord/310863_Serdsoshirurg.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Spec/010501_C_3_12022018.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Spec/110501_C_3_09032018.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Spec/170501_C_3_10092020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Spec/230501_C_3_01092020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Spec/27.05.01_C_3_14092020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Spec/300503_C_3_01092020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Spec/310501_C_3_01092020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Spec/31.05.02_C_3_14092020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Spec/330501_C_3_26062018.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Spec/380502_C_3_24122020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Spec/400502_C_3_14092020.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/fgosvospec/450501_C_15062018.pdf"
+    },
+    {
+     "text": "fgosvo.ru",
+     "url": "http://fgosvo.ru/uploadfiles/FGOS%20VO%203++/Spec/450501_C_3_31082020.pdf"
+    },
+    {
+     "text": "elib.pnzgu.ru",
+     "url": "http://elib.pnzgu.ru/library_doc/68063"
+    },
+    {
+     "text": "elib.pnzgu.ru",
+     "url": "http://elib.pnzgu.ru/library_doc/68064"
+    },
+    {
+     "text": "www.edu.ru",
+     "url": "http://www.edu.ru/db/mo/Data/d_14/m344.pdf"
+    },
+    {
+     "text": "www.garant.ru",
+     "url": "http://www.garant.ru/products/ipo/prime/doc/70605600/#1000"
+    },
+    {
+     "text": "www.edu.ru",
+     "url": "http://www.edu.ru/documents/view/58667/"
+    },
+    {
+     "text": "www.edu.ru",
+     "url": "http://www.edu.ru/documents/view/59268/"
+    },
+    {
+     "text": "www.edu.ru",
+     "url": "http://www.edu.ru/documents/view/59586/"
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "F-13",
+   "check": "Е-1",
+   "status": "fact",
+   "title": "Карта сайта пустая, robots.txt от 2022 года, нет редиректа на www, нет HTTP/2 и IPv6",
+   "section": "common",
+   "sections": [
+    "common"
+   ],
+   "where": [
+    {
+     "label": "sitemap.xml",
+     "url": "https://pnzgu.ru/sitemap.xml"
+    },
+    {
+     "label": "robots.txt",
+     "url": "https://pnzgu.ru/robots.txt"
+    }
+   ],
+   "evidence": "Пробы 29–30.09.2026 из внутреннего снимка.",
+   "norm": "Не норма: качество площадки",
+   "fix": "Собрать sitemap из реестра страниц, обновить robots, настроить canonical и 301 на один хост, включить HTTP/2 и AAAA.",
+   "owner": "Антонов А.В., проректор по эксплуатации и ЦНИТ",
+   "due": "2026-12-31",
+   "first_seen": "2026-09-29",
+   "rows": [],
+   "note": ""
+  }
+ ],
+ "registry": [
+  {
+   "value": "276 ссылок на ФГОС, 17 с дефектами, 109 по http",
+   "source": "разбор страницы /sveden/eduStandarts из снимка",
+   "date": "29.09.2026",
+   "method": "автоматический разбор HTML"
+  },
+  {
+   "value": "202 узла структуры, 122 с .sig, 80 без, 50 опубликовано без подписи",
+   "source": "снимок /sveden/struct",
+   "date": "29.09.2026",
+   "method": "инвентаризация по идентификаторам подразделений"
+  },
+  {
+   "value": "766 файлов по разделу /sveden",
+   "source": "сумма по 12 группам документов снимка",
+   "date": "29.09.2026",
+   "method": "подсчёт уникальных файлов"
+  },
+  {
+   "value": "возраст разделов от 5 до 722 дней",
+   "source": "поле «Дата обновления» страниц",
+   "date": "29.09.2026",
+   "method": "разница дат"
+  },
+  {
+   "value": "сертификат до 04.10.2026",
+   "source": "crt.sh",
+   "date": "29.09.2026",
+   "method": "запрос к журналу сертификатов"
+  },
+  {
+   "value": "домен оплачен до 11.10.2026",
+   "source": "whois.tcinet.ru",
+   "date": "30.09.2026",
+   "method": "WHOIS"
+  },
+  {
+   "value": "502 на 27 поддоменах извне",
+   "source": "внешний отчёт",
+   "date": "28.09.2026",
+   "method": "HTTP-пробы с внешнего IP; с российского маршрута 29.09 всё открывается"
+  },
+  {
+   "value": "таблица педсостава 5,3 МБ, 5431 ссылка; 89 международных соглашений",
+   "source": "внутренний снимок",
+   "date": "29.09.2026",
+   "method": "извне не воспроизводится"
+  },
+  {
+   "value": "живость ссылок по узлам: главная 96%, /sveden 88%, структура 82%, ФГОС 58%, ЛНА 74%, педсостав 66%, ФХД 70%, стипендии 60%, питание 44%",
+   "source": "HTTP-пробы по телу ответа",
+   "date": "29–30.09.2026",
+   "method": "живой файл отличается по Last-Modified и ETag; код 200 не считается"
+  }
+ ]
+}

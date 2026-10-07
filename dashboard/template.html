@@ -1,0 +1,355 @@
+<title>Аудит сайта ПГУ</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Макет: одна колонка до 1080px, три экрана сверху вниз: ответ, аналитика, подробности. */
+:root{
+  --bg:#f6f7f4; --surface:#ffffff; --surface-2:#eef1ec; --line:#d6dbd2; --fg:#15201b; --fg-2:#4f5d55; --fg-3:#7a877f;
+  --accent:#1f5f8b; --accent-soft:#dbe9f3;
+  --critical:#c2332f; --critical-soft:#f9e1df; --warning:#b97a00; --warning-soft:#fbeccc; --good:#1f7a3a; --good-soft:#dcefe0;
+  --check:#1f5f8b; --check-soft:#dbe9f3; --unv:#6f7a74; --unv-soft:#e6e9e4;
+  --display:"Manrope","IBM Plex Sans",system-ui,sans-serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#141a16; --surface:#1c2320; --surface-2:#232c27; --line:#36423b; --fg:#eef2ee; --fg-2:#b7c2bb; --fg-3:#8b978f;
+  --accent:#6fb0dc; --accent-soft:#22384a; --critical:#ef6b66; --critical-soft:#4a2320; --warning:#f0b43a; --warning-soft:#4a3a12;
+  --good:#5cc27a; --good-soft:#1d3b27; --check:#6fb0dc; --check-soft:#22384a; --unv:#a1aca5; --unv-soft:#2b332f; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#141a16; --surface:#1c2320; --surface-2:#232c27; --line:#36423b; --fg:#eef2ee; --fg-2:#b7c2bb; --fg-3:#8b978f;
+  --accent:#6fb0dc; --accent-soft:#22384a; --critical:#ef6b66; --critical-soft:#4a2320; --warning:#f0b43a; --warning-soft:#4a3a12;
+  --good:#5cc27a; --good-soft:#1d3b27; --check:#6fb0dc; --check-soft:#22384a; --unv:#a1aca5; --unv-soft:#2b332f; color-scheme:dark }
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.5 var(--body);margin:0}
+.wrap{max-width:1080px;margin:0 auto;padding-block:20px 64px;padding-inline:16px}
+a{color:var(--accent)}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0}
+h1{font-size:26px;font-weight:800;line-height:1.2}
+h2{font-size:21px;font-weight:700}
+h3{font-size:16px;font-weight:700}
+.muted{color:var(--fg-2)} .small{font-size:13px} .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+header.top{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--line)}
+nav.screens{display:flex;gap:6px;flex-wrap:wrap}
+nav.screens a{text-decoration:none;color:var(--fg-2);padding:6px 10px;border-radius:999px;border:1px solid var(--line);font-size:13px;background:var(--surface)}
+nav.screens a:hover,nav.screens a:focus-visible{color:var(--fg);border-color:var(--accent)}
+section.screen{padding-block:28px;border-bottom:1px solid var(--line)}
+section.screen:last-child{border-bottom:0}
+.eyebrow{font:600 12px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3);margin-bottom:8px}
+.verdict-row{display:grid;grid-template-columns:minmax(240px,1.4fr) repeat(3,minmax(120px,1fr));gap:12px;margin-top:16px}
+@media (max-width:720px){.verdict-row{grid-template-columns:1fr 1fr}.verdict{grid-column:1/-1}}
+.verdict{border-radius:12px;padding:18px 20px;border:2px solid var(--critical);background:var(--critical-soft)}
+.verdict.v-risk{border-color:var(--warning);background:var(--warning-soft)}
+.verdict.v-ok{border-color:var(--good);background:var(--good-soft)}
+.verdict .big{font:800 26px/1.15 var(--display)}
+.verdict .sub{margin-top:6px;color:var(--fg-2);font-size:13px}
+.kpi{border-radius:12px;padding:14px 16px;background:var(--surface);border:1px solid var(--line)}
+.kpi .n{font:700 30px/1.1 var(--display);font-variant-numeric:tabular-nums}
+.kpi .t{color:var(--fg-2);font-size:13px;margin-top:4px}
+.kpi.c-violation .n{color:var(--critical)} .kpi.c-risk .n{color:var(--warning)} .kpi.c-unverified .n{color:var(--unv)}
+.rules3{margin:14px 0 0;padding:0 0 0 18px;color:var(--fg-2);font-size:14px}
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:22px}
+.filters button{font:500 13px/1 var(--body);padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg-2);cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.filters .sec-filter{margin-left:auto;display:flex;gap:8px;align-items:center;font-size:13px;color:var(--fg-2)}
+.filters .sec-filter button{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{text-align:left;font-weight:600;color:var(--fg-2);font-size:12.5px;letter-spacing:.02em;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl{overflow-x:auto;margin-top:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.tbl table{min-width:640px}
+tr.f{cursor:pointer} tr.f:hover td{background:var(--surface-2)} tr.f[aria-expanded="true"] td{background:var(--surface-2)}
+.pill{display:inline-flex;align-items:center;gap:6px;font:600 12px/1 var(--body);padding:5px 9px;border-radius:999px;white-space:nowrap}
+.pill::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.pill.violation{color:var(--critical);background:var(--critical-soft)} .pill.risk{color:var(--warning);background:var(--warning-soft)}
+.pill.check{color:var(--check);background:var(--check-soft)} .pill.unverified{color:var(--unv);background:var(--unv-soft)}
+.pill.fact{color:var(--fg-2);background:var(--surface-2)} .pill.ok{color:var(--good);background:var(--good-soft)}
+#findings th:nth-child(1){width:124px} #findings th:nth-child(2){width:44%} #findings th:nth-child(5){width:96px} .where a{overflow-wrap:anywhere}
+.card{display:grid;grid-template-columns:160px 1fr;gap:8px 16px;padding:14px 16px;border-radius:10px;background:var(--surface);border:1px solid var(--line);margin:4px 0 8px}
+@media (max-width:720px){.card{grid-template-columns:1fr}}
+.card dt{color:var(--fg-3);font-size:12.5px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;padding-top:2px}
+.card dd{margin:0}
+.rows{margin:6px 0 0;padding:0;list-style:none;max-height:260px;overflow:auto;border:1px solid var(--line);border-radius:8px}
+.rows li{padding:6px 10px;border-bottom:1px solid var(--line);font-size:13px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap}
+.rows li:last-child{border-bottom:0}
+.rows li a{font-family:var(--mono);font-size:12px;word-break:break-all}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+@media (max-width:820px){.grid2{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;min-width:0}
+.panel h3{margin-bottom:4px}
+.chart svg{width:100%;height:auto;display:block;font-family:var(--body)}
+.chart .bar{cursor:pointer}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--fg-2);margin-top:8px}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px;background:var(--c)}
+.tip{position:fixed;pointer-events:none;background:var(--fg);color:var(--bg);font-size:12.5px;padding:6px 9px;border-radius:6px;transform:translate(-50%,calc(-100% - 10px));white-space:nowrap;z-index:5}
+.score-list{display:grid;gap:10px;margin-top:8px}
+.score{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center}
+.score .track{grid-column:1/-1;height:8px;border-radius:4px;background:var(--surface-2);overflow:hidden}
+.score .fill{height:100%;background:var(--accent);border-radius:4px}
+.score .v{font:700 18px/1 var(--display);font-variant-numeric:tabular-nums}
+.index-big{font:800 44px/1 var(--display);font-variant-numeric:tabular-nums}
+.placeholder{border:1px dashed var(--line);border-radius:12px;padding:16px;color:var(--fg-3);background:transparent}
+.formula{font-family:var(--mono);font-size:13px;background:var(--surface-2);padding:10px 12px;border-radius:8px;overflow-x:auto}
+textarea{width:100%;min-height:140px;font:12px/1.4 var(--mono);background:var(--surface-2);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:10px}
+.btn{font:600 13px/1 var(--body);padding:9px 14px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.btn:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.note{font-size:13px;color:var(--fg-2);margin-top:10px}
+details.meth{margin-top:14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:12px 16px}
+details.meth summary{cursor:pointer;font-weight:600}
+footer{margin-top:28px;color:var(--fg-3);font-size:12.5px}
+@media (prefers-reduced-motion:no-preference){.score .fill{transition:width .5s ease}}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div>
+    <div class="eyebrow">Аудит официального сайта вуза</div>
+    <h1 id="h-org"></h1>
+    <div class="muted small" id="h-meta"></div>
+  </div>
+  <nav class="screens" aria-label="Экраны">
+    <a href="#otvet">1 · Ответ</a><a href="#analitika">2 · Аналитика</a><a href="#podrobnosti">3 · Подробности</a>
+  </nav>
+</header>
+
+<section class="screen" id="otvet">
+  <div class="eyebrow">Экран 1 · Ответ на вопрос</div>
+  <h2>Соответствует ли сайт требованиям законодательства</h2>
+  <div class="verdict-row">
+    <div class="verdict" id="verdict"><div class="big" id="verdict-text"></div><div class="sub" id="verdict-sub"></div></div>
+    <div class="kpi c-violation"><div class="n" id="k-violation">0</div><div class="t">Нарушения</div></div>
+    <div class="kpi c-risk"><div class="n" id="k-risk">0</div><div class="t">Риски</div></div>
+    <div class="kpi c-unverified"><div class="n" id="k-unverified">0</div><div class="t">Не проверено</div></div>
+  </div>
+  <ol class="rules3">
+    <li>Каждая строка списка ведёт на место ошибки на сайте: ссылка и описание, где смотреть.</li>
+    <li>Все числа на странице посчитаны из сохранённого снимка сайта, дата снимка указана рядом с ответом.</li>
+    <li>«Нарушение» стоит только там, где есть доказательство и подтверждённая норма. Остальное помечено как риск, «проверить» или «не проверено».</li>
+  </ol>
+  <div class="filters" id="filters" role="group" aria-label="Фильтр по статусу"></div>
+  <div class="tbl"><table id="findings">
+    <thead><tr><th>Статус</th><th>Что не так</th><th>Где</th><th>Кто</th><th>Срок</th></tr></thead>
+    <tbody></tbody></table></div>
+  <p class="note">Нажмите на строку, чтобы раскрыть карточку: доказательство, норма, что сделать, построчный список.</p>
+</section>
+
+<section class="screen" id="analitika">
+  <div class="eyebrow">Экран 2 · Общая аналитика</div>
+  <h2>Где сосредоточены ошибки и насколько сайт далёк от эталона</h2>
+  <div class="grid2">
+    <div class="panel chart">
+      <h3>Находки по 14 подразделам</h3>
+      <div class="small muted">Нажмите на подраздел, чтобы отфильтровать список на экране 1</div>
+      <div id="chart-sections"></div>
+      <div class="legend"><span style="--c:var(--critical)">нарушения</span><span style="--c:var(--warning)">риски</span><span style="--c:var(--check)">проверить</span></div>
+    </div>
+    <div class="panel">
+      <h3>Индекс соответствия</h3>
+      <div class="small muted">Вычислен по формуле из методики, веса групп на экране 3</div>
+      <div class="index-big" id="index-big"></div>
+      <div class="score-list" id="group-scores"></div>
+    </div>
+  </div>
+  <div class="tbl"><table id="sections">
+    <thead><tr><th>Подраздел</th><th>Нарушения</th><th>Риски</th><th>Проверить</th><th>Файлов</th><th>Не обновлялся, дней</th><th>Живых ссылок, %</th></tr></thead>
+    <tbody></tbody></table></div>
+  <div class="grid2">
+    <div class="placeholder"><strong>Как увидит проверяющий.</strong> Прогон по методическим рекомендациям Рособрнадзора не входит в первую сборку.</div>
+    <div class="placeholder"><strong>Вуз среди соседей.</strong> Сравнение с другими вузами появится, когда те же правила будут применены к ним.</div>
+  </div>
+</section>
+
+<section class="screen" id="podrobnosti">
+  <div class="eyebrow">Экран 3 · Подробности для специалистов</div>
+  <h2>Все проверки, реестр цифр, методика и экспорт</h2>
+  <div class="filters" id="check-filters" role="group" aria-label="Фильтр проверок"></div>
+  <div class="tbl"><table id="checks">
+    <thead><tr><th>Код</th><th>Проверка</th><th>Класс</th><th>Способ</th><th>Результат</th><th>Примечание</th></tr></thead>
+    <tbody></tbody></table></div>
+
+  <h3 style="margin-top:28px">Реестр цифр: значение, источник, дата, метод</h3>
+  <div class="tbl"><table id="registry">
+    <thead><tr><th>Цифра</th><th>Источник</th><th>Дата</th><th>Метод</th></tr></thead>
+    <tbody></tbody></table></div>
+
+  <details class="meth" open>
+    <summary>Методика и формула</summary>
+    <p class="small">Оценка группы: доля невыполненных проверок с учётом веса. Вес найденного берётся из статуса и не может превышать класс проверки. Индекс: взвешенная сумма групп А–Д. Группа Е в индекс не входит.</p>
+    <div class="formula">S_g = 100 · (1 − Σ min(w_status, w_class) / Σ w_class)<br>I = 0,40·S_A + 0,15·S_Б + 0,15·S_В + 0,15·S_Г + 0,15·S_Д</div>
+    <p class="small" id="weights-text"></p>
+    <p class="small" id="route-note"></p>
+    <p class="small">Индекс не заменяет главный ответ: при одном доказанном нарушении вердикт «есть нарушения» независимо от индекса.</p>
+  </details>
+
+  <details class="meth">
+    <summary>Что не проверено и почему</summary>
+    <ul id="unverified-list" class="small"></ul>
+  </details>
+
+  <details class="meth">
+    <summary>Экспорт: CSV и JSON</summary>
+    <p class="small">Скачивание из этого окна отключено, поэтому текст можно скопировать кнопкой. Полный файл данных лежит рядом с дашбордом: dashboard/data.json.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0"><button class="btn" id="copy-csv" type="button">Скопировать CSV</button><button class="btn" id="copy-json" type="button">Скопировать JSON</button><span class="small muted" id="copy-status"></span></div>
+    <label class="small" for="csv-out">CSV находок</label>
+    <textarea id="csv-out" readonly></textarea>
+    <label class="small" for="json-out">JSON находок</label>
+    <textarea id="json-out" readonly></textarea>
+  </details>
+  <footer id="foot"></footer>
+</section>
+</div>
+
+<script id="data" type="application/json">/*__DATA__*/</script>
+<script>
+(function(){
+var D = JSON.parse(document.getElementById('data').textContent);
+var W = D.weights, meta = D.meta;
+var ST = {violation:'Нарушение', risk:'Риск', check:'Проверить', unverified:'Не проверено', fact:'Факт', ok:'Соответствует'};
+var CL = {violation:'нарушение', risk:'риск', check:'проверить', fact:'факт'};
+var ORDER = {violation:0, risk:1, check:2, unverified:3, fact:4, ok:5};
+var secByCode = {}; D.sections.forEach(function(s){ secByCode[s.code]=s; });
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function fmtDate(iso){ var p=iso.split('-'); return p[2]+'.'+p[1]+'.'+p[0]; }
+function pill(st){ return '<span class="pill '+st+'">'+ST[st]+'</span>'; }
+
+/* ---- подсчёты ---- */
+var counts = {violation:0,risk:0,check:0,unverified:0,fact:0,ok:0};
+D.checks.forEach(function(c){ counts[c.status]++; });
+var fCounts = {violation:0,risk:0,check:0,fact:0};
+D.findings.forEach(function(f){ fCounts[f.status]++; });
+
+var groupScores = {};
+Object.keys(D.groups).forEach(function(g){
+  var found=0, max=0;
+  D.checks.filter(function(c){return c.group===g;}).forEach(function(c){
+    var wc = W.cls[c.cls]; max += wc; found += Math.min(W.status[c.status], wc);
+  });
+  groupScores[g] = max>0 ? 100*(1-found/max) : null;
+});
+var index = 0; Object.keys(W.groups).forEach(function(g){ if(groupScores[g]!=null) index += W.groups[g]*groupScores[g]; });
+
+/* ---- шапка и вердикт ---- */
+document.getElementById('h-org').textContent = meta.org + ' · ' + meta.site;
+document.getElementById('h-meta').textContent = meta.build + ' от ' + fmtDate(meta.build_date) + ' · снимок сайта ' + fmtDate(meta.snapshot_date) + ' ' + meta.snapshot_time + ' · пробы ' + fmtDate(meta.probe_date) + ' · ' + meta.rules;
+var v = document.getElementById('verdict'), vt = document.getElementById('verdict-text'), vs = document.getElementById('verdict-sub');
+if (fCounts.violation>0){ vt.textContent='Есть нарушения'; v.className='verdict v-bad'; }
+else if (fCounts.risk>0 || counts.unverified>0){ vt.textContent='Есть риски'; v.className='verdict v-risk'; }
+else { vt.textContent='Соответствует'; v.className='verdict v-ok'; }
+vs.textContent = 'по снимку от ' + fmtDate(meta.snapshot_date) + ', ' + fCounts.violation + ' доказанных нарушений по ' + D.checks.filter(function(c){return c.status==='violation';}).length + ' проверкам';
+document.getElementById('k-violation').textContent = fCounts.violation;
+document.getElementById('k-risk').textContent = fCounts.risk;
+document.getElementById('k-unverified').textContent = counts.unverified;
+
+/* ---- список находок ---- */
+var state = {status:'all', section:null};
+var fl = document.getElementById('filters');
+function renderFilters(){
+  var defs=[['all','Все'],['violation','Нарушения'],['risk','Риски'],['check','Проверить'],['fact','Факты']];
+  var h = defs.map(function(d){ var n = d[0]==='all'? D.findings.length : fCounts[d[0]]; return '<button type="button" data-st="'+d[0]+'" aria-pressed="'+(state.status===d[0])+'">'+d[1]+' · '+n+'</button>'; }).join('');
+  if (state.section){ h += '<span class="sec-filter">Подраздел: '+esc(secByCode[state.section].name)+' <button type="button" data-clear="1">сбросить</button></span>'; }
+  fl.innerHTML = h;
+}
+fl.addEventListener('click', function(e){ var b=e.target.closest('button'); if(!b) return; if(b.dataset.clear){ state.section=null; } else { state.status=b.dataset.st; } renderFilters(); renderFindings(); });
+var tb = document.querySelector('#findings tbody');
+function card(f){
+  var where = f.where.map(function(w){ return '<a href="'+esc(w.url)+'" target="_blank" rel="noopener">'+esc(w.label)+' ↗</a>'; }).join('<br>');
+  var rows = f.rows.length ? '<dt>Построчно · '+f.rows.length+'</dt><dd><ul class="rows">'+f.rows.map(function(r){ return '<li><span>'+esc(r.text)+'</span><a href="'+esc(r.url)+'" target="_blank" rel="noopener">'+esc(r.url.replace(/^https?:\/\//,''))+' ↗</a></li>'; }).join('')+'</ul></dd>' : '';
+  var days = Math.round((new Date(meta.build_date) - new Date(f.first_seen))/864e5);
+  return '<dl class="card">'+
+   '<dt>Что не так</dt><dd>'+esc(f.title)+'</dd>'+
+   '<dt>Где</dt><dd class="where">'+where+'</dd>'+
+   '<dt>Доказательство</dt><dd>'+esc(f.evidence)+'</dd>'+
+   '<dt>Статус</dt><dd>'+pill(f.status)+' <span class="small muted">проверка '+esc(f.check)+'</span></dd>'+
+   '<dt>Норма</dt><dd>'+esc(f.norm)+'</dd>'+
+   '<dt>Что сделать</dt><dd>'+esc(f.fix)+'</dd>'+
+   '<dt>Кто</dt><dd>'+esc(f.owner)+'</dd>'+
+   '<dt>Срок</dt><dd>до '+fmtDate(f.due)+'</dd>'+
+   '<dt>Обнаружено</dt><dd>'+fmtDate(f.first_seen)+', висит '+days+' дн. на дату сборки</dd>'+ rows + '</dl>';
+}
+function renderFindings(){
+  var list = D.findings.filter(function(f){ return (state.status==='all'||f.status===state.status) && (!state.section||f.sections.indexOf(state.section)>=0); })
+    .sort(function(a,b){ return ORDER[a.status]-ORDER[b.status] || a.id.localeCompare(b.id); });
+  if(!list.length){ tb.innerHTML='<tr><td colspan="5" class="muted">По выбранному фильтру находок нет.</td></tr>'; return; }
+  tb.innerHTML = list.map(function(f){
+    var w = f.where[0];
+    return '<tr class="f" data-id="'+f.id+'" aria-expanded="false" tabindex="0"><td>'+pill(f.status)+'</td><td>'+esc(f.title)+'</td>'+
+      '<td class="where"><a href="'+esc(w.url)+'" target="_blank" rel="noopener">'+esc(w.label)+' ↗</a></td><td class="small">'+esc(f.owner.split(',')[0])+'</td><td class="mono small">'+fmtDate(f.due)+'</td></tr>'+
+      '<tr class="detail" data-for="'+f.id+'" hidden><td colspan="5">'+card(f)+'</td></tr>';
+  }).join('');
+}
+tb.addEventListener('click', function(e){ if(e.target.closest('a')) return; var tr=e.target.closest('tr.f'); if(tr) toggle(tr); });
+tb.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ var tr=e.target.closest('tr.f'); if(tr){ e.preventDefault(); toggle(tr);} } });
+function toggle(tr){ var d = tb.querySelector('tr.detail[data-for="'+tr.dataset.id+'"]'); var open = tr.getAttribute('aria-expanded')==='true'; tr.setAttribute('aria-expanded', String(!open)); d.hidden = open; }
+renderFilters(); renderFindings();
+
+/* ---- экран 2: график по подразделам ---- */
+var perSec = {};
+D.sections.forEach(function(s){ perSec[s.code]={violation:0,risk:0,check:0}; });
+D.findings.forEach(function(f){ if(f.status in {violation:1,risk:1,check:1}) f.sections.forEach(function(c){ if(perSec[c]) perSec[c][f.status]++; }); });
+(function chart(){
+  var left=250, rowH=28, w=760, right=40, h=D.sections.length*rowH+16;
+  var maxv = Math.max.apply(null, D.sections.map(function(s){ var p=perSec[s.code]; return p.violation+p.risk+p.check; }).concat([1]));
+  var scale = (w-left-right)/maxv;
+  var svg = '<svg viewBox="0 0 '+w+' '+h+'" role="img" aria-label="Число находок по подразделам">';
+  D.sections.forEach(function(s,i){
+    var y = 8+i*rowH, p=perSec[s.code], x=left, total=p.violation+p.risk+p.check;
+    var name = s.name.length>34 ? s.name.slice(0,33)+'…' : s.name;
+    svg += '<g class="bar" data-sec="'+s.code+'"><title>'+esc(s.name)+': нарушений '+p.violation+', рисков '+p.risk+', проверить '+p.check+'</title>';
+    svg += '<text x="'+(left-10)+'" y="'+(y+rowH/2+4)+'" text-anchor="end" font-size="12.5" fill="var(--fg)">'+esc(name)+'</text>';
+    svg += '<line x1="'+left+'" x2="'+(w-right)+'" y1="'+(y+rowH/2)+'" y2="'+(y+rowH/2)+'" stroke="var(--line)" stroke-dasharray="2 4"/>';
+    [['violation','var(--critical)'],['risk','var(--warning)'],['check','var(--check)']].forEach(function(k){
+      var n=p[k[0]]; if(!n) return; var bw=n*scale-2;
+      svg += '<rect x="'+x+'" y="'+(y+6)+'" width="'+Math.max(bw,2)+'" height="'+(rowH-12)+'" rx="3" fill="'+k[1]+'"/>'; x += n*scale;
+    });
+    if(total) svg += '<text x="'+(x+6)+'" y="'+(y+rowH/2+4)+'" font-size="12" fill="var(--fg-2)">'+total+'</text>';
+    else svg += '<text x="'+(left+6)+'" y="'+(y+rowH/2+4)+'" font-size="12" fill="var(--fg-3)">находок нет</text>';
+    svg += '</g>';
+  });
+  svg += '</svg>';
+  var el = document.getElementById('chart-sections'); el.innerHTML = svg;
+  var tip = null;
+  el.addEventListener('mousemove', function(e){ var g=e.target.closest('g.bar'); if(!g){ if(tip){tip.remove();tip=null;} return; } if(!tip){ tip=document.createElement('div'); tip.className='tip'; document.body.appendChild(tip);} tip.textContent = g.querySelector('title').textContent; tip.style.left=e.clientX+'px'; tip.style.top=e.clientY+'px'; });
+  el.addEventListener('mouseleave', function(){ if(tip){tip.remove();tip=null;} });
+  el.addEventListener('click', function(e){ var g=e.target.closest('g.bar'); if(!g) return; state.section=g.dataset.sec; state.status='all'; renderFilters(); renderFindings(); document.getElementById('otvet').scrollIntoView({behavior:'smooth'}); });
+})();
+document.getElementById('index-big').textContent = Math.round(index) + ' / 100';
+document.getElementById('group-scores').innerHTML = Object.keys(D.groups).filter(function(g){return groupScores[g]!=null;}).map(function(g){
+  var s=groupScores[g]; return '<div class="score"><span class="small">'+esc(D.groups[g])+' <span class="muted">· вес '+W.groups[g].toFixed(2).replace('.',',')+'</span></span><span class="v">'+Math.round(s)+'</span><div class="track"><div class="fill" style="width:'+s+'%"></div></div></div>';
+}).join('');
+document.querySelector('#sections tbody').innerHTML = D.sections.map(function(s){
+  var p=perSec[s.code]; var d = function(x){ return x==null?'<span class="muted">—</span>':x; };
+  return '<tr><td><a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.name)+'</a></td><td class="mono">'+(p.violation||'')+'</td><td class="mono">'+(p.risk||'')+'</td><td class="mono">'+(p.check||'')+'</td><td class="mono">'+d(s.files)+'</td><td class="mono">'+d(s.updated_days)+'</td><td class="mono">'+d(s.alive_pct)+'</td></tr>';
+}).join('');
+
+/* ---- экран 3 ---- */
+var cstate='all';
+var cf = document.getElementById('check-filters');
+function renderCheckFilters(){
+  var defs=[['all','Все · '+D.checks.length]].concat(Object.keys(ST).map(function(k){ return [k, ST[k]+' · '+counts[k]]; }));
+  cf.innerHTML = defs.map(function(d){ return '<button type="button" data-st="'+d[0]+'" aria-pressed="'+(cstate===d[0])+'">'+d[1]+'</button>'; }).join('');
+}
+cf.addEventListener('click', function(e){ var b=e.target.closest('button'); if(!b) return; cstate=b.dataset.st; renderCheckFilters(); renderChecks(); });
+function renderChecks(){
+  document.querySelector('#checks tbody').innerHTML = D.checks.filter(function(c){ return cstate==='all'||c.status===cstate; }).map(function(c){
+    var fs = D.findings.filter(function(f){ return f.check===c.id; }).map(function(f){ return f.id; }).join(', ');
+    return '<tr><td class="mono">'+c.id+'</td><td>'+esc(c.title)+'</td><td class="small">'+CL[c.cls]+'</td><td class="small">'+esc(c.method)+'</td><td>'+pill(c.status)+'</td><td class="small muted">'+esc(c.note)+(fs?' Находки: '+fs+'.':'')+'</td></tr>';
+  }).join('');
+}
+renderCheckFilters(); renderChecks();
+document.querySelector('#registry tbody').innerHTML = D.registry.map(function(r){ return '<tr><td>'+esc(r.value)+'</td><td class="small">'+esc(r.source)+'</td><td class="mono small">'+esc(r.date)+'</td><td class="small muted">'+esc(r.method)+'</td></tr>'; }).join('');
+document.getElementById('weights-text').textContent = 'Веса статусов: нарушение 1,0; риск 0,5; проверить 0,2; не проверено 0,2; факт 0; соответствует 0. Веса классов проверок: нарушение 1,0; риск 0,5; проверить 0,2; факт 0.';
+document.getElementById('route-note').textContent = meta.route_note;
+document.getElementById('unverified-list').innerHTML = D.checks.filter(function(c){return c.status==='unverified';}).map(function(c){ return '<li><span class="mono">'+c.id+'</span> '+esc(c.title)+'. <span class="muted">'+esc(c.note||'Причина не указана.')+'</span></li>'; }).join('');
+
+/* ---- экспорт ---- */
+function csvCell(s){ s=String(s==null?'':s); return /[";\n]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s; }
+var head=['id','статус','проверка','что не так','подраздел','где (ссылка)','доказательство','норма','что сделать','кто','срок','обнаружено'];
+var csv = [head.join(';')].concat(D.findings.map(function(f){ return [f.id,ST[f.status],f.check,f.title,secByCode[f.section].name,f.where[0].url,f.evidence,f.norm,f.fix,f.owner,f.due,f.first_seen].map(csvCell).join(';'); })).join('\n');
+document.getElementById('csv-out').value = csv;
+document.getElementById('json-out').value = JSON.stringify({meta:meta, index:Math.round(index), group_scores:groupScores, findings:D.findings}, null, 1);
+function copyFrom(id, label){ var ta=document.getElementById(id), st=document.getElementById('copy-status'); var done=function(){ st.textContent=label+' скопирован'; };
+  var fb=function(){ ta.focus(); ta.select(); try{ document.execCommand('copy'); done(); }catch(e){ st.textContent='Выделите текст и скопируйте вручную'; } };
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(ta.value).then(done, fb); } else fb(); }
+document.getElementById('copy-csv').addEventListener('click', function(){ copyFrom('csv-out','CSV'); });
+document.getElementById('copy-json').addEventListener('click', function(){ copyFrom('json-out','JSON'); });
+document.getElementById('foot').textContent = meta.org + ' · ' + meta.build + ' · собрано ' + fmtDate(meta.build_date) + ' по правилам от 07.10.2026 · все числа пересчитываются из встроенных данных';
+})();
+</script>
