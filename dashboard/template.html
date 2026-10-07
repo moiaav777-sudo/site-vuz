@@ -56,12 +56,19 @@ td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
 .tbl{overflow-x:auto;margin-top:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
 .tbl table{min-width:640px}
 tr.f{cursor:pointer} tr.f:hover td{background:var(--surface-2)} tr.f[aria-expanded="true"] td{background:var(--surface-2)}
+tr.f:hover .ttl{text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.chev{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font:600 12.5px/1 var(--body);color:var(--accent);padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
+.chev::after{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin-top:-3px;transition:transform .15s}
+tr.f[aria-expanded="true"] .chev::after{transform:rotate(-135deg);margin-top:3px}
+tr.f[aria-expanded="true"] .chev{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+tr.detail>td{padding:0 10px 10px;background:var(--surface-2)}
+@media (prefers-reduced-motion:reduce){.chev::after{transition:none}}
 .pill{display:inline-flex;align-items:center;gap:6px;font:600 12px/1 var(--body);padding:5px 9px;border-radius:999px;white-space:nowrap}
 .pill::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
 .pill.violation{color:var(--critical);background:var(--critical-soft)} .pill.risk{color:var(--warning);background:var(--warning-soft)}
 .pill.check{color:var(--check);background:var(--check-soft)} .pill.unverified{color:var(--unv);background:var(--unv-soft)}
 .pill.fact{color:var(--fg-2);background:var(--surface-2)} .pill.ok{color:var(--good);background:var(--good-soft)}
-#findings th:nth-child(1){width:124px} #findings th:nth-child(2){width:44%} #findings th:nth-child(5){width:96px} .where a{overflow-wrap:anywhere}
+#findings th:nth-child(1){width:124px} #findings th:nth-child(2){width:40%} #findings th:nth-child(5){width:96px} #findings th:nth-child(6){width:120px} .where a{overflow-wrap:anywhere}
 .card{display:grid;grid-template-columns:160px 1fr;gap:8px 16px;padding:14px 16px;border-radius:10px;background:var(--surface);border:1px solid var(--line);margin:4px 0 8px}
 @media (max-width:720px){.card{grid-template-columns:1fr}}
 .card dt{color:var(--fg-3);font-size:12.5px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;padding-top:2px}
@@ -126,9 +133,9 @@ footer{margin-top:28px;color:var(--fg-3);font-size:12.5px}
   </ol>
   <div class="filters" id="filters" role="group" aria-label="Фильтр по статусу"></div>
   <div class="tbl"><table id="findings">
-    <thead><tr><th>Статус</th><th>Что не так</th><th>Где</th><th>Кто</th><th>Срок</th></tr></thead>
+    <thead><tr><th>Статус</th><th>Что не так</th><th>Где</th><th>Кто</th><th>Срок</th><th>Карточка</th></tr></thead>
     <tbody></tbody></table></div>
-  <p class="note">Нажмите на строку, чтобы раскрыть карточку: доказательство, норма, что сделать, построчный список.</p>
+  <p class="note">У каждой ошибки есть карточка: доказательство, норма, что сделать, построчный список. Откройте её кнопкой «Подробнее» или нажатием на строку.</p>
 </section>
 
 <section class="screen" id="analitika">
@@ -244,15 +251,18 @@ document.getElementById('k-risk').textContent = fCounts.risk;
 document.getElementById('k-unverified').textContent = counts.unverified;
 
 /* ---- список находок ---- */
-var state = {status:'all', section:null};
+var state = {status:'all', section:null, allOpen:false};
 var fl = document.getElementById('filters');
 function renderFilters(){
   var defs=[['all','Все'],['violation','Нарушения'],['risk','Риски'],['check','Проверить'],['fact','Факты']];
   var h = defs.map(function(d){ var n = d[0]==='all'? D.findings.length : fCounts[d[0]]; return '<button type="button" data-st="'+d[0]+'" aria-pressed="'+(state.status===d[0])+'">'+d[1]+' · '+n+'</button>'; }).join('');
   if (state.section){ h += '<span class="sec-filter">Подраздел: '+esc(secByCode[state.section].name)+' <button type="button" data-clear="1">сбросить</button></span>'; }
+  h += '<button type="button" data-all="1" style="margin-left:auto">'+(state.allOpen?'Свернуть все':'Раскрыть все карточки')+'</button>';
   fl.innerHTML = h;
 }
-fl.addEventListener('click', function(e){ var b=e.target.closest('button'); if(!b) return; if(b.dataset.clear){ state.section=null; } else { state.status=b.dataset.st; } renderFilters(); renderFindings(); });
+fl.addEventListener('click', function(e){ var b=e.target.closest('button'); if(!b) return;
+  if(b.dataset.all){ state.allOpen=!state.allOpen; renderFilters(); tb.querySelectorAll('tr.f').forEach(function(tr){ tr.setAttribute('aria-expanded', String(state.allOpen)); tb.querySelector('tr.detail[data-for="'+tr.dataset.id+'"]').hidden=!state.allOpen; }); return; }
+  if(b.dataset.clear){ state.section=null; } else { state.status=b.dataset.st; } renderFilters(); renderFindings(); });
 var tb = document.querySelector('#findings tbody');
 function card(f){
   var where = f.where.map(function(w){ return '<a href="'+esc(w.url)+'" target="_blank" rel="noopener">'+esc(w.label)+' ↗</a>'+(w.hint?' <span class="small muted">· '+esc(w.hint)+'</span>':''); }).join('<br>');
@@ -273,12 +283,14 @@ function card(f){
 function renderFindings(){
   var list = D.findings.filter(function(f){ return (state.status==='all'||f.status===state.status) && (!state.section||f.sections.indexOf(state.section)>=0); })
     .sort(function(a,b){ return ORDER[a.status]-ORDER[b.status] || a.id.localeCompare(b.id); });
-  if(!list.length){ tb.innerHTML='<tr><td colspan="5" class="muted">По выбранному фильтру находок нет.</td></tr>'; return; }
+  if(!list.length){ tb.innerHTML='<tr><td colspan="6" class="muted">По выбранному фильтру находок нет.</td></tr>'; return; }
   tb.innerHTML = list.map(function(f){
     var w = f.where[0];
-    return '<tr class="f" data-id="'+f.id+'" aria-expanded="false" tabindex="0"><td>'+pill(f.status)+'</td><td>'+esc(f.title)+'</td>'+
-      '<td class="where"><a href="'+esc(w.url)+'" target="_blank" rel="noopener">'+esc(w.label)+' ↗</a></td><td class="small">'+esc(f.owner.split(',')[0])+'</td><td class="mono small">'+fmtDate(f.due)+'</td></tr>'+
-      '<tr class="detail" data-for="'+f.id+'" hidden><td colspan="5">'+card(f)+'</td></tr>';
+    var open = !!state.allOpen;
+    return '<tr class="f" data-id="'+f.id+'" aria-expanded="'+open+'" tabindex="0"><td>'+pill(f.status)+'</td><td class="ttl">'+esc(f.title)+'</td>'+
+      '<td class="where"><a href="'+esc(w.url)+'" target="_blank" rel="noopener">'+esc(w.label)+' ↗</a></td><td class="small">'+esc(f.owner.split(',')[0])+'</td><td class="mono small">'+fmtDate(f.due)+'</td>'+
+      '<td><span class="chev" role="button" aria-label="Открыть карточку '+f.id+'">Подробнее</span></td></tr>'+
+      '<tr class="detail" data-for="'+f.id+'"'+(open?'':' hidden')+'><td colspan="6">'+card(f)+'</td></tr>';
   }).join('');
 }
 tb.addEventListener('click', function(e){ if(e.target.closest('a')) return; var tr=e.target.closest('tr.f'); if(tr) toggle(tr); });
