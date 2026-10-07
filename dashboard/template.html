@@ -194,7 +194,7 @@ footer{margin-top:28px;color:var(--fg-3);font-size:12.5px}
     </div>
   </div>
   <div class="tbl"><table id="sections">
-    <thead><tr><th>Подраздел</th><th>Что не так</th><th>Нарушения</th><th>Риски</th><th>Проверить</th><th>Файлов</th><th>Не обновлялся, дней</th><th>Живых ссылок, %</th></tr></thead>
+    <thead><tr><th>Подраздел</th><th>Что не так</th><th>Нарушения</th><th>Риски</th><th>Проверить</th><th>Файлов</th><th>Не обновлялся, дней</th></tr></thead>
     <tbody></tbody></table></div>
   <div class="grid2">
     <div class="placeholder"><strong>Как увидит проверяющий.</strong> Прогон по методическим рекомендациям Рособрнадзора не входит в первую сборку.</div>
@@ -366,7 +366,7 @@ document.querySelector('#sections tbody').innerHTML = D.sections.map(function(s)
   var probs = D.findings.filter(function(f){ return f.sections.indexOf(s.code)>=0 && f.status!=='fact'; }).sort(function(a,b){ return ORDER[a.status]-ORDER[b.status]; })
     .map(function(f){ return '<a href="#otvet" class="open-f" data-open="'+f.id+'"><span class="pill '+f.status+'"></span><span>'+esc(f.title)+'</span></a>'; }).join('<br>');
   return '<tr><td><a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.name)+'</a></td><td class="small">'+(probs||'<span class="muted">проблем не найдено</span>')+'</td><td class="mono">'+(p.violation||'')+'</td><td class="mono">'+(p.risk||'')+'</td><td class="mono">'+(p.check||'')+'</td><td class="mono">'+d(s.files)+'</td><td class="mono">'+d(s.updated_days)+'</td><td class="mono">'+d(s.alive_pct)+'</td></tr>';
-}).join('') + ((meta.unassigned_files||[]).length ? '<tr><td class="muted" colspan="5">Не отнесены к подразделу: '+meta.unassigned_files.map(function(x){ return esc(x.label)+' ('+x.files+')'; }).join(', ')+'</td><td class="mono">'+meta.unassigned_files.reduce(function(a,x){return a+x.files;},0)+'</td><td></td><td></td></tr>' : '');
+}).join('') + ((meta.unassigned_files||[]).length ? '<tr><td class="muted" colspan="5">Не отнесены к подразделу: '+meta.unassigned_files.map(function(x){ return esc(x.label)+' ('+x.files+')'; }).join(', ')+'</td><td class="mono">'+meta.unassigned_files.reduce(function(a,x){return a+x.files;},0)+'</td><td></td></tr>' : '');
 
 document.querySelector('#sections').addEventListener('click', function(e){ var a=e.target.closest('a.open-f'); if(!a) return; e.preventDefault(); openFinding(a.dataset.open); });
 function openFinding(id){ state.section=null; state.status='all'; renderFilters(); renderFindings();
