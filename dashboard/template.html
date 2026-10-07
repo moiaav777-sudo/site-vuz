@@ -203,7 +203,7 @@ footer{margin-top:28px;color:var(--fg-3);font-size:12.5px}
 
 <section class="screen" id="podrobnosti">
   <div class="eyebrow">Экран 3 · Подробности для специалистов</div>
-  <h2>Все проверки, реестр цифр, методика и экспорт</h2>
+  <h2>Все проверки, реестр цифр и экспорт</h2>
   <div class="filters" id="check-filters" role="group" aria-label="Фильтр проверок"></div>
   <div class="tbl"><table id="checks">
     <thead><tr><th>Код</th><th>Проверка</th><th>Класс</th><th>Способ</th><th>Результат</th><th>Примечание</th></tr></thead>
@@ -214,24 +214,8 @@ footer{margin-top:28px;color:var(--fg-3);font-size:12.5px}
     <thead><tr><th>Цифра</th><th>Источник</th><th>Дата</th><th>Метод</th></tr></thead>
     <tbody></tbody></table></div>
 
-  <details class="meth" id="meth-main" open>
-    <summary>Методика и формула</summary>
-    <p class="small">Оценка группы: доля невыполненных проверок с учётом веса. Вес найденного берётся из статуса и не может превышать класс проверки. Индекс: взвешенная сумма групп А–Д. Группа Е в индекс не входит.</p>
-    <div class="formula">S_g = 100 · (1 − Σ min(w_status, w_class) / Σ w_class)<br>I = 0,40·S_A + 0,15·S_Б + 0,15·S_В + 0,15·S_Г + 0,15·S_Д</div>
-    <p class="small" id="weights-text"></p>
-    <p class="small" id="route-note"></p>
-    <p class="small">Индекс не заменяет главный ответ: при одном доказанном нарушении вердикт «есть нарушения» независимо от индекса.</p>
-  </details>
 
-  <details class="meth">
-    <summary>Что не проверено и почему</summary>
-    <ul id="unverified-list" class="small"></ul>
-  </details>
 
-  <details class="meth" id="changes-block" hidden>
-    <summary>Что изменено в этой сборке</summary>
-    <ol id="changes-list" class="small"></ol>
-  </details>
 
   <details class="meth">
     <summary>Экспорт: CSV и JSON</summary>
@@ -250,7 +234,6 @@ footer{margin-top:28px;color:var(--fg-3);font-size:12.5px}
 <script>
 (function(){
 var D = JSON.parse(document.getElementById('data').textContent);
-if (document.body.getAttribute('data-prerendered')) { document.querySelectorAll('details.meth').forEach(function(d){ if(d.id!=='meth-main') d.open=false; }); }
 var W = D.weights, meta = D.meta;
 var ST = {violation:'Нарушение', risk:'Риск', check:'Проверить', unverified:'Не проверено', fact:'Факт', ok:'Соответствует'};
 var CL = {violation:'нарушение', risk:'риск', check:'проверить', fact:'факт'};
@@ -398,10 +381,6 @@ function renderChecks(){
 }
 renderCheckFilters(); renderChecks();
 document.querySelector('#registry tbody').innerHTML = D.registry.map(function(r){ return '<tr><td>'+esc(r.value)+'</td><td class="small">'+esc(r.source)+'</td><td class="mono small">'+esc(r.date)+'</td><td class="small muted">'+esc(r.method)+'</td></tr>'; }).join('');
-document.getElementById('weights-text').textContent = 'Веса статусов: нарушение 1,0; риск 0,5; проверить 0,2; не проверено 0,2; факт 0; соответствует 0. Веса классов проверок: нарушение 1,0; риск 0,5; проверить 0,2; факт 0.';
-document.getElementById('route-note').textContent = meta.route_note;
-if ((meta.changes||[]).length){ document.getElementById('changes-block').hidden=false; document.getElementById('changes-list').innerHTML = meta.changes.map(function(c){ return '<li>'+esc(c)+'</li>'; }).join(''); }
-document.getElementById('unverified-list').innerHTML = D.checks.filter(function(c){return c.status==='unverified';}).map(function(c){ return '<li><span class="mono">'+c.id+'</span> '+esc(c.title)+'. <span class="muted">'+esc(c.note||'Причина не указана.')+'</span></li>'; }).join('');
 
 /* ---- экспорт ---- */
 function csvCell(s){ s=String(s==null?'':s); return /[";\n]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s; }
