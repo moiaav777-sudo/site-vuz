@@ -15,7 +15,7 @@ STATUSES = {"violation","risk","check","unverified","fact","ok"}
 CARD_STATUSES = {"violation","risk","check","fact"}
 NORM_RE = re.compile(r"(ФЗ-273|273-ФЗ|ст\. ?29|34-ФЗ|1802|1493|1353|920|№ ?102|577|462|152-ФЗ|63-ФЗ|не норма|без внешней нормы|качество площадки)", re.I)
 FORBIDDEN_WHERE = re.compile(r"(вся страница|весь html|весь блок|весь раздел|^—$|^-$)", re.I)
-TECH_TERMS = re.compile(r"(itemprop|<td|<th|\bhtml\b|snapshot|href|json|fetch|\bcss\b|\bdom\b|manifest|raw header|headless|axe-core|песочниц)", re.I)
+TECH_TERMS = re.compile(r"(itemprop|<td|<th|\bhtml\b|snapshot|href|json|fetch|\bcss\b|\bdom\b|manifest|raw header|headless|axe-core|песочниц|\bппс\b|\bоп\b|опоп|фгис|машиночитаем|ячеек)", re.I)
 PD_RE = re.compile(r"(\+7[\s(]*\d{3}[\s)]*\d{3}[\s-]*\d{2}[\s-]*\d{2}|[\w.+-]+@(mail\.ru|gmail\.com|yandex\.ru|ya\.ru|bk\.ru|list\.ru|inbox\.ru|rambler\.ru))", re.I)
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
@@ -75,8 +75,11 @@ def main():
             if r.get("url") is not None and not str(r.get("url","")).startswith("http"): E(f"{fid}: строка списка без ссылки http: {r.get('text')}")
         key = (f.get("section"), f.get("where",[{}])[0].get("url"), f.get("status"))
         seen_cause.setdefault(key, []).append(fid)
+        shot_key = ("shot", f.get("screenshot"))
+        if f.get("screenshot"): seen_cause.setdefault(shot_key, []).append(fid)
     for key, ids in seen_cause.items():
-        if len(ids) > 1: W(f"возможные дубли одной первопричины (один подраздел, одно место, один статус): {ids}; объедините, если причина одна")
+        if len(ids) > 1 and key[0] == "shot": E(f"одна первопричина разбита на несколько карточек (один и тот же скриншот {key[1]}): {ids}; объедините в одну карточку с перечнем проверок")
+        elif len(ids) > 1: W(f"возможные дубли одной первопричины (один подраздел, одно место, один статус): {ids}; объедините, если причина одна")
 
     reg = data.get("registry", [])
     if not reg: E("registry пуст")

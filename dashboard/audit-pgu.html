@@ -6,7 +6,7 @@
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)} body{margin:0} img{max-width:100%} [hidden]{display:none!important}</style>
 </head>
 <body data-prerendered="1">
-<title>Аудит сайта ПГУ</title>
+<title>Аудит сайта pnzgu.ru</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
 <style>
 /* Макет: одна колонка до 1080px, три экрана сверху вниз: ответ, аналитика, подробности. */
@@ -150,13 +150,17 @@ footer{margin-top:28px;color:var(--fg-3);font-size:12.5px}
   textarea{min-height:120px}
 }
 </style>
+<!--__DESIGN__-->
 
 <div class="wrap">
 <header class="top">
+  <div style="display:flex;gap:14px;align-items:flex-start">
+  <img id="h-logo" alt="" hidden="" style="height:44px;max-width:160px;object-fit:contain;margin-top:4px">
   <div>
     <div class="eyebrow">Аудит официального сайта вуза</div>
     <h1 id="h-org">Пензенский государственный университет · pnzgu.ru</h1>
     <div class="muted small" id="h-meta">Сборка 1.1, статичная от 07.10.2026 · снимок сайта 29.09.2026 · пробы 30.09.2026 · Правила аудита сайта вуза, финальная редакция от 07.10.2026</div>
+  </div>
   </div>
   <nav class="screens" aria-label="Экраны">
     <a href="#otvet">1 · Ответ</a><a href="#analitika">2 · Аналитика</a><a href="#podrobnosti">3 · Подробности</a>
@@ -1466,6 +1470,8 @@ var index = 0; Object.keys(W.groups).forEach(function(g){ if(groupScores[g]!=nul
 
 /* ---- шапка и вердикт ---- */
 document.getElementById('h-org').textContent = meta.org + ' · ' + meta.site;
+document.title = 'Аудит сайта ' + (meta.short || meta.site.replace(/^https?:\/\//,''));
+if (meta.design && meta.design.logo){ var lg=document.getElementById('h-logo'); lg.src=meta.design.logo; lg.hidden=false; lg.onerror=function(){ lg.hidden=true; }; }
 document.getElementById('h-meta').textContent = meta.build + ' от ' + fmtDate(meta.build_date) + ' · снимок сайта ' + fmtDate(meta.snapshot_date) + ' · пробы ' + fmtDate(meta.probe_date) + ' · ' + meta.rules;
 var v = document.getElementById('verdict'), vt = document.getElementById('verdict-text'), vs = document.getElementById('verdict-sub');
 if (fCounts.violation>0){ vt.textContent='Есть нарушения'; v.className='verdict v-bad'; }

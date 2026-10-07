@@ -1,4 +1,4 @@
-<title>Аудит сайта ПГУ</title>
+<title>Аудит сайта вуза</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 /* Макет: одна колонка до 1080px, три экрана сверху вниз: ответ, аналитика, подробности. */
@@ -266,6 +266,7 @@ var index = 0; Object.keys(W.groups).forEach(function(g){ if(groupScores[g]!=nul
 
 /* ---- шапка и вердикт ---- */
 document.getElementById('h-org').textContent = meta.org + ' · ' + meta.site;
+document.title = 'Аудит сайта ' + (meta.short || meta.site.replace(/^https?:\/\//,''));
 if (meta.design && meta.design.logo){ var lg=document.getElementById('h-logo'); lg.src=meta.design.logo; lg.hidden=false; lg.onerror=function(){ lg.hidden=true; }; }
 document.getElementById('h-meta').textContent = meta.build + ' от ' + fmtDate(meta.build_date) + ' · снимок сайта ' + fmtDate(meta.snapshot_date) + ' · пробы ' + fmtDate(meta.probe_date) + ' · ' + meta.rules;
 var v = document.getElementById('verdict'), vt = document.getElementById('verdict-text'), vs = document.getElementById('verdict-sub');

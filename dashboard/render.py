@@ -33,6 +33,8 @@ def render(data_path, out_dir, prerender=True):
     tpl = (HERE / "template.html").read_text(encoding="utf-8")
     body = tpl.replace("/*__DATA__*/", json.dumps(data, ensure_ascii=False).replace("</", "<\\/"))
     body = body.replace("<!--__DESIGN__-->", design_css(data.get("meta", {}).get("design")))
+    m = data.get("meta", {})
+    body = body.replace("<title>Аудит сайта вуза</title>", "<title>Аудит сайта " + (m.get("short") or m.get("site","").replace("https://","").replace("http://","")) + "</title>")
     html = ('<!doctype html>\n<html lang="ru">\n<head>\n<meta charset="utf-8">\n'
             '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
             '<meta name="color-scheme" content="light dark">\n'
