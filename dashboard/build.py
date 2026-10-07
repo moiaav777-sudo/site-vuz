@@ -314,4 +314,32 @@ standalone = ('<!doctype html>\n<html lang="ru">\n<head>\n<meta charset="utf-8">
               '<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)} body{margin:0} img{max-width:100%} [hidden]{display:none!important}</style>\n'
               '</head>\n<body>\n' + html + '\n</body>\n</html>\n')
 (HERE/"audit-pgu.html").write_text(standalone, encoding="utf-8")
+
+# Пререндер: без JavaScript (просмотрщики вложений на телефоне) страница должна быть полной.
+def prerender():
+    import asyncio
+    from playwright.async_api import async_playwright
+    async def run():
+        async with async_playwright() as p:
+            exe = pathlib.Path("/opt/pw-browsers/chromium-1194/chrome-linux/chrome")
+            br = await (p.chromium.launch(executable_path=str(exe)) if exe.exists() else p.chromium.launch())
+            pg = await br.new_page(viewport={"width": 1100, "height": 900})
+            await pg.goto((HERE/"audit-pgu.html").resolve().as_uri(), wait_until="load")
+            await pg.wait_for_timeout(500)
+            await pg.click("#filters button[data-all]")          # все карточки раскрыты в статике
+            await pg.evaluate("""() => {
+                document.querySelectorAll('textarea').forEach(t => { t.textContent = t.value; });
+                document.querySelectorAll('details.meth').forEach(d => d.open = true);
+                document.querySelectorAll('[data-prerendered]').forEach(e => e.removeAttribute('data-prerendered'));
+                document.body.setAttribute('data-prerendered', '1');
+            }""")
+            html = await pg.evaluate("'<!doctype html>\\n' + document.documentElement.outerHTML")
+            await br.close()
+            return html
+    return asyncio.run(run())
+try:
+    (HERE/"audit-pgu.html").write_text(prerender(), encoding="utf-8")
+    print("prerendered audit-pgu.html")
+except Exception as e:
+    print("prerender skipped:", e)
 print("findings", len(F), "checks", len(C), "files", sum(FILE_COUNTS), "html", len(html))
