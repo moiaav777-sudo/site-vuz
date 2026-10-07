@@ -103,6 +103,43 @@ details.meth{margin-top:14px;border:1px solid var(--line);border-radius:12px;bac
 details.meth summary{cursor:pointer;font-weight:600}
 footer{margin-top:28px;color:var(--fg-3);font-size:12.5px}
 @media (prefers-reduced-motion:no-preference){.score .fill{transition:width .5s ease}}
+/* ---- телефон ---- */
+@media (max-width:720px){
+  .wrap{padding-block:12px 48px}
+  h1{font-size:21px} h2{font-size:18px}
+  header.top{gap:10px}
+  nav.screens{position:sticky;top:env(safe-area-inset-top,0px);z-index:3;background:var(--bg);padding:6px 0;margin:0 -16px;padding-inline:16px;width:calc(100% + 32px)}
+  nav.screens a{flex:1;text-align:center;padding:8px 6px}
+  .verdict .big{font-size:22px}
+  .kpi .n{font-size:26px}
+  .filters button{padding:9px 12px}
+  .filters .sec-filter{margin-left:0;width:100%}
+  .filters button[data-all]{margin-left:0!important;width:100%}
+  /* таблица ошибок как список карточек */
+  #findings{min-width:0}
+  #findings thead{display:none}
+  #findings,#findings tbody,#findings tr,#findings td{display:block;width:100%}
+  #findings tr.f{display:grid;grid-template-columns:1fr auto;gap:6px 10px;padding:12px 12px 10px;border-bottom:1px solid var(--line)}
+  #findings tr.f td{padding:0;border:0;background:transparent!important}
+  #findings tr.f td:nth-child(1){grid-column:1;grid-row:1}
+  #findings tr.f td:nth-child(6){grid-column:2;grid-row:1;justify-self:end}
+  #findings tr.f td:nth-child(2){grid-column:1/-1;font-size:15px;line-height:1.4}
+  #findings tr.f td:nth-child(3),#findings tr.f td:nth-child(4),#findings tr.f td:nth-child(5){grid-column:1/-1;font-size:13px;color:var(--fg-2)}
+  #findings tr.f td:nth-child(3)::before{content:"Где: ";color:var(--fg-3)}
+  #findings tr.f td:nth-child(4)::before{content:"Кто: ";color:var(--fg-3)}
+  #findings tr.f td:nth-child(5)::before{content:"Срок: ";color:var(--fg-3);font-family:var(--body)}
+  #findings tr.f[aria-expanded="true"]{background:var(--surface-2)}
+  #findings tr.detail>td{padding:0 8px 12px}
+  .card{padding:12px;gap:4px 0}
+  .card dt{margin-top:6px}
+  .rows li{flex-direction:column;gap:2px}
+  .chev{padding:9px 12px}
+  .grid2{gap:12px}
+  .panel{padding:12px}
+  .index-big{font-size:36px}
+  .placeholder{padding:12px}
+  textarea{min-height:120px}
+}
 </style>
 
 <div class="wrap">
@@ -302,32 +339,39 @@ renderFilters(); renderFindings();
 var perSec = {};
 D.sections.forEach(function(s){ perSec[s.code]={violation:0,risk:0,check:0}; });
 D.findings.forEach(function(f){ if(f.status in {violation:1,risk:1,check:1}) f.sections.forEach(function(c){ if(perSec[c]) perSec[c][f.status]++; }); });
-(function chart(){
-  var left=250, rowH=28, w=760, right=40, h=D.sections.length*rowH+16;
+function chart(){
+  var el = document.getElementById('chart-sections');
+  var narrow = el.clientWidth && el.clientWidth < 560;
+  var w = narrow ? 360 : 760, left = narrow ? 0 : 250, rowH = narrow ? 44 : 28, right = narrow ? 36 : 40, h = D.sections.length*rowH+16;
   var maxv = Math.max.apply(null, D.sections.map(function(s){ var p=perSec[s.code]; return p.violation+p.risk+p.check; }).concat([1]));
   var scale = (w-left-right)/maxv;
   var svg = '<svg viewBox="0 0 '+w+' '+h+'" role="img" aria-label="Число находок по подразделам">';
   D.sections.forEach(function(s,i){
     var y = 8+i*rowH, p=perSec[s.code], x=left, total=p.violation+p.risk+p.check;
     var name = s.name.length>34 ? s.name.slice(0,33)+'…' : s.name;
+    var by = narrow ? y+26 : y+6, bh = narrow ? 12 : rowH-12, cy = by + bh/2;
     svg += '<g class="bar" data-sec="'+s.code+'"><title>'+esc(s.name)+': нарушений '+p.violation+', рисков '+p.risk+', проверить '+p.check+'</title>';
-    svg += '<text x="'+(left-10)+'" y="'+(y+rowH/2+4)+'" text-anchor="end" font-size="12.5" fill="var(--fg)">'+esc(name)+'</text>';
-    svg += '<line x1="'+left+'" x2="'+(w-right)+'" y1="'+(y+rowH/2)+'" y2="'+(y+rowH/2)+'" stroke="var(--line)" stroke-dasharray="2 4"/>';
+    if(narrow) svg += '<text x="0" y="'+(y+16)+'" font-size="12.5" fill="var(--fg)">'+esc(name)+'</text>';
+    else svg += '<text x="'+(left-10)+'" y="'+(cy+4)+'" text-anchor="end" font-size="12.5" fill="var(--fg)">'+esc(name)+'</text>';
+    svg += '<line x1="'+left+'" x2="'+(w-right)+'" y1="'+cy+'" y2="'+cy+'" stroke="var(--line)" stroke-dasharray="2 4"/>';
     [['violation','var(--critical)'],['risk','var(--warning)'],['check','var(--check)']].forEach(function(k){
       var n=p[k[0]]; if(!n) return; var bw=n*scale-2;
-      svg += '<rect x="'+x+'" y="'+(y+6)+'" width="'+Math.max(bw,2)+'" height="'+(rowH-12)+'" rx="3" fill="'+k[1]+'"/>'; x += n*scale;
+      svg += '<rect x="'+x+'" y="'+by+'" width="'+Math.max(bw,2)+'" height="'+bh+'" rx="3" fill="'+k[1]+'"/>'; x += n*scale;
     });
-    if(total) svg += '<text x="'+(x+6)+'" y="'+(y+rowH/2+4)+'" font-size="12" fill="var(--fg-2)">'+total+'</text>';
-    else svg += '<text x="'+(left+6)+'" y="'+(y+rowH/2+4)+'" font-size="12" fill="var(--fg-3)">находок нет</text>';
+    if(total) svg += '<text x="'+(x+6)+'" y="'+(cy+4)+'" font-size="12" fill="var(--fg-2)">'+total+'</text>';
+    else svg += '<text x="'+(left+6)+'" y="'+(cy+4)+'" font-size="12" fill="var(--fg-3)">находок нет</text>';
     svg += '</g>';
   });
   svg += '</svg>';
-  var el = document.getElementById('chart-sections'); el.innerHTML = svg;
+  el.innerHTML = svg;
+  if(el.dataset.bound) return; el.dataset.bound='1';
   var tip = null;
   el.addEventListener('mousemove', function(e){ var g=e.target.closest('g.bar'); if(!g){ if(tip){tip.remove();tip=null;} return; } if(!tip){ tip=document.createElement('div'); tip.className='tip'; document.body.appendChild(tip);} tip.textContent = g.querySelector('title').textContent; tip.style.left=e.clientX+'px'; tip.style.top=e.clientY+'px'; });
   el.addEventListener('mouseleave', function(){ if(tip){tip.remove();tip=null;} });
   el.addEventListener('click', function(e){ var g=e.target.closest('g.bar'); if(!g) return; state.section=g.dataset.sec; state.status='all'; renderFilters(); renderFindings(); document.getElementById('otvet').scrollIntoView({behavior:'smooth'}); });
-})();
+}
+chart();
+(function(){ var tmr; window.addEventListener('resize', function(){ clearTimeout(tmr); tmr=setTimeout(chart,150); }); })();
 document.getElementById('index-big').textContent = Math.round(index) + ' / 100';
 document.getElementById('group-scores').innerHTML = Object.keys(D.groups).filter(function(g){return groupScores[g]!=null;}).map(function(g){
   var s=groupScores[g]; return '<div class="score"><span class="small">'+esc(D.groups[g])+' <span class="muted">· вес '+W.groups[g].toFixed(2).replace('.',',')+'</span></span><span class="v">'+Math.round(s)+'</span><div class="track"><div class="fill" style="width:'+s+'%"></div></div></div>';

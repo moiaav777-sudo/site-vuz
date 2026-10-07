@@ -308,4 +308,10 @@ data = {
 tpl = (HERE/"template.html").read_text(encoding="utf-8")
 html = tpl.replace("/*__DATA__*/", json.dumps(data, ensure_ascii=False).replace("</", "<\\/"))
 (HERE/"index.html").write_text(html, encoding="utf-8")
+standalone = ('<!doctype html>\n<html lang="ru">\n<head>\n<meta charset="utf-8">\n'
+              '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
+              '<meta name="color-scheme" content="light dark">\n'
+              '<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)} body{margin:0} img{max-width:100%} [hidden]{display:none!important}</style>\n'
+              '</head>\n<body>\n' + html + '\n</body>\n</html>\n')
+(HERE/"audit-pgu.html").write_text(standalone, encoding="utf-8")
 print("findings", len(F), "checks", len(C), "files", sum(FILE_COUNTS), "html", len(html))
