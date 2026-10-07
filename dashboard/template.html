@@ -184,6 +184,11 @@ footer{margin-top:28px;color:var(--fg-3);font-size:12.5px}
     <ul id="unverified-list" class="small"></ul>
   </details>
 
+  <details class="meth" id="changes-block" hidden>
+    <summary>Что изменено в этой сборке</summary>
+    <ol id="changes-list" class="small"></ol>
+  </details>
+
   <details class="meth">
     <summary>Экспорт: CSV и JSON</summary>
     <p class="small">Скачивание из этого окна отключено, поэтому текст можно скопировать кнопкой. Полный файл данных лежит рядом с дашбордом: dashboard/data.json.</p>
@@ -228,12 +233,12 @@ var index = 0; Object.keys(W.groups).forEach(function(g){ if(groupScores[g]!=nul
 
 /* ---- шапка и вердикт ---- */
 document.getElementById('h-org').textContent = meta.org + ' · ' + meta.site;
-document.getElementById('h-meta').textContent = meta.build + ' от ' + fmtDate(meta.build_date) + ' · снимок сайта ' + fmtDate(meta.snapshot_date) + ' ' + meta.snapshot_time + ' · пробы ' + fmtDate(meta.probe_date) + ' · ' + meta.rules;
+document.getElementById('h-meta').textContent = meta.build + ' от ' + fmtDate(meta.build_date) + ' · снимок сайта ' + fmtDate(meta.snapshot_date) + ' · пробы ' + fmtDate(meta.probe_date) + ' · ' + meta.rules;
 var v = document.getElementById('verdict'), vt = document.getElementById('verdict-text'), vs = document.getElementById('verdict-sub');
 if (fCounts.violation>0){ vt.textContent='Есть нарушения'; v.className='verdict v-bad'; }
 else if (fCounts.risk>0 || counts.unverified>0){ vt.textContent='Есть риски'; v.className='verdict v-risk'; }
 else { vt.textContent='Соответствует'; v.className='verdict v-ok'; }
-vs.textContent = 'по снимку от ' + fmtDate(meta.snapshot_date) + ', ' + fCounts.violation + ' доказанных нарушений по ' + D.checks.filter(function(c){return c.status==='violation';}).length + ' проверкам';
+vs.textContent = 'по снимку от ' + fmtDate(meta.snapshot_date) + ' · ' + meta.build;
 document.getElementById('k-violation').textContent = fCounts.violation;
 document.getElementById('k-risk').textContent = fCounts.risk;
 document.getElementById('k-unverified').textContent = counts.unverified;
@@ -250,19 +255,20 @@ function renderFilters(){
 fl.addEventListener('click', function(e){ var b=e.target.closest('button'); if(!b) return; if(b.dataset.clear){ state.section=null; } else { state.status=b.dataset.st; } renderFilters(); renderFindings(); });
 var tb = document.querySelector('#findings tbody');
 function card(f){
-  var where = f.where.map(function(w){ return '<a href="'+esc(w.url)+'" target="_blank" rel="noopener">'+esc(w.label)+' ↗</a>'; }).join('<br>');
-  var rows = f.rows.length ? '<dt>Построчно · '+f.rows.length+'</dt><dd><ul class="rows">'+f.rows.map(function(r){ return '<li><span>'+esc(r.text)+'</span><a href="'+esc(r.url)+'" target="_blank" rel="noopener">'+esc(r.url.replace(/^https?:\/\//,''))+' ↗</a></li>'; }).join('')+'</ul></dd>' : '';
-  var days = Math.round((new Date(meta.build_date) - new Date(f.first_seen))/864e5);
+  var where = f.where.map(function(w){ return '<a href="'+esc(w.url)+'" target="_blank" rel="noopener">'+esc(w.label)+' ↗</a>'+(w.hint?' <span class="small muted">· '+esc(w.hint)+'</span>':''); }).join('<br>');
+  var rows = f.rows.length ? '<dt>Построчно · '+f.rows.length+'</dt><dd><ul class="rows">'+f.rows.map(function(r){ return '<li><span>'+esc(r.text)+'</span>'+(r.url?'<a href="'+esc(r.url)+'" target="_blank" rel="noopener">'+esc(r.url.replace(/^https?:\/\//,''))+' ↗</a>':'<span class="small muted">ссылки нет</span>')+'</li>'; }).join('')+'</ul></dd>' : '';
   return '<dl class="card">'+
    '<dt>Что не так</dt><dd>'+esc(f.title)+'</dd>'+
    '<dt>Где</dt><dd class="where">'+where+'</dd>'+
    '<dt>Доказательство</dt><dd>'+esc(f.evidence)+'</dd>'+
+   '<dt>Источник</dt><dd class="small">'+esc(f.source||'')+'</dd>'+
+   '<dt>Скриншот</dt><dd class="small muted">'+esc(f.screenshot||'нет')+'</dd>'+
    '<dt>Статус</dt><dd>'+pill(f.status)+' <span class="small muted">проверка '+esc(f.check)+'</span></dd>'+
    '<dt>Норма</dt><dd>'+esc(f.norm)+'</dd>'+
    '<dt>Что сделать</dt><dd>'+esc(f.fix)+'</dd>'+
    '<dt>Кто</dt><dd>'+esc(f.owner)+'</dd>'+
    '<dt>Срок</dt><dd>до '+fmtDate(f.due)+'</dd>'+
-   '<dt>Обнаружено</dt><dd>'+fmtDate(f.first_seen)+', висит '+days+' дн. на дату сборки</dd>'+ rows + '</dl>';
+   '<dt>Обнаружено</dt><dd>'+fmtDate(f.first_seen)+'</dd>'+ rows + '</dl>';
 }
 function renderFindings(){
   var list = D.findings.filter(function(f){ return (state.status==='all'||f.status===state.status) && (!state.section||f.sections.indexOf(state.section)>=0); })
@@ -317,7 +323,7 @@ document.getElementById('group-scores').innerHTML = Object.keys(D.groups).filter
 document.querySelector('#sections tbody').innerHTML = D.sections.map(function(s){
   var p=perSec[s.code]; var d = function(x){ return x==null?'<span class="muted">—</span>':x; };
   return '<tr><td><a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.name)+'</a></td><td class="mono">'+(p.violation||'')+'</td><td class="mono">'+(p.risk||'')+'</td><td class="mono">'+(p.check||'')+'</td><td class="mono">'+d(s.files)+'</td><td class="mono">'+d(s.updated_days)+'</td><td class="mono">'+d(s.alive_pct)+'</td></tr>';
-}).join('');
+}).join('') + ((meta.unassigned_files||[]).length ? '<tr><td class="muted" colspan="4">Не отнесены к подразделу: '+meta.unassigned_files.map(function(x){ return esc(x.label)+' ('+x.files+')'; }).join(', ')+'</td><td class="mono">'+meta.unassigned_files.reduce(function(a,x){return a+x.files;},0)+'</td><td></td><td></td></tr>' : '');
 
 /* ---- экран 3 ---- */
 var cstate='all';
@@ -337,12 +343,13 @@ renderCheckFilters(); renderChecks();
 document.querySelector('#registry tbody').innerHTML = D.registry.map(function(r){ return '<tr><td>'+esc(r.value)+'</td><td class="small">'+esc(r.source)+'</td><td class="mono small">'+esc(r.date)+'</td><td class="small muted">'+esc(r.method)+'</td></tr>'; }).join('');
 document.getElementById('weights-text').textContent = 'Веса статусов: нарушение 1,0; риск 0,5; проверить 0,2; не проверено 0,2; факт 0; соответствует 0. Веса классов проверок: нарушение 1,0; риск 0,5; проверить 0,2; факт 0.';
 document.getElementById('route-note').textContent = meta.route_note;
+if ((meta.changes||[]).length){ document.getElementById('changes-block').hidden=false; document.getElementById('changes-list').innerHTML = meta.changes.map(function(c){ return '<li>'+esc(c)+'</li>'; }).join(''); }
 document.getElementById('unverified-list').innerHTML = D.checks.filter(function(c){return c.status==='unverified';}).map(function(c){ return '<li><span class="mono">'+c.id+'</span> '+esc(c.title)+'. <span class="muted">'+esc(c.note||'Причина не указана.')+'</span></li>'; }).join('');
 
 /* ---- экспорт ---- */
 function csvCell(s){ s=String(s==null?'':s); return /[";\n]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s; }
-var head=['id','статус','проверка','что не так','подраздел','где (ссылка)','доказательство','норма','что сделать','кто','срок','обнаружено'];
-var csv = [head.join(';')].concat(D.findings.map(function(f){ return [f.id,ST[f.status],f.check,f.title,secByCode[f.section].name,f.where[0].url,f.evidence,f.norm,f.fix,f.owner,f.due,f.first_seen].map(csvCell).join(';'); })).join('\n');
+var head=['id','статус','проверка','что не так','подраздел','где (ссылка)','доказательство','источник','норма','что сделать','кто','срок','обнаружено'];
+var csv = [head.join(';')].concat(D.findings.map(function(f){ return [f.id,ST[f.status],f.check,f.title,secByCode[f.section].name,f.where[0].url,f.evidence,f.source||'',f.norm,f.fix,f.owner,f.due,f.first_seen].map(csvCell).join(';'); })).join('\n');
 document.getElementById('csv-out').value = csv;
 document.getElementById('json-out').value = JSON.stringify({meta:meta, index:Math.round(index), group_scores:groupScores, findings:D.findings}, null, 1);
 function copyFrom(id, label){ var ta=document.getElementById(id), st=document.getElementById('copy-status'); var done=function(){ st.textContent=label+' скопирован'; };
