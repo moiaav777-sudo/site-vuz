@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Демо-презентация</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<style>
+:root{
+  --bg1:#1a0b4d; --bg2:#3a1bd6; --accent:#c04dff; --accent2:#7a5cff;
+  --text:#fff; --muted:#b9acf5; --glass:rgba(255,255,255,.08); --line:rgba(255,255,255,.18);
+}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#0b0524;overflow:hidden;font-family:Manrope,system-ui,sans-serif;color:var(--text)}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;
+  background:radial-gradient(1200px 800px at 70% 20%,var(--bg2),var(--bg1) 70%)}
+.bokeh{position:absolute;inset:0;pointer-events:none}
+.bokeh i{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.9),rgba(255,255,255,0) 70%);filter:blur(6px);opacity:.5}
+.slide{position:absolute;inset:0;padding:90px 110px;opacity:0;visibility:hidden}
+.slide.active{visibility:visible}
+.eyebrow{font-size:22px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-weight:800}
+h1,h2{font-weight:800;line-height:1.08;letter-spacing:-.01em}
+h1{font-size:120px}
+h2{font-size:72px;margin-top:22px}
+h2 em,h1 em{font-style:normal;color:var(--accent)}
+.sub{font-size:34px;color:var(--muted);margin-top:30px;max-width:1100px;line-height:1.4}
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:28px;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 20px 60px rgba(10,0,50,.35)}
+.tag{position:absolute;padding:14px 26px;text-align:center;font-size:20px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.tag b{display:block;font-size:34px;letter-spacing:0;color:#fff;text-transform:none;margin-top:4px}
+.pill{position:absolute;left:0;padding:12px 24px;border-radius:999px;font-size:22px;color:#e6defc;display:flex;gap:12px;align-items:center}
+.col-lbl{position:absolute;font-size:24px;font-weight:600;color:var(--muted);transform:translateX(-50%)}
+.out{position:absolute;right:110px;top:350px;width:360px;padding:30px}
+.out small{font-size:18px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+.out h3{font-size:40px;margin:10px 0 0;line-height:1.15}
+.out .row{margin-top:22px;padding:16px 20px;border-radius:18px;background:rgba(255,255,255,.07);font-size:24px;font-weight:600}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;margin-top:70px}
+.card{padding:44px}
+.card .num{font-size:120px;font-weight:800;line-height:1;background:linear-gradient(90deg,#fff,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.card .lbl{font-size:28px;color:var(--muted);margin-top:16px;line-height:1.3}
+.bars{display:flex;align-items:flex-end;gap:34px;height:300px;margin-top:60px;padding:0 20px}
+.bar{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:12px;height:100%}
+.bar div{width:100%;border-radius:16px 16px 6px 6px;background:linear-gradient(180deg,var(--accent),var(--accent2));transform-origin:bottom;box-shadow:0 0 40px rgba(192,77,255,.45)}
+.bar span{font-size:24px;color:var(--muted);font-weight:600}
+.bar b{font-size:26px}
+#nav{position:absolute;left:110px;bottom:50px;display:flex;gap:14px;align-items:center;z-index:5}
+#nav i{width:54px;height:5px;border-radius:3px;background:rgba(255,255,255,.2);transition:.4s;cursor:pointer}
+#nav i.on{background:var(--accent);width:90px;box-shadow:0 0 14px var(--accent)}
+.logo{position:absolute;right:110px;top:70px;font-weight:800;font-size:26px;letter-spacing:.2em;opacity:.8}
+.note{position:absolute;right:110px;bottom:50px;font-size:18px;color:var(--muted);opacity:.7}
+svg{position:absolute;inset:0;overflow:visible}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="bokeh" id="bokeh"></div>
+  <div class="logo">ДЕМО · UNIVERSITY</div>
+
+  <!-- 1. Титул -->
+  <section class="slide" id="s0">
+    <div style="position:absolute;left:110px;top:330px">
+      <div class="eyebrow t">Тестовая презентация</div>
+      <h1 class="t" style="margin-top:26px">Путь студента<br><em>с ИИ-куратором</em></h1>
+      <p class="sub t">Как HTML, CSS, SVG и GSAP превращаются в слайды уровня выставочного стенда.</p>
+    </div>
+  </section>
+
+  <!-- 2. Линии -->
+  <section class="slide" id="s1">
+    <div class="eyebrow t">Ради чего это работает</div>
+    <h2 class="t">Высокое качество образования<br><em>важная цель университета</em></h2>
+    <svg id="chart" viewBox="0 0 1920 1080" width="1920" height="1080"></svg>
+    <div class="glass tag" id="e4" style="left:700px;top:430px;opacity:0">Выпуск через<b>4 года</b></div>
+    <div class="glass tag" id="e6" style="left:1040px;top:690px;opacity:0">Выпуск через<b>6 лет</b></div>
+    <div class="glass tag" id="ege" style="left:110px;top:700px;width:180px;text-align:left;padding:18px 20px;opacity:0">На входе<b style="font-size:54px;color:var(--accent)">ЕГЭ</b><span style="font-size:16px;letter-spacing:0;text-transform:none;line-height:1.2;display:block">высокие баллы абитуриентов</span></div>
+    <div id="cols"></div>
+    <div class="glass out" id="out" style="opacity:0">
+      <small>На выходе</small><h3>Высокий уровень компетенций</h3>
+      <div class="row">💼 Успешное трудоустройство</div>
+      <div class="row">💰 Высокая зарплата</div>
+    </div>
+    <div id="legend" style="position:absolute;left:300px;top:955px;display:flex;gap:18px;opacity:0">
+      <div class="glass pill" style="position:static">◉ сигнал риска</div>
+      <div class="glass pill" style="position:static">┄ без помощи: долги, отчисление</div>
+      <div class="glass pill" style="position:static">◎ ИИ-куратор помог вовремя</div>
+    </div>
+  </section>
+
+  <!-- 3. Цифры -->
+  <section class="slide" id="s2">
+    <div class="eyebrow t">Результаты пилота</div>
+    <h2 class="t">Цифры, которые <em>видно сразу</em></h2>
+    <div class="cards">
+      <div class="glass card t"><div class="num" data-to="87" data-suf="%">0</div><div class="lbl">студентов получили помощь до первой сессии</div></div>
+      <div class="glass card t"><div class="num" data-to="34" data-suf="%">0</div><div class="lbl">снижение числа отчислений за год</div></div>
+      <div class="glass card t"><div class="num" data-to="2.4" data-suf="×" data-dec="1">0</div><div class="lbl">рост доли успешных выпускников</div></div>
+    </div>
+    <div class="bars" id="bars"></div>
+    <div class="note">* данные вымышлены, для демонстрации</div>
+  </section>
+
+  <div id="nav"></div>
+</div>
+
+<script>
+const W=1920,H=1080,stage=document.getElementById('stage');
+function fit(){const s=Math.min(innerWidth/W,innerHeight/H);stage.style.transform=`scale(${s}) translate(-50%,-50%)`;stage.style.transformOrigin='0 0';
+  stage.style.left='50%';stage.style.top='50%';}
+addEventListener('resize',fit);fit();
+
+// bokeh
+const bk=document.getElementById('bokeh');
+for(let i=0;i<22;i++){const e=document.createElement('i'),s=20+Math.random()*70;
+  Object.assign(e.style,{width:s+'px',height:s+'px',left:Math.random()*1900+'px',top:Math.random()*1000+'px',opacity:.15+Math.random()*.4});
+  bk.appendChild(e);
+  gsap.to(e,{x:'+='+(Math.random()*80-40),y:'+='+(Math.random()*80-40),duration:6+Math.random()*6,repeat:-1,yoyo:true,ease:'sine.inOut'});}
+
+// rng
+let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+
+// chart
+const svgNS='http://www.w3.org/2000/svg',svg=document.getElementById('chart');
+const mk=(n,a)=>{const e=document.createElementNS(svgNS,n);for(const k in a)e.setAttribute(k,a[k]);svg.appendChild(e);return e};
+const defs=document.createElementNS(svgNS,'defs');
+defs.innerHTML=`<linearGradient id="lg" x1="0" x2="1"><stop offset="0" stop-color="#7a5cff"/><stop offset="1" stop-color="#e07bff"/></linearGradient>
+<filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`;
+svg.appendChild(defs);
+const cx=[420,590,760,930,1100,1270]; // колонки курсов
+cx.forEach((x,i)=>{mk('line',{x1:x,x2:x,y1:560,y2:900,stroke:'rgba(255,255,255,.12)','stroke-dasharray':'4 8'});
+  const l=document.createElement('div');l.className='col-lbl';l.style.left=x+'px';l.style.top='915px';l.textContent=(i+1)+' курс';document.getElementById('cols').appendChild(l)});
+const E4=[860,500],E6=[1270,600],paths=[];
+for(let i=0;i<42;i++){
+  const y0=790+rnd()*90-45,fast=rnd()<.3,E=fast?E4:E6,ey=E[1]+rnd()*10-5;
+  const d=`M300 ${y0} C ${E[0]*.55+rnd()*120} ${y0+rnd()*60-30}, ${E[0]*.7+rnd()*80} ${ey+40+rnd()*170}, ${E[0]} ${ey}`;
+  const p=mk('path',{d,fill:'none',stroke:'url(#lg)','stroke-width':1.6+rnd()*1.2,opacity:.55+rnd()*.4,filter:'url(#glow)'});
+  p._len=p.getTotalLength();p.style.strokeDasharray=p._len;p.style.strokeDashoffset=p._len;paths.push(p);
+}
+// выходные линии
+const out4=mk('line',{x1:860,y1:500,x2:1450,y2:500,stroke:'#fff','stroke-width':2,opacity:0});
+const out6=mk('line',{x1:1270,y1:600,x2:1450,y2:600,stroke:'#fff','stroke-width':2,opacity:0});
+// точки риска
+const risk=[[3,.32],[8,.5],[13,.6],[18,.72],[24,.8],[29,.88]].map(([i,f])=>{
+  const p=paths[i],pt=p.getPointAtLength(p._len*f);
+  const dash=mk('path',{d:`M${pt.x} ${pt.y} Q ${pt.x+70} ${pt.y+20} ${pt.x+130} ${pt.y+210}`,fill:'none',stroke:'rgba(255,255,255,.55)','stroke-dasharray':'6 8','stroke-width':2,opacity:0});
+  const dot=mk('circle',{cx:pt.x,cy:pt.y,r:0,fill:'#2a0f8c',stroke:'#fff','stroke-width':3});
+  const core=mk('circle',{cx:pt.x,cy:pt.y,r:0,fill:'#fff'});
+  return {dash,dot,core};});
+
+// столбики
+const bars=document.getElementById('bars');
+[['2020',32],['2021',41],['2022',55],['2023',68],['2024',87]].forEach(([y,v])=>{
+  bars.insertAdjacentHTML('beforeend',`<div class="bar"><b>${v}%</b><div style="height:${v*2.9}px"></div><span>${y}</span></div>`)});
+
+// слайды
+const slides=[...document.querySelectorAll('.slide')],nav=document.getElementById('nav');
+slides.forEach((_,i)=>{const d=document.createElement('i');d.onclick=()=>go(i);nav.appendChild(d)});
+const enter=[
+ tl=>tl.from('#s0 .t',{y:50,opacity:0,duration:.9,stagger:.18,ease:'power3.out'}),
+ tl=>{
+  tl.from('#s1 .t',{y:40,opacity:0,duration:.8,stagger:.15,ease:'power3.out'})
+    .to('#ege',{opacity:1,duration:.6},'-=.4')
+    .to(paths,{strokeDashoffset:0,duration:2.4,stagger:{each:.04,from:'random'},ease:'power2.inOut'},'-=.2')
+    .from('.col-lbl',{opacity:0,y:10,stagger:.08,duration:.5},'<')
+    .to('#e4',{opacity:1,duration:.6},'-=.8').to('#e6',{opacity:1,duration:.6},'<.2')
+    .to([out4,out6],{opacity:1,duration:.8},'-=.4')
+    .to('#out',{opacity:1,x:0,duration:.8},'<')
+    .to(risk.map(r=>r.dot),{attr:{r:11},duration:.5,stagger:.2,ease:'back.out(3)'},'-=.2')
+    .to(risk.map(r=>r.core),{attr:{r:4},duration:.4,stagger:.2},'<')
+    .to(risk.map(r=>r.dash),{opacity:1,duration:.8,stagger:.2},'<.3')
+    .to('#legend',{opacity:1,duration:.6},'-=.4');},
+ tl=>{
+  tl.from('#s2 .t',{y:50,opacity:0,duration:.8,stagger:.15,ease:'power3.out'})
+    .from('.bar div',{scaleY:0,duration:1,stagger:.12,ease:'power3.out'},'-=.2')
+    .from('.bar b,.bar span',{opacity:0,duration:.5,stagger:.06},'<.4');
+  document.querySelectorAll('.num').forEach(n=>{const o={v:0},to=+n.dataset.to,dec=+n.dataset.dec||0;
+    tl.to(o,{v:to,duration:1.6,ease:'power2.out',onUpdate:()=>n.textContent=o.v.toFixed(dec)+n.dataset.suf},0.3)});}
+];
+function resetS1(){gsap.set(paths,{strokeDashoffset:p=>0});paths.forEach(p=>p.style.strokeDashoffset=p._len);
+  gsap.set(['#e4','#e6','#ege','#out','#legend'],{opacity:0});gsap.set([out4,out6],{opacity:0});
+  risk.forEach(r=>{gsap.set(r.dash,{opacity:0});r.dot.setAttribute('r',0);r.core.setAttribute('r',0)});}
+let cur=-1,tlc;
+function go(i){
+  if(i<0||i>=slides.length||i===cur)return;
+  if(tlc)tlc.kill();
+  const prev=slides[cur];
+  if(prev)gsap.to(prev,{opacity:0,duration:.4,onComplete:()=>{prev.classList.remove('active')}});
+  cur=i;const s=slides[i];s.classList.add('active');
+  if(i===1)resetS1();
+  gsap.set(s,{opacity:0});gsap.to(s,{opacity:1,duration:.5});
+  tlc=gsap.timeline({delay:.25});enter[i](tlc);
+  [...nav.children].forEach((d,k)=>d.classList.toggle('on',k===i));
+}
+addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key))go(cur+1);if(['ArrowLeft','PageUp'].includes(e.key))go(cur-1)});
+let tx=0;addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50)go(cur+(d<0?1:-1))});
+go(0);
+</script>
+</body>
+</html>
