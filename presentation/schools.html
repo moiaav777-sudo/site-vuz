@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Школа России в цифрах</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<style>
+:root{--bg1:#1a0b4d;--bg2:#3a1bd6;--accent:#c04dff;--accent2:#7a5cff;--muted:#b9acf5;--glass:rgba(255,255,255,.08);--line:rgba(255,255,255,.18);--warn:#ffb86b}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#0b0524;color-scheme:dark;overflow:hidden;font-family:Manrope,system-ui,sans-serif;color:#fff}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;will-change:transform;background:radial-gradient(1200px 800px at 70% 20%,var(--bg2),var(--bg1) 70%)}
+.bokeh{position:absolute;inset:0;pointer-events:none}
+.bokeh i{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.9),rgba(255,255,255,0) 70%);will-change:transform}
+.slide{position:absolute;inset:0;padding:90px 110px;opacity:0;visibility:hidden}
+.slide.active{visibility:visible}
+.eyebrow{font-size:22px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-weight:800}
+h1,h2{font-weight:800;line-height:1.08;letter-spacing:-.01em}
+h1{font-size:120px}
+h2{font-size:68px;margin-top:20px}
+em{font-style:normal;color:var(--accent)}
+.sub{font-size:34px;color:var(--muted);margin-top:30px;max-width:1100px;line-height:1.4}
+.glass{background:rgba(70,40,170,.4);border:1px solid var(--line);border-radius:28px}
+@media (hover:hover) and (min-width:1100px){.glass{background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}}
+.abs{position:absolute}
+.stat{padding:26px 34px;width:470px}
+.stat .num{font-size:84px;font-weight:800;line-height:1;background:linear-gradient(90deg,#fff,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat .num small{font-size:40px}
+.stat .lbl{font-size:24px;color:var(--muted);margin-top:10px;line-height:1.3}
+.kpi{font-size:76px;font-weight:800;line-height:1}
+.kpi small{font-size:34px;font-weight:600;color:var(--muted);margin-left:10px}
+.cap{font-size:26px;color:var(--muted);margin-top:8px}
+.cap b{color:#fff}
+.cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;margin-top:50px}
+.c4{padding:34px 34px 28px}
+.c4 .l{font-size:22px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;min-height:56px;line-height:1.25}
+.c4 .num{font-size:92px;font-weight:800;line-height:1;margin-top:14px;background:linear-gradient(90deg,#fff,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.c4 .s{font-size:24px;color:var(--muted);margin-top:12px;min-height:62px;line-height:1.3}
+.c4 svg{position:static;width:100%;height:190px;margin-top:14px}
+.insight{padding:34px 38px;font-size:28px;line-height:1.4;color:#e6defc}
+.insight b{color:#fff}
+.insight h3{font-size:22px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.tags{display:flex;gap:26px;margin-top:70px}
+.tag{padding:22px 34px;font-size:22px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.tag b{display:block;font-size:52px;letter-spacing:0;color:#fff;text-transform:none;margin-bottom:2px}
+#nav{position:absolute;left:110px;bottom:50px;display:flex;gap:14px;align-items:center;z-index:5}
+#nav i{width:44px;height:5px;border-radius:3px;background:rgba(255,255,255,.2);transition:.4s;cursor:pointer}
+#nav i.on{background:var(--accent);width:80px}
+.logo{position:absolute;right:110px;top:70px;font-weight:800;font-size:24px;letter-spacing:.2em;opacity:.8}
+.src{position:absolute;right:110px;bottom:46px;font-size:18px;color:var(--muted);opacity:.75;text-align:right;max-width:1000px}
+svg.ch{position:absolute;inset:0;overflow:visible;pointer-events:none}
+#rot{display:none;position:fixed;left:0;right:0;bottom:calc(14px + env(safe-area-inset-bottom,0px));text-align:center;font-size:14px;color:#b9acf5;z-index:9}
+@media (orientation:portrait){#rot{display:block}}
+</style>
+</head>
+<body>
+<div id="rot">Поверните телефон горизонтально</div>
+<div id="stage">
+  <div class="bokeh" id="bokeh"></div>
+  <div class="logo">ОБРАЗОВАНИЕ · РФ</div>
+
+  <!-- 1 Титул -->
+  <section class="slide" id="s0">
+    <div class="abs" style="left:110px;top:250px">
+      <div class="eyebrow t">Система образования России · 2019–2025</div>
+      <h1 class="t" style="margin-top:26px">Школа России<br><em>в цифрах</em></h1>
+      <p class="sub t">Сколько в стране школьников и учителей и как это менялось за шесть лет.</p>
+      <div class="tags">
+        <div class="glass tag t"><b>17,5 млн</b>школьников</div>
+        <div class="glass tag t"><b>1,07 млн</b>учителей</div>
+        <div class="glass tag t"><b>37,9 тыс.</b>школ</div>
+      </div>
+    </div>
+    <div class="src">Источник: база «Показатели системы образования» (И61)</div>
+  </section>
+
+  <!-- 2 Школьники -->
+  <section class="slide" id="s1">
+    <div class="eyebrow t">Школьники</div>
+    <h2 class="t">17,5 млн детей учатся в школах:<br><em>рост остановился</em></h2>
+    <div class="abs t" style="left:110px;top:400px;display:flex;flex-direction:column;gap:24px">
+      <div class="glass stat"><div class="num" data-to="17.49" data-dec="2">0<small> млн</small></div><div class="lbl">школьников в 2025 году</div></div>
+      <div class="glass stat"><div class="num" data-to="7.2" data-dec="1" data-pre="+">0<small> %</small></div><div class="lbl">к 2019 году (16,31 млн)</div></div>
+      <div class="glass stat"><div class="num" data-to="1.3" data-dec="1" data-pre="−">0<small> %</small></div><div class="lbl">к пику 2023 года (17,71 млн)</div></div>
+    </div>
+    <div class="src">Сумма обучающихся начального, основного и среднего общего образования. Ось не от нуля. Источник: И61</div>
+  </section>
+
+  <!-- 3 Уровни -->
+  <section class="slide" id="s2">
+    <div class="eyebrow t">Школьники по уровням</div>
+    <h2 class="t">Основная школа растёт, <em>начальная сжимается</em></h2>
+    <div class="glass insight abs t" style="left:1360px;top:360px;width:450px">
+      <h3>2019 → 2025</h3>
+      <b>Основная школа</b><br>+1,50 млн (+19,6%)<br><br>
+      <b>Начальная школа</b><br>−0,27 млн (−3,7%), от пика 2022 года −0,64 млн<br><br>
+      <b>Старшая школа</b><br>−0,05 млн (−3,6%)
+    </div>
+    <div class="src">Численность обучающихся по программам начального, основного и среднего общего образования. Источник: И61</div>
+  </section>
+
+  <!-- 4 Учителя -->
+  <section class="slide" id="s3">
+    <div class="eyebrow t">Учителя</div>
+    <h2 class="t">Учителей меньше, <em>нагрузка выше</em></h2>
+    <div class="abs t" style="left:110px;top:330px;width:800px">
+      <div class="kpi" data-to="1.067" data-dec="3">0<small>млн учителей</small></div>
+      <div class="cap">на <b>16 тыс.</b> меньше, чем в 2019 году (1,083 млн)</div>
+    </div>
+    <div class="abs t" style="left:1030px;top:330px;width:780px">
+      <div class="kpi" data-to="16.7" data-dec="1">0<small>школьников на учителя</small></div>
+      <div class="cap">в 2019 году было <b>15,3</b></div>
+    </div>
+    <div class="src">Учителя в списочном составе общеобразовательных организаций. Оси не от нуля. Источник: И61</div>
+  </section>
+
+  <!-- 5 Кадры -->
+  <section class="slide" id="s4">
+    <div class="eyebrow t">Кадры</div>
+    <h2 class="t">Педагогический корпус <em>стареет</em></h2>
+    <div class="cards4" id="cards4"></div>
+    <div class="glass insight abs t" style="left:110px;right:110px;top:850px;padding:22px 34px;font-size:28px">Почти <b>каждый шестой</b> учитель старше 60 лет, а доля молодых до 35 лет за шесть лет почти не изменилась.</div>
+    <div class="src">Доли от списочного состава учителей. Данные по повышению квалификации за 2019–2024 годы. Источник: И61</div>
+  </section>
+
+  <!-- 6 Предметы -->
+  <section class="slide" id="s5">
+    <div class="eyebrow t">Учителя по предметам</div>
+    <h2 class="t">Языки и математика: <em>больше всего учителей</em></h2>
+    <div class="src">Численность учителей-предметников в списочном составе, 2025 год, человек. Источник: И61</div>
+  </section>
+
+  <!-- 7 Регионы -->
+  <section class="slide" id="s6">
+    <div class="eyebrow t">Регионы</div>
+    <h2 class="t">Нагрузка на учителя: от 10,7 до 22,8 <em>школьников</em></h2>
+    <div class="src">Численность обучающихся на одного учителя в списочном составе, 2025 год; пять максимумов и пять минимумов из 85 регионов с данными. Источник: И61</div>
+  </section>
+
+  <div id="nav"></div>
+</div>
+
+<script>
+const W=1920,H=1080,stage=document.getElementById('stage');
+function fit(){const s=Math.min(innerWidth/W,innerHeight/H);stage.style.transform=`scale(${s}) translate(-50%,-50%)`}
+addEventListener('resize',fit);fit();
+
+const bk=document.getElementById('bokeh');
+for(let i=0;i<(innerWidth<1000?8:14);i++){const e=document.createElement('i'),s=20+Math.random()*70;
+  Object.assign(e.style,{width:s+'px',height:s+'px',left:Math.random()*1900+'px',top:Math.random()*1000+'px',opacity:.12+Math.random()*.35});
+  bk.appendChild(e);gsap.to(e,{x:'+='+(Math.random()*80-40),y:'+='+(Math.random()*80-40),duration:6+Math.random()*6,repeat:-1,yoyo:true,ease:'sine.inOut'});}
+
+/* ---------- данные И61 (РФ, год → значение) ---------- */
+const Y=[2019,2020,2021,2022,2023,2024,2025];
+const D={
+ noo:[7210231,7321873,7459361,7583753,7534114,7319667,6939987],
+ ooo:[7638725,7876649,8216090,8556507,8835689,8992926,9140513],
+ soo:[1460697,1438157,1373880,1331257,1344967,1387543,1408507],
+ teachers:[1083294,1087325,1083382,1079625,1074747,1068989,1066907],
+ load:[15.3,15.5,16,16.4,16.7,16.8,16.67],
+ age60:[12.9,13.6,14.1,14.7,15.5,16.4,17.36],
+ under35:[22.8,23.1,23.3,23.3,23.1,22.7,22.57],
+ vac:[14020,16000,20456,22412,18160,18791,17024],
+ pd:[68.8,72.7,74.2,76.1,77,79]
+};
+D.total=D.noo.map((v,i)=>v+D.ooo[i]+D.soo[i]);
+const subjects=[['Русский язык и литература',127589],['Иностранные языки',116790],['Математика',102060],['Физическая культура',71549],['История, обществознание, право',67698],['Труд (технология)',41660],['Биология',32028],['География',31053],['Физика',30971],['Информатика',27540],['Химия',23222]];
+const regions=[['Тюменская область',22.77],['Калининградская область',20.84],['Севастополь',20.52],['Московская область',19.76],['Самарская область',19.74],['Россия',16.67,1],['Республика Алтай',10.97],['Республика Саха (Якутия)',11.05],['Чукотский АО',11.65],['Курская область',10.95],['Республика Калмыкия',10.68]];
+regions.splice(6,5,['Чукотский АО',11.65],['Республика Саха (Якутия)',11.05],['Республика Алтай',10.97],['Курская область',10.95],['Республика Калмыкия',10.68]);
+
+/* ---------- SVG-помощники ---------- */
+const NS='http://www.w3.org/2000/svg';
+const MUTED='#b9acf5',GRID='rgba(255,255,255,.12)';
+function mkSvg(id,cls='ch'){const s=document.createElementNS(NS,'svg');s.setAttribute('class',cls);s.setAttribute('viewBox','0 0 1920 1080');s.setAttribute('width',1920);s.setAttribute('height',1080);document.getElementById(id).appendChild(s);return s}
+function el(p,n,a,t){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;p.appendChild(e);return e}
+const nf=(v,d=0)=>v.toLocaleString('ru-RU',{minimumFractionDigits:d,maximumFractionDigits:d});
+function smooth(pts){let d=`M${pts[0][0]} ${pts[0][1]}`;for(let i=1;i<pts.length;i++){const[a,b]=[pts[i-1],pts[i]],mx=(a[0]+b[0])/2;d+=` C${mx} ${a[1]},${mx} ${b[1]},${b[0]} ${b[1]}`}return d}
+function lineChart(svg,o){
+  const sx=i=>o.x+i/(o.n-1)*o.w, sy=v=>o.y+o.h-(v-o.ymin)/(o.ymax-o.ymin)*o.h, g=[], paths=[], pops=[];
+  o.ticks.forEach(t=>{el(svg,'line',{x1:o.x,x2:o.x+o.w,y1:sy(t),y2:sy(t),stroke:GRID});el(svg,'text',{x:o.x-16,y:sy(t)+8,'text-anchor':'end',fill:MUTED,'font-size':22},o.tfmt(t))});
+  Y.slice(0,o.n).forEach((yr,i)=>el(svg,'text',{x:sx(i),y:o.y+o.h+44,'text-anchor':'middle',fill:MUTED,'font-size':22},yr));
+  o.series.forEach(s=>{
+    const pts=s.v.map((v,i)=>[sx(i),sy(v)]);
+    if(s.area){const a=el(svg,'path',{d:smooth(pts)+` L${pts[pts.length-1][0]} ${o.y+o.h} L${pts[0][0]} ${o.y+o.h}Z`,fill:s.color,'fill-opacity':.14});pops.push(a)}
+    const p=el(svg,'path',{d:smooth(pts),fill:'none',stroke:s.color,'stroke-width':s.w||5,'stroke-linecap':'round'});
+    p._len=p.getTotalLength();p.style.strokeDasharray=p._len;p.style.strokeDashoffset=p._len;paths.push(p);
+    pts.forEach((pt,i)=>{const last=i===pts.length-1,first=i===0,peak=s.peak===i;
+      const c=el(svg,'circle',{cx:pt[0],cy:pt[1],r:last?10:6,fill:last?'#fff':'#2a0f8c',stroke:s.color,'stroke-width':3});pops.push(c);
+      if(last||first||peak){const up=s.below?36:-22;const t=el(svg,'text',{x:pt[0],y:pt[1]+up,'text-anchor':(last&&o.endLabel)||first?'start':'middle',fill:'#fff','font-size':last?28:24,'font-weight':last?800:600},o.vfmt(s.v[i]));
+        if(last&&o.endLabel){t.setAttribute('x',pt[0]+22);t.setAttribute('y',pt[1]+9);}pops.push(t)}});
+    if(o.endLabel){const lp=pts[pts.length-1];pops.push(el(svg,'text',{x:lp[0]+22,y:lp[1]+44,fill:s.color,'font-size':22,'font-weight':600},s.name))}
+  });
+  return{paths,pops};
+}
+function hbars(svg,o){
+  const bars=[],pops=[];
+  o.rows.forEach((r,i)=>{const y=o.y+i*o.rowH,w=r[1]/o.max*o.maxW,ref=r[2];
+    const t=el(svg,'text',{x:o.x,y:y+o.rowH*.62,fill:ref?'#fff':'#e6defc','font-size':o.fs||26,'font-weight':ref?800:600},r[0]);pops.push(t);
+    const b=el(svg,'rect',{x:o.x+o.labelW,y:y+o.rowH*.14,width:w,height:o.rowH*.58,rx:8,fill:ref?'#fff':(o.colors?o.colors(i):'url(#bg)')});b._w=w;b.setAttribute('width',0);bars.push(b);
+    const v=el(svg,'text',{x:o.x+o.labelW+w+16,y:y+o.rowH*.62,fill:'#fff','font-size':o.fs||26,'font-weight':800},o.fmt(r[1]));v._x=o.x+o.labelW+w+16;pops.push(v);});
+  return{bars,pops};
+}
+function spark(vals,color){const w=300,h=190,mn=Math.min(...vals),mx=Math.max(...vals),pad=(mx-mn)*.2||1;
+  const pts=vals.map((v,i)=>[8+i/(vals.length-1)*(w-16),h-8-(v-mn+pad)/(mx-mn+2*pad)*(h-16)]);
+  return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><path class="sp" d="${smooth(pts)}" fill="none" stroke="${color}" stroke-width="4" stroke-linecap="round"/><circle class="spd" cx="${pts[pts.length-1][0]}" cy="${pts[pts.length-1][1]}" r="7" fill="#fff"/></svg>`}
+
+/* градиент для столбиков */
+function defs(svg){const d=el(svg,'defs',{});d.innerHTML='<linearGradient id="bg" x1="0" x2="1"><stop offset="0" stop-color="#7a5cff"/><stop offset="1" stop-color="#d36bff"/></linearGradient>'}
+const anim={};
+
+/* ---------- слайд 2: общее число школьников ---------- */
+(()=>{const s=mkSvg('s1');defs(s);
+ const c=lineChart(s,{x:790,y:400,w:960,h:420,n:7,ymin:16,ymax:18,ticks:[16,16.5,17,17.5,18],tfmt:t=>nf(t,1),vfmt:v=>nf(v,2),
+   series:[{v:D.total.map(v=>v/1e6),color:'#d36bff',w:6,area:1,peak:4}]});
+ c.pops.forEach(p=>gsap.set(p,{opacity:0}));
+ el(s,'text',{x:790,y:360,fill:MUTED,'font-size':22,'font-weight':600},'Школьники, млн человек');
+ anim[1]={paths:c.paths,pops:c.pops};})();
+
+/* ---------- слайд 3: уровни ---------- */
+(()=>{const s=mkSvg('s2');defs(s);
+ const c=lineChart(s,{x:170,y:400,w:950,h:420,n:7,ymin:0,ymax:10,ticks:[0,2.5,5,7.5,10],tfmt:t=>nf(t,1),vfmt:v=>nf(v,2),endLabel:1,
+   series:[{name:'основная школа',v:D.ooo.map(v=>v/1e6),color:'#d36bff',w:6},{name:'начальная школа',v:D.noo.map(v=>v/1e6),color:'#8f7bff',w:6,peak:3,below:1},{name:'старшая школа',v:D.soo.map(v=>v/1e6),color:'#ffffff',w:5,below:1}]});
+ c.pops.forEach(p=>gsap.set(p,{opacity:0}));
+ el(s,'text',{x:170,y:360,fill:MUTED,'font-size':22,'font-weight':600},'Обучающиеся, млн человек');
+ anim[2]={paths:c.paths,pops:c.pops};})();
+
+/* ---------- слайд 4: учителя ---------- */
+(()=>{const s=mkSvg('s3');defs(s);
+ const a=lineChart(s,{x:190,y:520,w:640,h:320,n:7,ymin:1.06,ymax:1.09,ticks:[1.06,1.07,1.08,1.09],tfmt:t=>nf(t,2),vfmt:v=>nf(v,3),
+   series:[{v:D.teachers.map(v=>v/1e6),color:'#d36bff',w:6,area:1,peak:1}]});
+ const b=lineChart(s,{x:1110,y:520,w:620,h:320,n:7,ymin:15,ymax:17,ticks:[15,16,17],tfmt:t=>nf(t,0),vfmt:v=>nf(v,1),
+   series:[{v:D.load,color:'#ffb86b',w:6,area:1}]});
+ const pops=[...a.pops,...b.pops];pops.forEach(p=>gsap.set(p,{opacity:0}));
+ anim[3]={paths:[...a.paths,...b.paths],pops};})();
+
+/* ---------- слайд 5: карточки ---------- */
+(()=>{const cards=[
+ ['Учителя старше 60 лет',D.age60,17.36,'%','было 12,9% в 2019 году','#ffb86b',1],
+ ['Учителя моложе 35 лет',D.under35,22.57,'%','было 22,8% в 2019 году','#8f7bff',1],
+ ['Вакантные должности учителей',D.vac,17024,'','пик 22,4 тыс. в 2022 году','#d36bff',0],
+ ['Прошли повышение квалификации за 3 года',D.pd,79,'%','было 68,8% в 2019 году, данные по 2024','#7be0ff',0]];
+ const box=document.getElementById('cards4');
+ cards.forEach(c=>{const d=document.createElement('div');d.className='glass c4 t';
+  d.innerHTML=`<div class="l">${c[0]}</div><div class="num" data-to="${c[2]}" data-dec="${c[3]?(c[2]===79?0:1):0}" data-suf="${c[3]}">0</div><div class="s">${c[4]}</div>${spark(c[1],c[5])}`;box.appendChild(d)});
+ const sp=[...box.querySelectorAll('.sp')];sp.forEach(p=>{p._len=p.getTotalLength();p.style.strokeDasharray=p._len;p.style.strokeDashoffset=p._len});
+ anim[4]={paths:sp,pops:[...box.querySelectorAll('.spd')]};})();
+
+/* ---------- слайд 6: предметы ---------- */
+(()=>{const s=mkSvg('s5');defs(s);
+ const h=hbars(s,{x:110,y:340,rowH:52,labelW:520,maxW:900,max:127589,rows:subjects,fmt:v=>nf(v)});
+ anim[5]={bars:h.bars,pops:h.pops};})();
+
+/* ---------- слайд 7: регионы ---------- */
+(()=>{const s=mkSvg('s6');defs(s);
+ const h=hbars(s,{x:110,y:340,rowH:52,labelW:480,maxW:1000,max:24,rows:regions,fmt:v=>nf(v,1),colors:i=>i<5?'url(#bg)':'#ffb86b'});
+ anim[6]={bars:h.bars,pops:h.pops};})();
+
+/* ---------- навигация и анимации ---------- */
+const slides=[...document.querySelectorAll('.slide')],nav=document.getElementById('nav');
+slides.forEach((_,i)=>{const d=document.createElement('i');d.onclick=()=>go(i);nav.appendChild(d)});
+function fmtNum(n,v){const dec=+n.dataset.dec||0;return(n.dataset.pre||'')+nf(v,dec)+(n.dataset.suf||'')}
+function counters(sl,tl,at){sl.querySelectorAll('[data-to]').forEach(n=>{const o={v:0},to=+n.dataset.to,sm=n.querySelector('small');
+  const set=v=>{n.firstChild.nodeValue=fmtNum(n,v)};set(0);
+  tl.to(o,{v:to,duration:1.6,ease:'power2.out',onUpdate:()=>set(o.v)},at)})}
+function reset(i){const a=anim[i];if(!a)return;
+  (a.paths||[]).forEach(p=>p.style.strokeDashoffset=p._len);
+  (a.bars||[]).forEach(b=>b.setAttribute('width',0));
+  (a.pops||[]).forEach(p=>gsap.set(p,{opacity:0}))}
+function play(i,tl){const sl=slides[i],a=anim[i];
+  tl.from(sl.querySelectorAll('.t'),{y:40,opacity:0,duration:.8,stagger:.15,ease:'power3.out'});
+  counters(sl,tl,.4);
+  if(a&&a.paths)tl.to(a.paths,{strokeDashoffset:0,duration:1.8,stagger:.25,ease:'power2.inOut'},.6);
+  if(a&&a.bars){tl.to(a.bars,{attr:{width:(k,t)=>t._w},duration:1,stagger:.07,ease:'power3.out'},.6);
+    tl.to(a.pops,{opacity:1,duration:.5,stagger:.035},.7)}
+  else if(a&&a.pops)tl.to(a.pops,{opacity:1,duration:.5,stagger:.04},'>-.6');
+  if(a&&a.paths&&i===4)tl.to(a.pops,{opacity:1,duration:.4,stagger:.1},'>-.4')}
+let cur=-1,tlc;
+function go(i){
+  if(i<0||i>=slides.length||i===cur)return;
+  if(tlc)tlc.kill();
+  const prev=slides[cur];
+  if(prev)gsap.to(prev,{opacity:0,duration:.4,onComplete:()=>prev.classList.remove('active')});
+  cur=i;const s=slides[i];s.classList.add('active');reset(i);
+  gsap.set(s,{opacity:0});gsap.to(s,{opacity:1,duration:.5});
+  tlc=gsap.timeline({delay:.25});play(i,tlc);
+  [...nav.children].forEach((d,k)=>d.classList.toggle('on',k===i));
+}
+addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key))go(cur+1);if(['ArrowLeft','PageUp'].includes(e.key))go(cur-1)});
+let tx=0;addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50)go(cur+(d<0?1:-1))});
+go(0);
+</script>
+</body>
+</html>
