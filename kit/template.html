@@ -300,7 +300,7 @@ function card(f){
    '<dt>Где</dt><dd class="where">'+where+'</dd>'+
    '<dt>Доказательство</dt><dd>'+esc(f.evidence)+'</dd>'+
    '<dt>Источник</dt><dd class="small">'+esc(f.source||'')+'</dd>'+
-   '<dt>Скриншот</dt><dd class="small muted">'+esc(f.screenshot||'нет')+'</dd>'+
+   '<dt>Скриншот</dt><dd class="small muted">'+(f.screenshot_b64||f.screenshot ? '<img src="'+esc(f.screenshot_b64||f.screenshot)+'" alt="Скриншот: '+esc(f.title)+'" loading="lazy" style="max-width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:8px;margin-bottom:4px">' : '')+esc(f.screenshot||'нет')+'</dd>'+
    '<dt>Статус</dt><dd>'+pill(f.status)+' <span class="small muted">проверка '+esc(f.check)+'</span></dd>'+
    '<dt>Норма</dt><dd>'+esc(f.norm)+'</dd>'+
    '<dt>Что сделать</dt><dd>'+esc(f.fix)+'</dd>'+
