@@ -260,10 +260,11 @@ const anim={};
 /* ---------- навигация и анимации ---------- */
 const slides=[...document.querySelectorAll('.slide')],nav=document.getElementById('nav');
 slides.forEach((_,i)=>{const d=document.createElement('i');d.onclick=()=>go(i);nav.appendChild(d)});
+const K=3; // во сколько раз медленнее появляются данные на графиках
 function fmtNum(n,v){const dec=+n.dataset.dec||0;return(n.dataset.pre||'')+nf(v,dec)+(n.dataset.suf||'')}
 function counters(sl,tl,at){sl.querySelectorAll('[data-to]').forEach(n=>{const o={v:0},to=+n.dataset.to,sm=n.querySelector('small');
   const set=v=>{n.firstChild.nodeValue=fmtNum(n,v)};set(0);
-  tl.to(o,{v:to,duration:1.6,ease:'power2.out',onUpdate:()=>set(o.v)},at)})}
+  tl.to(o,{v:to,duration:1.6*K,ease:'power2.out',onUpdate:()=>set(o.v)},at)})}
 function reset(i){const a=anim[i];if(!a)return;
   (a.paths||[]).forEach(p=>p.style.strokeDashoffset=p._len);
   (a.bars||[]).forEach(b=>b.setAttribute('width',0));
@@ -271,11 +272,11 @@ function reset(i){const a=anim[i];if(!a)return;
 function play(i,tl){const sl=slides[i],a=anim[i];
   tl.from(sl.querySelectorAll('.t'),{y:40,opacity:0,duration:.8,stagger:.15,ease:'power3.out'});
   counters(sl,tl,.4);
-  if(a&&a.paths)tl.to(a.paths,{strokeDashoffset:0,duration:1.8,stagger:.25,ease:'power2.inOut'},.6);
-  if(a&&a.bars){tl.to(a.bars,{attr:{width:(k,t)=>t._w},duration:1,stagger:.07,ease:'power3.out'},.6);
-    tl.to(a.pops,{opacity:1,duration:.5,stagger:.035},.7)}
-  else if(a&&a.pops)tl.to(a.pops,{opacity:1,duration:.5,stagger:.04},'>-.6');
-  if(a&&a.paths&&i===4)tl.to(a.pops,{opacity:1,duration:.4,stagger:.1},'>-.4')}
+  if(a&&a.paths)tl.to(a.paths,{strokeDashoffset:0,duration:1.8*K,stagger:.25*K,ease:'power2.inOut'},.6);
+  if(a&&a.bars){tl.to(a.bars,{attr:{width:(k,t)=>t._w},duration:1*K,stagger:.07*K,ease:'power3.out'},.6);
+    tl.to(a.pops,{opacity:1,duration:.5*K,stagger:.035*K},.7)}
+  else if(a&&a.pops)tl.to(a.pops,{opacity:1,duration:.5*K,stagger:.04*K},'>-'+.6*K);
+  if(a&&a.paths&&i===4)tl.to(a.pops,{opacity:1,duration:.4*K,stagger:.1*K},'>-'+.4*K)}
 let cur=-1,tlc;
 function go(i){
   if(i<0||i>=slides.length||i===cur)return;
