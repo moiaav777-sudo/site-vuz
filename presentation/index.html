@@ -14,10 +14,10 @@
 }
 *{box-sizing:border-box;margin:0}
 html,body{height:100%;background:#0b0524;overflow:hidden;font-family:Manrope,system-ui,sans-serif;color:var(--text)}
-#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;will-change:transform;
   background:radial-gradient(1200px 800px at 70% 20%,var(--bg2),var(--bg1) 70%)}
 .bokeh{position:absolute;inset:0;pointer-events:none}
-.bokeh i{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.9),rgba(255,255,255,0) 70%);filter:blur(6px);opacity:.5}
+.bokeh i{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.9),rgba(255,255,255,0) 70%);will-change:transform}
 .slide{position:absolute;inset:0;padding:90px 110px;opacity:0;visibility:hidden}
 .slide.active{visibility:visible}
 .eyebrow{font-size:22px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-weight:800}
@@ -27,7 +27,8 @@ h2{font-size:72px;margin-top:22px}
 h2 em,h1 em{font-style:normal;color:var(--accent)}
 .sub{font-size:34px;color:var(--muted);margin-top:30px;max-width:1100px;line-height:1.4}
 .glass{background:var(--glass);border:1px solid var(--line);border-radius:28px;
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 20px 60px rgba(10,0,50,.35)}
+  background:rgba(70,40,170,.4)}
+@media (hover:hover) and (min-width:1100px){.glass{background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}}
 .tag{position:absolute;padding:14px 26px;text-align:center;font-size:20px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
 .tag b{display:block;font-size:34px;letter-spacing:0;color:#fff;text-transform:none;margin-top:4px}
 .pill{position:absolute;left:0;padding:12px 24px;border-radius:999px;font-size:22px;color:#e6defc;display:flex;gap:12px;align-items:center}
@@ -42,7 +43,7 @@ h2 em,h1 em{font-style:normal;color:var(--accent)}
 .card .lbl{font-size:28px;color:var(--muted);margin-top:16px;line-height:1.3}
 .bars{display:flex;align-items:flex-end;gap:34px;height:300px;margin-top:60px;padding:0 20px}
 .bar{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:12px;height:100%}
-.bar div{width:100%;border-radius:16px 16px 6px 6px;background:linear-gradient(180deg,var(--accent),var(--accent2));transform-origin:bottom;box-shadow:0 0 40px rgba(192,77,255,.45)}
+.bar div{width:100%;border-radius:16px 16px 6px 6px;background:linear-gradient(180deg,var(--accent),var(--accent2));transform-origin:bottom}
 .bar span{font-size:24px;color:var(--muted);font-weight:600}
 .bar b{font-size:26px}
 #nav{position:absolute;left:110px;bottom:50px;display:flex;gap:14px;align-items:center;z-index:5}
@@ -112,7 +113,7 @@ addEventListener('resize',fit);fit();
 
 // bokeh
 const bk=document.getElementById('bokeh');
-for(let i=0;i<22;i++){const e=document.createElement('i'),s=20+Math.random()*70;
+for(let i=0;i<(innerWidth<1000?8:14);i++){const e=document.createElement('i'),s=20+Math.random()*70;
   Object.assign(e.style,{width:s+'px',height:s+'px',left:Math.random()*1900+'px',top:Math.random()*1000+'px',opacity:.15+Math.random()*.4});
   bk.appendChild(e);
   gsap.to(e,{x:'+='+(Math.random()*80-40),y:'+='+(Math.random()*80-40),duration:6+Math.random()*6,repeat:-1,yoyo:true,ease:'sine.inOut'});}
@@ -131,17 +132,18 @@ const cx=[420,590,760,930,1100,1270]; // колонки курсов
 cx.forEach((x,i)=>{mk('line',{x1:x,x2:x,y1:560,y2:900,stroke:'rgba(255,255,255,.12)','stroke-dasharray':'4 8'});
   const l=document.createElement('div');l.className='col-lbl';l.style.left=x+'px';l.style.top='915px';l.textContent=(i+1)+' курс';document.getElementById('cols').appendChild(l)});
 const E4=[860,500],E6=[1270,600],paths=[];
-for(let i=0;i<42;i++){
+const NL=innerWidth<1000?22:42;
+for(let i=0;i<NL;i++){
   const y0=790+rnd()*90-45,fast=rnd()<.3,E=fast?E4:E6,ey=E[1]+rnd()*10-5;
   const d=`M300 ${y0} C ${E[0]*.55+rnd()*120} ${y0+rnd()*60-30}, ${E[0]*.7+rnd()*80} ${ey+40+rnd()*170}, ${E[0]} ${ey}`;
-  const p=mk('path',{d,fill:'none',stroke:'url(#lg)','stroke-width':1.6+rnd()*1.2,opacity:.55+rnd()*.4,filter:'url(#glow)'});
+  const p=mk('path',{d,fill:'none',stroke:'url(#lg)','stroke-width':1.6+rnd()*1.2,opacity:.55+rnd()*.4});
   p._len=p.getTotalLength();p.style.strokeDasharray=p._len;p.style.strokeDashoffset=p._len;paths.push(p);
 }
 // выходные линии
 const out4=mk('line',{x1:860,y1:500,x2:1450,y2:500,stroke:'#fff','stroke-width':2,opacity:0});
 const out6=mk('line',{x1:1270,y1:600,x2:1450,y2:600,stroke:'#fff','stroke-width':2,opacity:0});
 // точки риска
-const risk=[[3,.32],[8,.5],[13,.6],[18,.72],[24,.8],[29,.88]].map(([i,f])=>{
+const risk=[[3,.32],[8,.5],[13,.6],[17,.72],[19,.8],[21,.88]].map(([i,f])=>{
   const p=paths[i],pt=p.getPointAtLength(p._len*f);
   const dash=mk('path',{d:`M${pt.x} ${pt.y} Q ${pt.x+70} ${pt.y+20} ${pt.x+130} ${pt.y+210}`,fill:'none',stroke:'rgba(255,255,255,.55)','stroke-dasharray':'6 8','stroke-width':2,opacity:0});
   const dot=mk('circle',{cx:pt.x,cy:pt.y,r:0,fill:'#2a0f8c',stroke:'#fff','stroke-width':3});
