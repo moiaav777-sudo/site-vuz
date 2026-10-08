@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <title>Пилотные проекты ИИ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +12,7 @@
 /* Брендбук «Единый стиль презентаций» v2.0. M = высота ÷ 18 = 60 px при 1080 */
 :root{--primary:#12152a;--secondary:#4200d0;--accent:#ff76c8;--lavender:#b9a4f5;--text:#12152a;--text2:#4c5068;--tint:#eff0f6;--surface:#f6f6fa;--border:#e3e3ee;--neutral:#c8c9d8;--white:#fff;--r:6px}
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:#0c0d1c;color-scheme:light;overflow:hidden;font-family:'IBM Plex Sans',Arial,sans-serif;color:var(--text)}
+html,body{height:100%;background:#0c0d1c;color-scheme:light;overflow:hidden;position:fixed;inset:0;width:100%;touch-action:manipulation;font-family:'IBM Plex Sans',Arial,sans-serif;color:var(--text)}
 #stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:var(--white)}
 .slide{position:absolute;inset:0;opacity:0;visibility:hidden;background:var(--white)}
 .slide.active{visibility:visible}
@@ -143,8 +143,8 @@ table.tb{position:absolute;left:80px;right:80px;border-collapse:collapse;width:1
 .ms.go .dot{background:var(--secondary)}
 
 /* ===== Футуризм при академической строгости ===== */
-.slide:not(#s0):not(#s14x){background-color:#fff;background-image:linear-gradient(rgba(66,0,208,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(66,0,208,.05) 1px,transparent 1px);background-size:60px 60px;background-position:20px 20px}
-#s0,#s15{background:linear-gradient(135deg,#2c0094 0%,#4200d0 55%,#5a10dc 100%)}
+.slide:not(#s0){background-color:#fff;background-image:linear-gradient(rgba(66,0,208,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(66,0,208,.05) 1px,transparent 1px);background-size:60px 60px;background-position:20px 20px}
+#s0{background:linear-gradient(135deg,#2c0094 0%,#4200d0 55%,#5a10dc 100%)}
 .reg{position:absolute;inset:0;pointer-events:none}
 .reg i{position:absolute;width:26px;height:26px;background:linear-gradient(var(--secondary),var(--secondary)) center/100% 2px no-repeat,linear-gradient(var(--secondary),var(--secondary)) center/2px 100% no-repeat;opacity:.55}
 .reg i:nth-child(1){left:27px;top:27px}.reg i:nth-child(2){right:27px;top:27px}.reg i:nth-child(3){left:27px;bottom:27px}.reg i:nth-child(4){right:27px;bottom:27px}
@@ -416,7 +416,7 @@ table.tb{position:absolute;left:80px;right:80px;border-collapse:collapse;width:1
     <div class="ttl" data-a="fade">Граф тем: Алгебра</div>
     <div class="sub" data-a="fade">96 тем · 194 связей «что учить раньше» · 69 диагностических · 915 уроков 5–11 классов привязано к темам</div>
     <div class="pn"></div>
-    <div class="gleg" data-a="fade"><span><i></i>что учить раньше</span><span><i class="d"></i>при ошибке вернуться к…</span><span><em></em>проверяется в ЕГЭ</span><span>полоса слева — линия курса (А — числа … З — задачи)</span></div><div class="gboard nonav" data-a="fade"><div class="ghead"></div><div class="gcols"></div><svg class="gedges"></svg></div><div class="gmask nonav"><div class="gcard"></div></div>
+    <div class="gleg" data-a="fade"><span><i></i>что учить раньше</span><span><i class="d"></i>при ошибке вернуться к…</span><span><em></em>проверяется в ЕГЭ</span><span>полоса слева — линия курса (А — числа … З — задачи)</span></div><div class="gboard nonav" data-a="fade"><div class="ghead"></div><div class="gcols"></div><svg class="gedges"></svg></div><div class="gmask nonav"><div class="gcard" role="dialog" aria-modal="true" aria-label="Карточка темы"></div></div>
     
     <div class="strip"></div><div class="prog"></div>
   </section>
@@ -485,6 +485,13 @@ table.tb{position:absolute;left:80px;right:80px;border-collapse:collapse;width:1
   </section>
 </div>
 <script>
+if(!window.gsap){/* GSAP не загрузился: показываем слайды без анимации */
+ const SH=e=>(e&&e.length!==undefined&&!e.nodeType?[...e]:[e]);
+ const tw={set(t,v){SH(t).forEach(e=>{if(e&&e.style&&v&&v.opacity!=null)e.style.opacity=v.opacity})},to(t,v){SH(t).forEach(e=>{if(e&&e.style&&v&&v.opacity!=null)e.style.opacity=v.opacity});if(v&&v.onComplete)setTimeout(v.onComplete,0);return tw},from(){return tl0},fromTo(){return tl0},killTweensOf(){},call(f){},timeScale(){return tl0},kill(){}};
+ const tl0=Object.assign({},tw,{to(){return tl0},from(){return tl0},call(){return tl0}});
+ window.gsap=Object.assign({},tw,{timeline(){return tl0},globalTimeline:{timeScale(){}}});
+ document.querySelectorAll('.slide').forEach(e=>e.style.opacity=0);
+}
 const W=1920,H=1080,stage=document.getElementById('stage');
 function fit(){const s=Math.min(innerWidth/W,innerHeight/H);stage.style.transform='scale('+s+') translate(-50%,-50%)'}
 addEventListener('resize',fit);fit();
@@ -515,21 +522,30 @@ function play(i,tl){const sl=slides[i];
     const set=v=>{n.firstChild.nodeValue=(n.dataset.pre||'')+nf(v)+(n.dataset.suf||'')};set(0);
     tl.to(o,{v:to,duration:Math.min(1.6*K,.8+to*.3),ease:'power2.out',onUpdate:()=>set(o.v)},.5)})}
 document.querySelectorAll('.cyc .node + .node').forEach((n,i)=>{const p=document.createElement('i');p.className='pulse';n.appendChild(p);gsap.fromTo(p,{x:0,opacity:0},{x:34,opacity:1,duration:1.4,repeat:-1,ease:'power1.inOut',delay:i*.45,repeatDelay:.6,keyframes:{opacity:[0,1,1,0]}})});
-document.querySelectorAll('.far').forEach((a,i,all)=>{const box=a.parentNode,W=()=>box.clientWidth-60;
+if(!matchMedia('(prefers-reduced-motion:reduce)').matches)document.querySelectorAll('.far').forEach((a,i,all)=>{const box=a.parentNode,W=()=>box.clientWidth-60;
  gsap.fromTo(a,{x:10,opacity:0,scale:.8},{x:()=>W(),keyframes:{opacity:[0,1,1,0],scale:[.8,1,1,.9],easeEach:'none'},duration:7,ease:'sine.inOut',repeat:-1,delay:i*1.4})});
 let cur=-1,tlc;
+const RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const ANIM='[data-a],.bub i,.kpi,.rg,.pil,.fc';
 function go(i,fromHash){
   if(i<0||i>=N||i===cur)return;
-  if(tlc)tlc.kill();
+  if(tlc){tlc.kill();tlc=null}
   const prev=slides[cur];
   if(prev&&prev.id==='sG'&&window.GD_DEMO)GD_DEMO.stop();
-  if(prev)gsap.to(prev,{opacity:0,duration:.5,ease:'sine.inOut',onComplete:()=>prev.classList.remove('active')}); // переход Fade 0,5 с
-  cur=i;const s=slides[i];s.classList.add('active');
+  gsap.killTweensOf(slides);slides.forEach(x=>{if(x!==slides[i]&&x!==prev){x.classList.remove('active');gsap.set(x,{opacity:0})}});
+  if(prev){gsap.killTweensOf(prev);gsap.to(prev,{opacity:0,duration:.5,ease:'sine.inOut',onComplete:()=>{if(prev!==slides[cur])prev.classList.remove('active')}})} // переход Fade 0,5 с
+  cur=i;const s=slides[i];
+  /* вернувшись на слайд, очищаем всё, что остановленная анимация оставила на полпути */
+  gsap.killTweensOf(s);
+  const els=s.querySelectorAll(ANIM);gsap.killTweensOf(els);gsap.set(els,{clearProps:'opacity,transform,scale,x,y'});
+  s.querySelectorAll('.rp').forEach(c=>c.style.strokeDashoffset=C);
+  s.classList.add('active');
   gsap.set(s,{opacity:0});gsap.to(s,{opacity:1,duration:.5,ease:'sine.inOut'});
   tlc=gsap.timeline({delay:.3});play(i,tlc);
+  if(RM)tlc.timeScale(60);
   try{history.replaceState(null,'','#'+(i+1))}catch(e){}
 }
-addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' ','Enter'].includes(e.key))go(cur+1);if(['ArrowLeft','PageUp','Backspace'].includes(e.key))go(cur-1);if(e.key==='Home')go(0);if(e.key==='End')go(N-1)});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&window.GD_DEMO){GD_DEMO.close();return}if(e.target&&e.target.closest&&e.target.closest('button,a,input,.nonav')&&['Enter',' ','Backspace'].includes(e.key))return;if(['ArrowRight','PageDown',' ','Enter'].includes(e.key))go(cur+1);if(['ArrowLeft','PageUp','Backspace'].includes(e.key))go(cur-1);if(e.key==='Home')go(0);if(e.key==='End')go(N-1)});
 addEventListener('click',e=>{if(e.target.closest&&e.target.closest('.nonav'))return;go(cur+(e.clientX<innerWidth*.3?-1:1))});
 let tx=0;addEventListener('touchstart',e=>tx=e.touches[0].clientX);
 addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50){go(cur+(d<0?1:-1));e.preventDefault()}});
@@ -633,9 +649,10 @@ addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx;if(Math.a
   cur.style.transition='opacity .6s';cur.style.opacity=0;setTimeout(()=>{cur.style.transition=''},700);
   await sleep(3500);say('')}
  sl.addEventListener('pointerdown',e=>{if(e.isTrusted){run++;cur.style.opacity=0;say('')}},true);
- window.GD_DEMO={play,stop(){run++;reset()}};
+ window.GD_DEMO={close(){closeCard()},play,stop(){run++;reset()}};
 })();
 
+addEventListener('hashchange',()=>{const v=parseInt((location.hash||'').slice(1),10);if(v>=1&&v<=N)go(v-1)});
 const h=parseInt((location.hash||'').slice(1),10);go(h>=1&&h<=N?h-1:0);
 </script>
 </body>
