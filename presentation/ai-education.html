@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ИИ для прорыва в образовании и науке</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<style>
+:root{--bg1:#1a0b4d;--bg2:#3a1bd6;--accent:#c04dff;--accent2:#7a5cff;--pink:#ff8ad8;--muted:#b9acf5;--glass:rgba(255,255,255,.08);--line:rgba(255,255,255,.18)}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#0b0524;color-scheme:dark;overflow:hidden;font-family:Manrope,system-ui,sans-serif;color:#fff}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;will-change:transform;background:radial-gradient(1200px 800px at 70% 20%,var(--bg2),var(--bg1) 70%)}
+.bokeh{position:absolute;inset:0;pointer-events:none}
+.bokeh i{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.9),rgba(255,255,255,0) 70%);will-change:transform}
+.slide{position:absolute;inset:0;padding:90px 110px;opacity:0;visibility:hidden}
+.slide.active{visibility:visible}
+.eyebrow{font-size:22px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:800}
+h1,h2{font-weight:800;line-height:1.1;letter-spacing:-.01em}
+h2{font-size:66px;margin-top:18px}
+em{font-style:normal;color:var(--accent)}
+b{font-weight:800}
+.glass{background:rgba(70,40,170,.4);border:1px solid var(--line);border-radius:28px}
+@media (hover:hover) and (min-width:1100px){.glass{background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}}
+.glass.fill{background:linear-gradient(135deg,#5a2be0,#8a3bf0);border-color:rgba(255,255,255,.3)}
+.abs{position:absolute}
+.num{font-weight:800;line-height:1;background:linear-gradient(90deg,#fff,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.num small{font-size:.45em}
+.lbl{color:#e6defc;line-height:1.3}
+.lbl b{color:#fff}
+.logo{position:absolute;right:110px;top:70px;font-weight:800;font-size:22px;letter-spacing:.18em;opacity:.8}
+#nav{position:absolute;left:110px;bottom:50px;display:flex;gap:14px;align-items:center;z-index:5}
+#nav i{width:40px;height:5px;border-radius:3px;background:rgba(255,255,255,.2);transition:.4s;cursor:pointer}
+#nav i.on{background:var(--accent);width:76px}
+svg{overflow:visible}
+/* титул */
+.pat{position:absolute;left:110px;right:110px;top:140px;height:350px;border-radius:30px;overflow:hidden;border:1px solid var(--line);background:rgba(20,5,90,.5)}
+.pat i{position:absolute;width:118px;height:56px;border-radius:20px 20px 8px 20px;background:linear-gradient(180deg,var(--pink) 0 30%,#eadcff 30%);box-shadow:9px 9px 0 #4a3bff}
+.tt{position:absolute;left:110px;top:560px}
+.tt h1{font-size:76px;text-transform:uppercase}
+.tt .who{margin-top:44px;font-size:30px;font-weight:800}
+.tt .who span{display:block;font-size:24px;font-weight:400;color:var(--muted);margin-top:6px}
+/* s2 */
+.row4{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;position:absolute;left:110px;right:110px;top:290px}
+.row4 .glass{padding:30px 34px;min-height:330px;display:flex;flex-direction:column;justify-content:space-between}
+.row4 .num{font-size:104px}
+.row4 .lbl{font-size:26px}
+.band{position:absolute;left:110px;right:110px;top:660px;height:310px;padding:34px 44px;display:grid;grid-template-columns:520px repeat(3,1fr) 1fr;align-items:center;gap:20px}
+.band h3{font-size:42px;line-height:1.15}
+.band p{font-size:24px;color:#e6defc;margin-top:14px;line-height:1.35}
+.ring{display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;font-size:22px;color:#e6defc;line-height:1.3;padding:0 8px;border-left:1px solid var(--line);height:100%;justify-content:center}
+.ring .rg{position:relative;width:130px;height:130px}
+.ring .rg svg{position:absolute;inset:0;width:130px;height:130px;transform:rotate(-90deg)}
+.ring .rg .num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:36px;background:none;-webkit-text-fill-color:#fff;color:#fff}
+.spark{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;font-size:24px;border-left:1px solid var(--line);height:100%;justify-content:center;padding:0 8px}
+/* цитата */
+.qm{font-size:240px;line-height:.7;font-weight:800;color:var(--accent);position:absolute;left:104px;top:190px;font-family:Georgia,serif}
+.q{position:absolute;left:110px;top:370px;width:1560px;font-size:46px;line-height:1.3;font-weight:600}
+.q em{font-weight:800}
+.qa{position:absolute;left:110px;top:790px;padding:30px 44px}
+.qa b{font-size:34px}
+.qa div{font-size:24px;color:var(--muted);margin-top:6px}
+/* s4 */
+.focus{position:absolute;left:110px;top:290px;width:800px;height:680px;padding:56px}
+.focus h3{font-size:72px;line-height:1.08}
+.focus p{font-size:34px;line-height:1.45;margin-top:34px;color:#efe9ff}
+.pr{position:absolute;left:1000px;right:110px;top:290px}
+.pr h4{font-size:38px;margin-bottom:12px}
+.pr .it{display:flex;align-items:center;gap:36px;padding:28px 0;border-top:1px solid var(--line)}
+.pr .it .n{font-size:76px;font-weight:800;color:var(--accent);width:110px;flex:none}
+.pr .it .x{font-size:32px;line-height:1.3}
+/* s5 */
+.big9{position:absolute;left:110px;top:290px;width:520px;height:680px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.big9 .num{font-size:440px;line-height:.85}
+.big9 div.c{font-size:44px;font-weight:800;margin-top:20px}
+.lv{position:absolute;left:720px;right:110px;top:290px}
+.lv h4{font-size:30px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:22px}
+.lv .it{display:flex;align-items:center;gap:30px;padding:0 30px;height:100px;border-left:6px solid var(--accent);margin-bottom:16px;border-radius:0 18px 18px 0;background:rgba(255,255,255,.06);font-size:34px}
+.lv .it .n{font-size:52px;font-weight:800;color:var(--accent);width:84px;flex:none}
+/* s6 */
+.pri{position:absolute;left:110px;right:110px;top:290px;display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+.pri div{display:flex;align-items:center;gap:26px;font-size:32px;font-weight:800;line-height:1.25;padding:0 36px;border-left:1px solid var(--line)}
+.pri div:first-child{border-left:0;padding-left:0}
+.pri svg{width:84px;height:84px;flex:none}
+.st3{position:absolute;left:110px;right:110px;top:450px;height:520px;display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+.st3 .glass{padding:36px 40px;display:flex;flex-direction:column;justify-content:space-between}
+.st3 .num{font-size:190px}
+.st3 .fill .num{background:none;-webkit-text-fill-color:#fff;color:#fff}
+.st3 .lbl{font-size:30px}
+/* s7 */
+.cols3{position:absolute;left:110px;right:110px;top:290px;height:690px;display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+.col{border-radius:28px;overflow:hidden;border:1px solid var(--line);display:flex;flex-direction:column;background:rgba(70,40,170,.28)}
+.col .hd{padding:30px 36px;background:linear-gradient(135deg,#5a2be0,#8a3bf0);min-height:270px}
+.col .hd small{font-size:22px;color:#dccfff}
+.col .hd h3{font-size:46px;margin:8px 0 12px}
+.col .hd p{font-size:25px;line-height:1.35;color:#efe9ff}
+.col .st{padding:26px 36px;flex:1;display:flex;flex-direction:column;justify-content:center}
+.col .st+.st{border-top:1px solid var(--line)}
+.col .st .num{font-size:88px}
+.col .st .lbl{font-size:25px;margin-top:8px}
+#rot{display:none;position:fixed;left:0;right:0;bottom:calc(14px + env(safe-area-inset-bottom,0px));text-align:center;font-size:14px;color:#b9acf5;z-index:9}
+@media (orientation:portrait){#rot{display:block}}
+</style>
+</head>
+<body>
+<div id="rot">Поверните телефон горизонтально</div>
+<div id="stage">
+  <div class="bokeh" id="bokeh"></div>
+  <div class="logo">ЦИФРОВЫЕ ДНИ ИННОПОЛИСА</div>
+
+  <!-- 1 титул -->
+  <section class="slide" id="s0">
+    <div class="pat"></div>
+    <div class="tt">
+      <h1 class="t">Искусственный интеллект<br><em>для прорыва в образовании и науке</em></h1>
+      <div class="who t">Д. Н. Чернышенко<span>Заместитель Председателя Правительства Российской Федерации</span></div>
+    </div>
+  </section>
+
+  <!-- 2 ИИ в жизни -->
+  <section class="slide" id="s1">
+    <div class="eyebrow t">Мониторинг цифровой трансформации общества · ИСИЭЗ НИУ ВШЭ, 2026</div>
+    <h2 class="t">ИИ как часть <em>повседневной жизни</em></h2>
+    <div class="row4">
+      <div class="glass t"><div class="num" data-to="79" data-suf="%">0</div><div class="lbl">интернет-пользователей применяли ИИ-сервисы <b>за последние 3 месяца</b></div></div>
+      <div class="glass t"><div class="num" data-to="90" data-pre="&gt;" data-suf="%">0</div><div class="lbl">среди подростков и молодёжи <b>14–24 лет</b></div></div>
+      <div class="glass t"><div class="num" data-to="52" data-suf="%">0</div><div class="lbl">пользователей ИИ <b>поручают ему поиск информации</b></div></div>
+      <div class="glass t"><div class="num" data-to="1" data-suf="%">0</div><div class="lbl">не пользующихся ИИ <b>не слышали о нём</b> (два года назад — 18%)</div></div>
+    </div>
+    <div class="glass fill band t">
+      <div><h3>Главный запрос — доверие и ИИ-грамотность</h3><p>Доверяют ИИ пока 22% — а среди тех, кто владеет навыками работы с ним, вдвое больше (51%)</p></div>
+      <div class="ring"><div class="rg"><svg viewBox="0 0 130 130"><circle cx="65" cy="65" r="54" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="14"/><circle class="rp" data-p="29" cx="65" cy="65" r="54" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round"/></svg><div class="num" data-to="29" data-suf="%">0</div></div>пользователей не имеют ИИ-компетенций</div>
+      <div class="ring"><div class="rg"><svg viewBox="0 0 130 130"><circle cx="65" cy="65" r="54" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="14"/><circle class="rp" data-p="37" cx="65" cy="65" r="54" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round"/></svg><div class="num" data-to="37" data-suf="%">0</div></div>задумываются о том, какие данные можно загружать в ИИ-сервисы</div>
+      <div class="ring"><div class="rg"><svg viewBox="0 0 130 130"><circle cx="65" cy="65" r="54" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="14"/><circle class="rp" data-p="25" cx="65" cy="65" r="54" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round"/></svg><div class="num" data-to="25" data-suf="%">0</div></div>проверяют результаты ИИ</div>
+      <div class="spark"><svg width="110" height="110" viewBox="0 0 110 110" fill="none" stroke="#fff" stroke-width="3"><path d="M40 20c3 20 12 29 32 32-20 3-29 12-32 32-3-20-12-29-32-32 20-3 29-12 32-32z"/><path d="M82 8c1.5 9 5 13 14 14-9 1-12.5 5-14 14-1.5-9-5-13-14-14 9-1 12.5-5 14-14z"/><path d="M82 70c1.5 9 5 13 14 14-9 1-12.5 5-14 14-1.5-9-5-13-14-14 9-1 12.5-5 14-14z"/></svg><div>→ <b>доверенные ИИ-инструменты</b></div></div>
+    </div>
+  </section>
+
+  <!-- 3 цитата -->
+  <section class="slide" id="s2">
+    <div class="eyebrow t">Позиция государства</div>
+    <div class="qm t">«</div>
+    <div class="q t">Считаю необходимым обеспечить создание и последующее развитие <em>отечественных фундаментальных моделей искусственного интеллекта</em>. Они должны быть конкурентоспособными в мировом масштабе и при этом обладать максимальным уровнем суверенности</div>
+    <div class="glass fill qa t"><b>В. В. Путин</b><div>Президент Российской Федерации</div><div>Совещание по вопросам развития технологий ИИ, 10 апреля 2026 г.</div></div>
+  </section>
+
+  <!-- 4 ИИ в образовании -->
+  <section class="slide" id="s3">
+    <div class="eyebrow t">Образование</div>
+    <h2 class="t">Выделенный проект <em>«ИИ в образовании»</em></h2>
+    <div class="glass fill focus t"><h3>Главный фокус<br>для всех стран</h3><p>ИИ <b>уже массово используется</b> на всех уровнях образования, необходимо формировать <b>правила</b> его использования, развивать <b>инструменты и подготовку</b> педагогов</p></div>
+    <div class="pr">
+      <h4 class="t">Ключевые принципы</h4>
+      <div class="it t"><span class="n">01</span><span class="x">Сохранение навыков критического мышления</span></div>
+      <div class="it t"><span class="n">02</span><span class="x">Снижение образовательного неравенства</span></div>
+      <div class="it t"><span class="n">03</span><span class="x">Повышение достоверности результатов оценивания</span></div>
+      <div class="it t"><span class="n">04</span><span class="x">Сохранение традиционных ценностей</span></div>
+    </div>
+  </section>
+
+  <!-- 5 рабочие группы -->
+  <section class="slide" id="s4">
+    <div class="eyebrow t">Образование</div>
+    <h2 class="t">Выделенный проект <em>«ИИ в образовании»</em></h2>
+    <div class="glass big9 t"><div class="num" data-to="9">0</div><div class="c">рабочих групп</div></div>
+    <div class="lv">
+      <h4 class="t">Укрупнённые уровни образования:</h4>
+      <div class="it t"><span class="n">01</span>Общее образование</div>
+      <div class="it t"><span class="n">02</span>Дополнительное образование детей</div>
+      <div class="it t"><span class="n">03</span>Среднее профессиональное образование</div>
+      <div class="it t"><span class="n">04</span>Высшее образование</div>
+      <div class="it t"><span class="n">05</span>Дополнительное профессиональное образование</div>
+    </div>
+  </section>
+
+  <!-- 6 ИИ в науке -->
+  <section class="slide" id="s5">
+    <div class="eyebrow t">Наука</div>
+    <h2 class="t">Выделенный проект <em>«ИИ в науке»</em></h2>
+    <div class="pri t">
+      <div><svg viewBox="0 0 84 84" fill="none" stroke="#c04dff" stroke-width="4"><ellipse cx="38" cy="18" rx="28" ry="10"/><path d="M10 18v40c0 6 12 10 28 10M66 18v18M10 38c0 6 12 10 28 10M10 28c0 6 12 10 28 10"/><circle cx="64" cy="62" r="14" fill="#7a5cff"/><path d="M58 56l12 12M70 56L58 68" stroke="#fff"/></svg>Систематизация научных данных</div>
+      <div><svg viewBox="0 0 84 84" fill="none" stroke="#c04dff" stroke-width="4"><rect x="6" y="8" width="52" height="16" rx="4"/><rect x="6" y="30" width="52" height="16" rx="4"/><rect x="6" y="52" width="30" height="16" rx="4"/><circle cx="14" cy="16" r="2" fill="#c04dff"/><circle cx="14" cy="38" r="2" fill="#c04dff"/><path d="M44 72c-8 0-8-14 2-14 2-8 16-8 18 0 10 0 10 14 0 14z" fill="#7a5cff" stroke="#fff"/></svg>Доступ к инфраструктуре и вычислениям</div>
+      <div><svg viewBox="0 0 84 84" fill="none"><path d="M42 6l30 10v22c0 20-13 34-30 40C25 72 12 58 12 38V16z" fill="#7a5cff" stroke="#c04dff" stroke-width="3"/><path d="M28 42l10 10 18-20" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>Стандартизация и доверие</div>
+    </div>
+    <div class="st3">
+      <div class="glass t"><div class="num" data-to="9">0</div><div class="lbl"><b>рабочих групп</b> по направлениям национальных проектов технологического лидерства</div></div>
+      <div class="glass fill t"><div class="num" data-to="536">0</div><div class="lbl"><b>российских и зарубежных проектов</b> изучили рабочие группы</div></div>
+      <div class="glass t"><div class="num" data-to="12">0</div><div class="lbl"><b>ИИ-решений</b> в науке представлено на выставке</div></div>
+    </div>
+  </section>
+
+  <!-- 7 инфраструктура -->
+  <section class="slide" id="s6">
+    <div class="eyebrow t">Наука</div>
+    <h2 class="t">Выделенный проект <em>«ИИ в науке»</em></h2>
+    <div class="cols3">
+      <div class="col t"><div class="hd"><small>01</small><h3>Данные</h3><p>Государственная система научно-технической информации, оцифровка накопленного опыта</p></div>
+        <div class="st"><div class="num" data-to="2" data-pre="&gt;">0<small> млрд</small></div><div class="lbl"><b>экземпляров книг и журналов</b> в ГСНТИ уже в 1970-е</div></div>
+        <div class="st"><div class="num" data-to="2" data-pre="≈">0<small> тыс.</small></div><div class="lbl"><b>научно-технических библиотек</b> хранят фонды ГСНТИ</div></div></div>
+      <div class="col t"><div class="hd"><small>02</small><h3>Вычисления</h3><p>Национальная исследовательская компьютерная сеть и её операционный центр</p></div>
+        <div class="st"><div class="num" data-to="16">0</div><div class="lbl"><b>суперкомпьютерных центров</b> коллективного пользования</div></div>
+        <div class="st"><div class="num" data-to="100" data-pre="&gt;">0<small> ПБ</small></div><div class="lbl"><b>данных</b> в год передаётся по сети</div></div></div>
+      <div class="col t"><div class="hd"><small>03</small><h3>Сервисы</h3><p>Домен «Наука и инновации» и платформы партнёров</p></div>
+        <div class="st"><div class="num" data-to="33">0</div><div class="lbl"><b>сервиса</b> работают или готовятся к запуску</div></div>
+        <div class="st"><div class="num" data-to="43">0<small> тыс.</small></div><div class="lbl"><b>пользователей</b> уже работают в сервисах</div></div></div>
+    </div>
+  </section>
+
+  <!-- 8 финал -->
+  <section class="slide" id="s7"></section>
+
+  <div id="nav"></div>
+</div>
+
+<script>
+const W=1920,H=1080,stage=document.getElementById('stage');
+function fit(){const s=Math.min(innerWidth/W,innerHeight/H);stage.style.transform=`scale(${s}) translate(-50%,-50%)`}
+addEventListener('resize',fit);fit();
+
+const bk=document.getElementById('bokeh');
+for(let i=0;i<(innerWidth<1000?8:14);i++){const e=document.createElement('i'),s=20+Math.random()*70;
+  Object.assign(e.style,{width:s+'px',height:s+'px',left:Math.random()*1900+'px',top:Math.random()*1000+'px',opacity:.12+Math.random()*.35});
+  bk.appendChild(e);gsap.to(e,{x:'+='+(Math.random()*80-40),y:'+='+(Math.random()*80-40),duration:6+Math.random()*6,repeat:-1,yoyo:true,ease:'sine.inOut'});}
+
+const slides=[...document.querySelectorAll('.slide')];
+slides[7].innerHTML=slides[0].innerHTML; // финальный слайд повторяет титул
+const nf=(v,d=0)=>v.toLocaleString('ru-RU',{minimumFractionDigits:d,maximumFractionDigits:d});
+
+/* паттерн из «диалоговых облачков» на титуле */
+const tiles={};
+[0,7].forEach(si=>{const pat=slides[si].querySelector('.pat'),arr=[];
+  for(let r=0;r<6;r++)for(let c=-1;c<14;c++){const i=document.createElement('i');
+    i.style.left=(c*130+(r%2?-40:0)+10)+'px';i.style.top=(r*57+10)+'px';pat.appendChild(i);arr.push(i)}
+  tiles[si]=arr});
+
+/* кольца */
+const C=2*Math.PI*54;
+document.querySelectorAll('.rp').forEach(c=>{c.style.strokeDasharray=C;c.style.strokeDashoffset=C});
+
+const nav=document.getElementById('nav');
+slides.forEach((_,i)=>{const d=document.createElement('i');d.onclick=()=>go(i);nav.appendChild(d)});
+function fmtNum(n,v){return(n.dataset.pre||'')+nf(v,+n.dataset.dec||0)+(n.dataset.suf||'')}
+function counters(sl,tl,at){sl.querySelectorAll('[data-to]').forEach(n=>{const o={v:0},to=+n.dataset.to;
+  const set=v=>{n.firstChild.nodeValue=fmtNum(n,v)};set(0);
+  tl.to(o,{v:to,duration:1.6,ease:'power2.out',onUpdate:()=>set(o.v)},at)})}
+function reset(i){const sl=slides[i];
+  sl.querySelectorAll('.rp').forEach(c=>c.style.strokeDashoffset=C);
+  if(tiles[i])tiles[i].forEach(t=>gsap.set(t,{opacity:0,scale:.6}))}
+function play(i,tl){const sl=slides[i];
+  if(tiles[i])tl.to(tiles[i],{opacity:1,scale:1,duration:.5,stagger:{each:.012,from:'random'},ease:'back.out(2)'},0);
+  tl.from(sl.querySelectorAll('.t'),{y:40,opacity:0,duration:.8,stagger:.14,ease:'power3.out'},tiles[i]?.5:0);
+  counters(sl,tl,.5);
+  sl.querySelectorAll('.rp').forEach(c=>tl.to(c,{strokeDashoffset:C*(1-c.dataset.p/100),duration:1.6,ease:'power2.out'},.7))}
+let cur=-1,tlc;
+function go(i){
+  if(i<0||i>=slides.length||i===cur)return;
+  if(tlc)tlc.kill();
+  const prev=slides[cur];
+  if(prev)gsap.to(prev,{opacity:0,duration:.4,onComplete:()=>prev.classList.remove('active')});
+  cur=i;const s=slides[i];s.classList.add('active');reset(i);
+  gsap.set(s,{opacity:0});gsap.to(s,{opacity:1,duration:.5});
+  tlc=gsap.timeline({delay:.25});play(i,tlc);
+  [...nav.children].forEach((d,k)=>d.classList.toggle('on',k===i));
+}
+addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key))go(cur+1);if(['ArrowLeft','PageUp'].includes(e.key))go(cur-1)});
+let tx=0;addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50)go(cur+(d<0?1:-1))});
+go(0);
+</script>
+</body>
+</html>
